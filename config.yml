@@ -1,0 +1,3 @@
+dbUrl: "jdbc:mysql://localhost:3306/timetable"
+dbUser: "root"
+dbPwd: "root"

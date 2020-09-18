@@ -1,0 +1,98 @@
+import java.io.StringWriter
+import groovy.xml.MarkupBuilder
+import org.jooq.codegen.GenerationTool
+import org.apache.tools.ant.filters.ReplaceTokens
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        //添加jooq依赖
+        classpath "org.jooq:jooq-codegen:${System.getProperty("project.jooqVersion")}"
+        //<!> 一定要添加所用数据库的依赖，否则会报错而且不告诉你原因
+        classpath group: 'org.xerial', name: 'sqlite-jdbc', version: '3.25.2'
+        // https://mvnrepository.com/artifact/com.sun.xml.bind/jaxb-impl
+
+        // Java 9 之后的版本须添加此依赖
+        classpath 'org.glassfish.jaxb:jaxb-runtime:2.3.2'
+    }
+}
+
+task createJooqConfig {
+    doLast {
+        def file = new File("jooq.properties")
+
+        if (file.exists()) {
+            logger.error(file.path + " already exist.")
+        } else {
+            file.write("jooq.srcDatabaseName="+ System.getProperties().getProperty("project.archivesBaseName")
+                    +"\n" +
+                    "jooq.url=jdbc:mysql://localhost:3306/\n" +
+                    "jooq.user=root\n" +
+                    "jooq.password=")
+        }
+    }
+}
+
+jooq {
+    version = System.getProperty("project.jooqVersion")
+    edition = 'OSS'
+    generateSchemaSourceOnCompilation = false
+    def file = new File(System.getProperty("project.jooqPropFile"))
+    if (!file.exists()) {
+        logger.error("Will not generate jOOQ ORM because config not found")
+        logger.error(file.path + " not found. Run gradle task createJooqConfig to create new one.")
+    } else {
+        logger.info("Generating MySQL jOOQ ORM, make sure that mysql connection is OK.")
+
+        def props = new Properties()
+        file.withInputStream { props.load(it) }
+
+        app(sourceSets.main) {
+            jdbc {
+                driver = 'com.mysql.cj.jdbc.Driver'
+                url = props.getProperty("jooq.url") + props.getProperty("jooq.srcDatabaseName") + '?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8'
+                user = props.getProperty("jooq.user")
+                password = props.getProperty("jooq.password")
+                properties {
+
+                }
+            }
+            generator {
+                name = 'org.jooq.codegen.DefaultGenerator'
+                strategy {
+                    name = 'org.jooq.codegen.DefaultGeneratorStrategy'
+                    // ...
+                }
+                database {
+                    //The database type. The format here is:
+                    //           org.jooq.meta.[database].[database]Database
+                    name = 'org.jooq.meta.mysql.MySQLDatabase'
+                    inputSchema = props.getProperty("jooq.srcDatabaseName")
+                    outputSchemaToDefault = true //Do not make database name fixed
+                    forcedTypes {
+
+                    }
+                }
+                generate {
+                    relations = true
+                    deprecated = true
+                    records = true
+                    routines = true
+                    udts = true
+                    sequences  = true
+                    interfaces = true
+                    pojos = true//是否生成数据表对应的javabean类
+                    daos = true//是否生成数据表对应的dao层，这里生成的dao能执行基本的增删改查sql操作，复杂一点的操作需要自己写dao
+                    fluentSetters = true
+                }
+                target {
+                    packageName = System.getProperty("project.fullPackageName") + ".orm"
+                    directory = 'build/src'
+                }
+            }
+        }
+    }
+}

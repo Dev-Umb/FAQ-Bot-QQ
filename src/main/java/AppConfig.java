@@ -2,59 +2,30 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
 import java.util.List;
+import java.util.Map;
 
 public class AppConfig {
     private static AppConfig INSTANCE = null;
     public String dbUrl;
     public String dbUser;
     public String dbPwd;
-    public List<Long> admin;
-    public String help;
-
-    private static File configFile;
-
-    private AppConfig() {
+    public Long BotQQ;
+    public String BotPwd;
+    private AppConfig() throws FileNotFoundException {
+        Yaml yml = new Yaml();
+        Map<String,String> data = yml.load(new FileReader( new File("config.yml")));
+        dbUrl=data.get("dbUrl");
+        dbUser=data.get("dbUser");
+        dbPwd=data.get("dbPwd");
+        BotQQ= Long.valueOf(data.get("botQQ"));
+        BotPwd=data.get("botPwd");
     }
 
-    public static AppConfig getInstance() {
-
+    public static AppConfig getInstance() throws FileNotFoundException {
+        if (INSTANCE == null){
+            INSTANCE=new AppConfig();
+        }
         return INSTANCE;
     }
-
-    public boolean isAdmin(Long user) {
-        if (admin == null) {
-            return false;
-        }
-        return admin.contains(user);
-    }
-
-    public static void loadConfig(File file) throws IOException {
-        if (INSTANCE != null) {
-            return;
-        }
-        configFile = file;
-        FileInputStream fileInputStream = new FileInputStream(file);
-        fileInputStream.close();
-    }
-
-    public static void reload() throws IOException {
-        FileInputStream fileInputStream = new FileInputStream(configFile);
-        fileInputStream.close();
-    }
-    public static void loadHelp() throws IOException {
-        File helpFile = new File("help.txt");
-        StringBuilder sb = new StringBuilder();
-        FileReader fileReader = new FileReader(helpFile);
-        BufferedReader bufferedReader = new BufferedReader(fileReader);
-        String line;
-        while ((line = bufferedReader.readLine()) != null ){
-            sb.append(line);
-            sb.append("\n");
-        }
-        INSTANCE.help = sb.toString();
-        bufferedReader.close();
-        fileReader.close();
-    }
-
 }
 

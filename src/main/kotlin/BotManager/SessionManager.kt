@@ -59,12 +59,10 @@ fun analyticalAnswer(query: QueryRowSet):MessageChain{
     answer.imgList.forEach {
         messageChain.add(Image(it))
     }
+    messageChain.add("\n--来自${query[Question.lastEditUser]}的编辑")
     return messageChain.build()
 }
 
-fun getAnswer(question: String,group: Group): MessageChain? {
-    val query = searchQuestion(question,group)
-    return query?.let {
-        analyticalAnswer(it)
-    }
+fun getAnswer(query: QueryRowSet,group: Group): MessageChain? {
+    return analyticalAnswer(query)
 }

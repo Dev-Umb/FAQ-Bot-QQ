@@ -1,6 +1,5 @@
 import groovy.xml.MarkupBuilder
 import org.yaml.snakeyaml.Yaml
-import org.jooq.codegen.GenerationTool
 buildscript {
     repositories {
         mavenLocal()
@@ -18,10 +17,11 @@ buildscript {
     }
 }
 plugins {
+    id 'application'
     id 'java'
     id 'org.jetbrains.kotlin.jvm' version '1.3.72'
 }
-
+mainClassName = 'TestKt'
 group 'org.example'
 version '1.0-SNAPSHOT'
 

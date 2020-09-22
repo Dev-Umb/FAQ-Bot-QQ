@@ -9,6 +9,10 @@ package BotManager
 import DTO.Answer
 import DTO.Question
 import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import me.liuwj.ktorm.dsl.*
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.alsoLogin
@@ -21,19 +25,20 @@ import java.io.File
 import java.lang.Exception
 import java.net.URL
 import java.util.*
-
-
-suspend fun getBot(): Bot {
-       return Bot(
-               qq = AppConfig.getInstance().BotQQ.toLong(),
+import kotlin.coroutines.CoroutineContext
+internal val appJob = Job()
+object BotsManager : CoroutineScope {
+    suspend fun loginBot(): Bot {
+        return Bot(
+                qq = AppConfig.getInstance().BotQQ.toLong(),
                 password = AppConfig.getInstance().BotPwd
-       ) {
-           val deviceInfoFolder = File("devices")
-           if (!deviceInfoFolder.exists()) {
-               deviceInfoFolder.mkdir()
-           }
-           fileBasedDeviceInfo(File(deviceInfoFolder,
-               "${AppConfig.getInstance().BotQQ.toLong()}.json").absolutePath)
+        ) {
+            val deviceInfoFolder = File("devices")
+            if (!deviceInfoFolder.exists()) {
+                deviceInfoFolder.mkdir()
+            }
+            fileBasedDeviceInfo(File(deviceInfoFolder,
+                    "${AppConfig.getInstance().BotQQ.toLong()}.json").absolutePath)
             botLoggerSupplier = { _ ->
                 Log4jLogger(LogManager.getLogger("BOT"))
             }
@@ -41,4 +46,11 @@ suspend fun getBot(): Bot {
                 Log4jLogger(LogManager.getLogger("NETWORK"))
             }
         }.alsoLogin()
+    }
+    val jobs = Job()
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.IO+ SupervisorJob(appJob) + jobs
+    fun closeAllBot() {
+        jobs.cancel()
+    }
 }

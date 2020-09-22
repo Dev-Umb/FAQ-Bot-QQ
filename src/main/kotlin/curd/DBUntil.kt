@@ -8,6 +8,7 @@
 package curd
 
 import BotManager.Session
+import DB.DB
 import DTO.Answer
 import DTO.Question
 import com.google.gson.Gson
@@ -30,7 +31,7 @@ fun logger(): Logger {
 fun deleteQuestion(question: String,group: Group):Boolean{
     try {
         if (searchQuestion(question,group)!=null) {
-            DB.DB.database.delete(Question) {
+            DB.database.delete(Question) {
                 it.question eq question
             }
             return true
@@ -43,7 +44,7 @@ fun deleteQuestion(question: String,group: Group):Boolean{
 
 
 fun searchQuestion(question:String,group: Group): QueryRowSet? {
-    val query= DB.DB.database
+    val query= DB.database
         .from(Question)
         .select()
         .where {
@@ -54,6 +55,20 @@ fun searchQuestion(question:String,group: Group): QueryRowSet? {
     }
     return null
 }
+
+fun quickSearchQuestion(id:Int,group: Group): QueryRowSet? {
+    val query= DB.database
+            .from(Question)
+            .select()
+            .where {
+                (Question.id eq id) and (Question.group eq group.id)
+            }
+    query.forEach {
+        return it
+    }
+    return null
+}
+
 
 fun downImg(imgUrl:OnlineGroupImage){
     val file = File("img",imgUrl.imageId)
@@ -101,7 +116,7 @@ fun upDateQuestionAnswer(message: GroupMessageEvent, session: Session): Boolean 
 
 fun upDate(answer: Answer,session: Session){
     val gson = Gson()
-    DB.DB.database.update(Question) {
+    DB.database.update(Question) {
         it.answer to gson.toJson(answer)
         it.lastEditUser to session.user
         where {

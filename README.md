@@ -28,6 +28,4 @@
   各大迎新群或工作室群提供快捷的提问回答服务
 
 ## 相关项目链接：
-  [Mirai](https://github.com/mamoe/mirai)
-
-  [Mirai-api-http](https://github.com/project-mirai/mirai-api-http)
+  感谢[Mirai](https://github.com/mamoe/mirai)的开发者们提供的bot框架

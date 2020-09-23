@@ -1,3 +1,5 @@
-dbUrl: "jdbc:mysql://localhost:3306/timetable"
-dbUser: "root"
-dbPwd: "root"
+dbUrl: "" # 你的数据库端口链接
+dbUser: "" # 数据库用户名
+dbPwd: "" # 数据库密码
+botQQ: "" # 机器人的QQ
+botPwd: "" # 机器人的密码

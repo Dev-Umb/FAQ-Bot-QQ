@@ -12,7 +12,9 @@ import Listener.BaseListeners
 import curd.logger
 import kotlinx.coroutines.joinAll
 import net.mamoe.mirai.event.registerEvents
-
+import net.mamoe.mirai.event.subscribeAlways
+import net.mamoe.mirai.message.GroupMessageEvent
+import net.mamoe.mirai.message.data.content
 
 suspend fun main() {
     BaseListeners.listeners.forEach {

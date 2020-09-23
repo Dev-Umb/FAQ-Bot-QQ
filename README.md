@@ -33,5 +33,6 @@
   感谢[HelloWorld](https://github.com/mzdluo123)给予的相关技术指导
   
 ## 注
-  $$使用过程中您遇到的bug都是feature$$
+  ~~使用过程中您遇到的bug都是feature~~（bushi
+  
   遇到bug请提交Issue

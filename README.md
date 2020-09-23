@@ -29,3 +29,4 @@
 
 ## 相关项目链接：
   感谢[Mirai](https://github.com/mamoe/mirai)的开发者们提供的bot框架
+  感谢[HelloWorld](https://github.com/mzdluo123)给予的相关技术指导

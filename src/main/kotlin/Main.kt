@@ -17,10 +17,11 @@ import net.mamoe.mirai.message.GroupMessageEvent
 import net.mamoe.mirai.message.data.content
 
 suspend fun main() {
+    // 添加监听job
     BaseListeners.listeners.forEach {
         BotsManager.registerEvents(it)
     }
-    val bot = BotsManager.loginBot()
-    val logger = logger()
-    joinAll(BotsManager.jobs)
+    BotsManager.loginBot() //登录bot
+    val logger = logger() // 打印日志
+    joinAll(BotsManager.jobs) // 将BotsManager的监听事件加入协程
 }

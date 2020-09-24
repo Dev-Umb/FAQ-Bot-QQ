@@ -16,9 +16,12 @@ import net.mamoe.mirai.message.GroupMessageEvent
 import net.mamoe.mirai.message.data.PlainText
 
 class BotMsgListener : BaseListeners() {
+
+    // 重写Event监听事件
     @EventHandler
     suspend fun GroupMessageEvent.onEvent() {
         route(prefix = "", delimiter = " ")  {
+            // 优先进行会话处理
             if (SessionManager.performSession(event)) {
                 reply("答案录入成功！")
                 return@route
@@ -51,12 +54,12 @@ class BotMsgListener : BaseListeners() {
                 return@route
             }
 
+            // 根据问题名称获取回答
             val tryGetAnswer = searchQuestion(
                     event.message.get(PlainText).toString(), group
                 )?.let {
                     getAnswer(it, group)
             }
-
             if (tryGetAnswer != null) {
                 reply(tryGetAnswer)
                 return@route
@@ -76,8 +79,9 @@ class BotMsgListener : BaseListeners() {
                         it.group to event.sender.group.id
                         it.question to question
                     }
+                    // 新建会话
                     SessionManager.addSession(
-                            user=event.sender.id,
+                            user = event.sender.id,
                             session =  Session(
                                     user = event.sender.id,
                                     question = question!!,
@@ -101,6 +105,7 @@ class BotMsgListener : BaseListeners() {
                 if (query == null){
                     reply("问题$question 不存在")
                 }else{
+                    // 新建修改问题会话
                     SessionManager.addSession(
                             user=event.sender.id,
                             session =  Session(

@@ -44,14 +44,18 @@ fun deleteQuestion(question: String,group: Group):Boolean{
 
 
 fun searchQuestion(question:String,group: Group): QueryRowSet? {
-    val query= DB.database
-        .from(Question)
-        .select()
-        .where {
-            (Question.question eq question) and (Question.group eq group.id)
+    try {
+        val query = DB.database
+                .from(Question)
+                .select()
+                .where {
+                    (Question.question eq question) and (Question.group eq group.id)
+                }
+        query.forEach {
+            return it
         }
-    query.forEach {
-        return it
+    }catch (e:Exception) {
+
     }
     return null
 }

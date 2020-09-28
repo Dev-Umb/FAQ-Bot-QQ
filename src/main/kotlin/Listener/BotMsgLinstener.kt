@@ -20,6 +20,7 @@ class BotMsgListener : BaseListeners() {
     // 重写Event监听事件
     @EventHandler
     suspend fun GroupMessageEvent.onEvent() {
+
         route(prefix = "", delimiter = " ")  {
             // 优先进行会话处理
             if (SessionManager.performSession(event)) {
@@ -148,6 +149,35 @@ class BotMsgListener : BaseListeners() {
                 reply(getHelp())
                 return@route
             }
+            case("同步问答","同步不同群的问答消息会将本群问题覆盖"){
+                val signGroup = event.message
+                        .get(PlainText)?.contentToString()?.replace("同步问答 ","")
+                try {
+                    var groupID = signGroup!!.toLong()
+                    val questions = DB.database.from(Question)
+                            .select()
+                            .where {
+                                (Question.group eq groupID)
+                            }
+                    var QuestionNum = 0;
+                    for (i in questions){
+                        if (searchQuestion(question= i[Question.question].toString(),group = event.group)==null) {
+                            DB.database.insert(Question) {
+                                it.lastEditUser to i[Question.lastEditUser]
+                                it.group to event.sender.group.id
+                                it.question to i[Question.question]
+                                it.answer to i[Question.answer]
+                            }
+                            ++QuestionNum
+                        }
+                    }
+                    reply("同步成功，共同步$QuestionNum 条问题记录")
+                }catch (e:Exception){
+                    reply("请输入有效群号")
+                    return@route
+                }
+            }
+
         }
     }
 }

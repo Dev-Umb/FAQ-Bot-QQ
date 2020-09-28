@@ -1,6 +1,6 @@
-package Listener
+package io.farewell.github.qabot.Listener
 
-import curd.logger
+import io.farewell.github.qabot.curd.logger
 import kotlinx.coroutines.*
 import net.mamoe.mirai.message.MessageEvent
 import net.mamoe.mirai.message.data.Message

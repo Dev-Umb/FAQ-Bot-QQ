@@ -5,12 +5,12 @@
     "INVISIBLE_REFERENCE",
     "INVISIBLE_MEMBER"
 )
-package curd
+package io.farewell.github.qabot.curd
 
-import BotManager.Session
-import DB.DB
-import DTO.Answer
-import DTO.Question
+import io.farewell.github.qabot.BotManager.Session
+import io.farewell.github.qabot.DB.DB
+import io.farewell.github.qabot.DTO.Answer
+import io.farewell.github.qabot.DTO.Question
 import com.google.gson.Gson
 import me.liuwj.ktorm.dsl.*
 import net.mamoe.mirai.contact.Group

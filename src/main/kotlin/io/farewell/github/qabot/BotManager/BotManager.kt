@@ -5,26 +5,17 @@
     "INVISIBLE_REFERENCE",
     "INVISIBLE_MEMBER"
 )
-package BotManager
-import DTO.Answer
-import DTO.Question
-import com.google.gson.Gson
+package io.farewell.github.qabot.BotManager
+import io.farewell.github.qabot.AppConfig
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
-import me.liuwj.ktorm.dsl.*
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.alsoLogin
-import net.mamoe.mirai.contact.Group
-import net.mamoe.mirai.message.GroupMessageEvent
-import net.mamoe.mirai.message.data.*
 import net.mamoe.mirai.utils.internal.logging.Log4jLogger
 import org.apache.logging.log4j.LogManager
 import java.io.File
-import java.lang.Exception
-import java.net.URL
-import java.util.*
 import kotlin.coroutines.CoroutineContext
 internal val appJob = Job()
 object BotsManager : CoroutineScope {

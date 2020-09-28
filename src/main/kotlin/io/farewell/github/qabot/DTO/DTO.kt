@@ -1,9 +1,7 @@
-package DTO
+package io.farewell.github.qabot.DTO
 
-import com.google.gson.Gson
 import me.liuwj.ktorm.schema.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 object Question: Table<Nothing>("question") {
     val id = int("id").primaryKey()

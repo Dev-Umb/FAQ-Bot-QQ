@@ -1,19 +1,14 @@
-package BotManager
+package io.farewell.github.qabot.BotManager
 
-import DTO.Answer
-import DTO.Question
+import io.farewell.github.qabot.DTO.Answer
+import io.farewell.github.qabot.DTO.Question
 import com.google.gson.Gson
-import curd.searchQuestion
-import curd.upDateQuestionAnswer
-import io.ktor.util.*
+import io.farewell.github.qabot.curd.upDateQuestionAnswer
 import me.liuwj.ktorm.dsl.*
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.contact.Group
-import net.mamoe.mirai.contact.Member
-import net.mamoe.mirai.event.EventHandler
 import net.mamoe.mirai.message.*
 import net.mamoe.mirai.message.data.*
-import java.io.File
 
 data class Session(
         val group:Long,

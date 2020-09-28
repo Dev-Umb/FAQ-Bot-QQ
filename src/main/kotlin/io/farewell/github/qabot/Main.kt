@@ -6,15 +6,14 @@
         "INVISIBLE_MEMBER"
 )
 
+package io.farewell.github.qabot
 
-import BotManager.BotsManager
-import Listener.BaseListeners
-import curd.logger
+
+import io.farewell.github.qabot.BotManager.BotsManager
+import io.farewell.github.qabot.Listener.BaseListeners
+import io.farewell.github.qabot.curd.logger
 import kotlinx.coroutines.joinAll
 import net.mamoe.mirai.event.registerEvents
-import net.mamoe.mirai.event.subscribeAlways
-import net.mamoe.mirai.message.GroupMessageEvent
-import net.mamoe.mirai.message.data.content
 
 suspend fun main() {
     // 添加监听job

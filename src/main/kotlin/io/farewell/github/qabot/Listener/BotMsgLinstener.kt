@@ -1,15 +1,15 @@
-package Listener
+package io.farewell.github.qabot.Listener
 
-import BotManager.Session
-import BotManager.SessionManager
-import BotManager.getAnswer
-import DB.DB
-import DB.DB.database
-import DTO.Question
-import curd.deleteQuestion
-import curd.logger
-import curd.quickSearchQuestion
-import curd.searchQuestion
+import io.farewell.github.qabot.BotManager.Session
+import io.farewell.github.qabot.BotManager.SessionManager
+import io.farewell.github.qabot.BotManager.getAnswer
+import io.farewell.github.qabot.DB.DB
+import io.farewell.github.qabot.DB.DB.database
+import io.farewell.github.qabot.DTO.Question
+import io.farewell.github.qabot.curd.deleteQuestion
+import io.farewell.github.qabot.curd.logger
+import io.farewell.github.qabot.curd.quickSearchQuestion
+import io.farewell.github.qabot.curd.searchQuestion
 import me.liuwj.ktorm.dsl.*
 import net.mamoe.mirai.event.EventHandler
 import net.mamoe.mirai.message.GroupMessageEvent

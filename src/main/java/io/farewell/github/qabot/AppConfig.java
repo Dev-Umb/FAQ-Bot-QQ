@@ -1,7 +1,8 @@
+package io.farewell.github.qabot;
+
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
-import java.util.List;
 import java.util.Map;
 
 public class AppConfig {

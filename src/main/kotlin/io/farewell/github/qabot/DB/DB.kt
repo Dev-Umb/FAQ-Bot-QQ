@@ -1,10 +1,10 @@
-package DB
+package io.farewell.github.qabot.DB
 
-import AppConfig
+import io.farewell.github.qabot.AppConfig
 import me.liuwj.ktorm.database.Database
 
 object DB{
-    private val appConfig=AppConfig.getInstance()
+    private val appConfig= AppConfig.getInstance()
     val database=Database.connect(
         url= appConfig.dbUrl,
         user = appConfig.dbUser,

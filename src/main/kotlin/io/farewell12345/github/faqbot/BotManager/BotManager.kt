@@ -5,8 +5,8 @@
     "INVISIBLE_REFERENCE",
     "INVISIBLE_MEMBER"
 )
-package io.farewell12345.github.fqabot.BotManager
-import io.farewell12345.github.fqabot.AppConfig
+package io.farewell12345.github.faqbot.BotManager
+import io.farewell12345.github.faqbot.AppConfig
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

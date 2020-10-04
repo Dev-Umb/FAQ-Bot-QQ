@@ -1,4 +1,4 @@
-package io.farewell12345.github.fqabot.DTO
+package io.farewell12345.github.faqbot.DTO
 
 import me.liuwj.ktorm.schema.*
 import java.util.*

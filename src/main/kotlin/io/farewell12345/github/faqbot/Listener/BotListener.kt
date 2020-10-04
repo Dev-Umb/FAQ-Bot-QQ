@@ -1,4 +1,4 @@
-package io.farewell12345.github.fqabot.Listener
+package io.farewell12345.github.faqbot.Listener
 
 import net.mamoe.mirai.event.SimpleListenerHost
 import org.apache.logging.log4j.LogManager

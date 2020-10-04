@@ -6,12 +6,12 @@
         "INVISIBLE_MEMBER"
 )
 
-package io.farewell12345.github.fqabot
+package io.farewell12345.github.faqbot
 
 
-import io.farewell12345.github.fqabot.BotManager.BotsManager
-import io.farewell12345.github.fqabot.Listener.BaseListeners
-import io.farewell12345.github.fqabot.curd.logger
+import io.farewell12345.github.faqbot.BotManager.BotsManager
+import io.farewell12345.github.faqbot.Listener.BaseListeners
+import io.farewell12345.github.faqbot.curd.logger
 import kotlinx.coroutines.joinAll
 import net.mamoe.mirai.event.registerEvents
 

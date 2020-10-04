@@ -21,7 +21,7 @@ plugins {
     id 'java'
     id 'org.jetbrains.kotlin.jvm' version '1.3.72'
 }
-mainClassName = 'io.farewell12345.github.qabot.MainKt'
+mainClassName = 'io.farewell12345.github.faqbot.MainKt'
 group 'org.example'
 version '1.0-SNAPSHOT'
 

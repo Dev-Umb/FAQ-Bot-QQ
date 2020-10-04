@@ -1,9 +1,9 @@
-package io.farewell12345.github.fqabot.BotManager
+package io.farewell12345.github.faqbot.BotManager
 
-import io.farewell12345.github.fqabot.DTO.Answer
-import io.farewell12345.github.fqabot.DTO.Question
+import io.farewell12345.github.faqbot.DTO.Answer
+import io.farewell12345.github.faqbot.DTO.Question
 import com.google.gson.Gson
-import io.farewell12345.github.fqabot.curd.upDateQuestionAnswer
+import io.farewell12345.github.faqbot.curd.upDateQuestionAnswer
 import me.liuwj.ktorm.dsl.*
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.contact.Group

@@ -1,11 +1,11 @@
-package io.farewell12345.github.fqabot;
+package io.farewell12345.github.faqbot;
 
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
 import java.util.Map;
 
-import static io.farewell12345.github.fqabot.curd.DBUntilKt.logger;
+import static io.farewell12345.github.faqbot.curd.DBUntilKt.logger;
 
 public class AppConfig {
     private static AppConfig INSTANCE = null;

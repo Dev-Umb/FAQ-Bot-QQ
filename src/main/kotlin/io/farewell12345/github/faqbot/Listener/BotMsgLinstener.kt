@@ -1,13 +1,17 @@
-package io.farewell12345.github.fqabot.Listener
+package io.farewell12345.github.faqbot.Listener
 
 
-import io.farewell12345.github.fqabot.BotManager.Session
-import io.farewell12345.github.fqabot.BotManager.SessionManager
-import io.farewell12345.github.fqabot.BotManager.*
-import io.farewell12345.github.fqabot.DTO.Question
-import io.farewell12345.github.fqabot.curd.*
-import io.farewell12345.github.fqabot.DB.DB
-import io.farewell12345.github.fqabot.DB.DB.database
+import io.farewell12345.github.faqbot.BotManager.Session
+import io.farewell12345.github.faqbot.BotManager.SessionManager
+import io.farewell12345.github.faqbot.BotManager.*
+import io.farewell12345.github.faqbot.DTO.Question
+import io.farewell12345.github.faqbot.curd.*
+import io.farewell12345.github.faqbot.DB.DB
+import io.farewell12345.github.faqbot.DB.DB.database
+import io.farewell12345.github.faqbot.BotManager.getAnswer
+import io.farewell12345.github.faqbot.curd.deleteQuestion
+import io.farewell12345.github.faqbot.curd.quickSearchQuestion
+import io.farewell12345.github.faqbot.curd.searchQuestion
 import me.liuwj.ktorm.dsl.*
 import net.mamoe.mirai.event.EventHandler
 import net.mamoe.mirai.message.GroupMessageEvent
@@ -26,8 +30,7 @@ class BotMsgListener : BaseListeners() {
                 reply("答案录入成功！")
                 return@route
             }
-
-            case("#","快速索引"){
+            furry("#","快速索引"){
                 try {
                     val id = event.message
                                 .get(PlainText)?.contentToString()?.replace("#", "")?.toInt()
@@ -46,13 +49,43 @@ class BotMsgListener : BaseListeners() {
                     }
                 }catch (e:NumberFormatException){
                     logger.info(e)
-                    reply(e.toString())
+//                    reply("参数错误！请输入问题序号")
                 }catch (e:NullPointerException){
                     logger.info(e)
-                    reply(e.toString())
+//                    reply("请输入完整序号")
+                }catch (e:Exception){
+                    logger.info(e)
+//                    reply(e.toString())
                 }
+
                 return@route
             }
+//            case("#","快速索引"){
+//                try {
+//                    val id = event.message
+//                                .get(PlainText)?.contentToString()?.replace("#", "")?.toInt()
+//                    if (id!=null) {
+//                        val queryRowSet = quickSearchQuestion(id, group)
+//                        if (queryRowSet!=null) {
+//                            val tryAnswer = queryRowSet?.let {
+//                                    getAnswer(it, group)
+//                            }
+//                            if (tryAnswer != null) {
+//                                    reply(tryAnswer)
+//                            }
+//                        }
+//                    }else{
+//                        throw NumberFormatException("参数错误！请输入问题序号")
+//                    }
+//                }catch (e:NumberFormatException){
+//                    logger.info(e)
+//                    reply(e.toString())
+//                }catch (e:NullPointerException){
+//                    logger.info(e)
+//                    reply(e.toString())
+//                }
+//                return@route
+//            }
 
             // 根据问题名称获取回答
             val tryGetAnswer = searchQuestion(

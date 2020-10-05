@@ -60,32 +60,6 @@ class BotMsgListener : BaseListeners() {
 
                 return@route
             }
-//            case("#","快速索引"){
-//                try {
-//                    val id = event.message
-//                                .get(PlainText)?.contentToString()?.replace("#", "")?.toInt()
-//                    if (id!=null) {
-//                        val queryRowSet = quickSearchQuestion(id, group)
-//                        if (queryRowSet!=null) {
-//                            val tryAnswer = queryRowSet?.let {
-//                                    getAnswer(it, group)
-//                            }
-//                            if (tryAnswer != null) {
-//                                    reply(tryAnswer)
-//                            }
-//                        }
-//                    }else{
-//                        throw NumberFormatException("参数错误！请输入问题序号")
-//                    }
-//                }catch (e:NumberFormatException){
-//                    logger.info(e)
-//                    reply(e.toString())
-//                }catch (e:NullPointerException){
-//                    logger.info(e)
-//                    reply(e.toString())
-//                }
-//                return@route
-//            }
 
             // 根据问题名称获取回答
             val tryGetAnswer = searchQuestion(

@@ -89,7 +89,7 @@ class BotMsgListener : BaseListeners() {
                     // 新建会话
                     SessionManager.addSession(
                             user = event.sender.id,
-                            session =  Session(
+                            session = Session(
                                     user = event.sender.id,
                                     question = question!!,
                                     type = "upDate",

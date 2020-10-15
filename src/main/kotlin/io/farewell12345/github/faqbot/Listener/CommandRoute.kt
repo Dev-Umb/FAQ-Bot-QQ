@@ -21,7 +21,7 @@ class CommandRoute<T : MessageEvent>( val args: List<String>?,  val event: T) : 
         if (args?.size == 0){
             return
         }
-        if (!alreadyCalled && case == args?.get(0) ) {
+        if (!alreadyCalled && args?.find { it.equals(case) }!=null ) {
             alreadyCalled = true
             kotlin.runCatching { event.receiver(args.subList(1, args.size)) }.also {
                 handleException(it.exceptionOrNull())

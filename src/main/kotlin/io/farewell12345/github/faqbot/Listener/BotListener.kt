@@ -16,7 +16,8 @@ abstract class BaseListeners : SimpleListenerHost() {
     }
     companion object {
         val listeners = listOf(
-                BotMsgListener()
+                BotMsgListener(),
+            NewGroupMemberListener()
         )
     }
 }

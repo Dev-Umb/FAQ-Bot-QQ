@@ -3,6 +3,7 @@ package io.farewell12345.github.faqbot.BotManager
 import io.farewell12345.github.faqbot.DTO.Answer
 import io.farewell12345.github.faqbot.DTO.Question
 import com.google.gson.Gson
+import io.farewell12345.github.faqbot.curd.changeWelcome
 import io.farewell12345.github.faqbot.curd.upDateQuestionAnswer
 import me.liuwj.ktorm.dsl.*
 import net.mamoe.mirai.Bot
@@ -19,6 +20,10 @@ data class Session(
 object SessionManager{
     private var Sessions= mutableMapOf<Long, Session>()
 
+    fun SessionsIsEmpty():Boolean{
+        return Sessions.isEmpty()
+    }
+
     fun addSession(user:Long, session: Session){
         Sessions.put(user,session)
     }
@@ -30,6 +35,7 @@ object SessionManager{
             flag=true
             when(session.type){
                 "upDate"-> upDateQuestionAnswer(messageEvent,session)
+                "changeWelcome" -> changeWelcome(messageEvent.group,messageEvent.message)
             }
             Sessions.remove(messageEvent.sender.id)
         }
@@ -43,20 +49,22 @@ fun analyticalAnswer(query: QueryRowSet):MessageChain{
     val answer =gson.fromJson(answerJson, Answer::class.java)
     val messageChain=MessageChainBuilder()
     messageChain.add(answer.text)
-    answer.atList.forEach {
-        messageChain.add(
-                At(
+    if (answer.atList.size>0) {
+        answer.atList.forEach {
+            messageChain.add(At(
                     Bot.botInstances[0]
                         .getGroup(query[Question.group]!!)[it]
-                )
-        )
+                ))
+        }
     }
-    answer.imgList.forEach {
-        messageChain.add(Image(it))
+    if (answer.imgList.size>0) {
+        answer.imgList.forEach {
+            messageChain.add(Image(it))
+        }
     }
     return messageChain.build()
 }
 
-fun getAnswer(query: QueryRowSet,group: Group): MessageChain? {
+fun getAnswer(query: QueryRowSet): MessageChain? {
     return analyticalAnswer(query)
 }

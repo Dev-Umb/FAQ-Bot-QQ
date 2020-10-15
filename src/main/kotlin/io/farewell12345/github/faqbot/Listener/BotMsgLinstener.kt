@@ -1,6 +1,7 @@
 package io.farewell12345.github.faqbot.Listener
 
 
+import com.google.gson.Gson
 import io.farewell12345.github.faqbot.BotManager.Session
 import io.farewell12345.github.faqbot.BotManager.SessionManager
 import io.farewell12345.github.faqbot.BotManager.*
@@ -9,39 +10,83 @@ import io.farewell12345.github.faqbot.curd.*
 import io.farewell12345.github.faqbot.DB.DB
 import io.farewell12345.github.faqbot.DB.DB.database
 import io.farewell12345.github.faqbot.BotManager.getAnswer
+import io.farewell12345.github.faqbot.DTO.Answer
+import io.farewell12345.github.faqbot.DTO.Welcome
 import io.farewell12345.github.faqbot.curd.deleteQuestion
 import io.farewell12345.github.faqbot.curd.quickSearchQuestion
 import io.farewell12345.github.faqbot.curd.searchQuestion
 import me.liuwj.ktorm.dsl.*
+import net.mamoe.mirai.Bot
 import net.mamoe.mirai.event.EventHandler
+import net.mamoe.mirai.event.events.MemberJoinEvent
 import net.mamoe.mirai.message.GroupMessageEvent
-import net.mamoe.mirai.message.data.PlainText
+import net.mamoe.mirai.message.data.*
+import java.awt.SystemColor.text
+import java.util.*
 
 class BotMsgListener : BaseListeners() {
 
     // 重写Event监听事件
     @EventHandler
     suspend fun GroupMessageEvent.onEvent() {
+        route (prefix = ".command",delimiter = " "){
+            if (event.sender.permission.ordinal==0){
+                return@route
+            }
+            case("welcome","开关迎新词"){
+                if (!(event.group.id in CommandGroupList.welcomeGroupList)) {
+                    CommandGroupList.welcomeGroupList.add(this.group.id)
+                    val query = searchWelcomeTalk(group)
+                    if (query == null) {
+                        val talk =
+                            Answer(atList = LinkedList(), imgList = LinkedList(), text = "欢迎来到 ${this.group.name} 群")
+                        if (appendWelcomeTalk(group, talk)) {
+                            reply("启动迎新成功！您可使用change指令修改迎新词")
+                            return@route
+                        }
+                    }
+                }
+                reply("已开启迎新功能")
+            }
+            case("change","修改迎新词"){
+                if (searchWelcomeTalk(group)!=null &&
+                    event.group.id in CommandGroupList.welcomeGroupList
+                ){
+                    SessionManager.addSession(
+                        user = event.sender.id,
+                        session = Session(
+                            user = event.sender.id,
+                            question = "",
+                            type = "changeWelcome",
+                            group = event.group.id
+                        )
+                    )
+                    reply("请输入修改后的迎新词")
+                }else{
+                    reply("此群暂未开启迎新！")
+                }
 
+            }
+
+        }
         route(prefix = "", delimiter = " ")  {
             // 优先进行会话处理
-            
-            if (SessionManager.performSession(event)) {
-                reply("答案录入成功！")
-                return@route
+            if(!SessionManager.SessionsIsEmpty()) {
+                if (SessionManager.performSession(event)) {
+                    reply("录入成功！")
+                    return@route
+                }
             }
             furry("#","快速索引"){
                 try {
-                    val id = event.message
-                                .get(PlainText)?.contentToString()?.replace("#", "")?.toInt()
+                    val id = event.message[PlainText]?.contentToString()?.replace("#", "")?.toInt()
                     if (id!=null) {
                         val queryRowSet = quickSearchQuestion(id, group)
                         if (queryRowSet!=null) {
-                            val tryAnswer = queryRowSet?.let {
-                                    getAnswer(it, group)
-                            }
+                            val tryAnswer = getAnswer(queryRowSet)
                             if (tryAnswer != null) {
-                                    reply(tryAnswer)
+                                reply(tryAnswer)
+                                return@route
                             }
                         }
                     }else{
@@ -49,13 +94,10 @@ class BotMsgListener : BaseListeners() {
                     }
                 }catch (e:NumberFormatException){
                     logger.info(e)
-//                    reply("参数错误！请输入问题序号")
                 }catch (e:NullPointerException){
                     logger.info(e)
-//                    reply("请输入完整序号")
                 }catch (e:Exception){
                     logger.info(e)
-//                    reply(e.toString())
                 }
 
                 return@route
@@ -63,9 +105,8 @@ class BotMsgListener : BaseListeners() {
 
             // 根据问题名称获取回答
             val tryGetAnswer = searchQuestion(
-                    event.message.get(PlainText).toString(), group
-                )?.let {
-                    getAnswer(it, group)
+                    event.message[PlainText].toString(), group)?.let {
+                    getAnswer(it)
             }
             if (tryGetAnswer != null) {
                 reply(tryGetAnswer)
@@ -82,9 +123,9 @@ class BotMsgListener : BaseListeners() {
                     reply("问题${query[Question.question]}已经存在")
                 } else {
                     DB.database.insert(Question) {
-                        it.lastEditUser to event.sender.id
-                        it.group to event.sender.group.id
-                        it.question to question
+                        set(it.lastEditUser, event.sender.id)
+                        set(it.group, event.sender.group.id)
+                        set(it.question, question)
                     }
                     // 新建会话
                     SessionManager.addSession(
@@ -140,8 +181,8 @@ class BotMsgListener : BaseListeners() {
                 if (deleteQuestion(question!!,event.group)){
                     reply("已删除问题$question")
                 }else{
-                    val id = question.replace("#", "")?.toInt()
-                    val query = quickSearchQuestion(id!!, group)
+                    val id = question.replace("#", "").toInt()
+                    val query = quickSearchQuestion(id, group)
                     if (query!=null)
                         question = query[Question.question]
                         if (deleteQuestion(question!!,event.group)){

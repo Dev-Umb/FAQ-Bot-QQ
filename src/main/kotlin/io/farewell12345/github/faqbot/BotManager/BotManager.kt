@@ -13,11 +13,22 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.alsoLogin
+import net.mamoe.mirai.message.data.MessageChain
 import net.mamoe.mirai.utils.internal.logging.Log4jLogger
 import org.apache.logging.log4j.LogManager
 import java.io.File
+import java.util.*
 import kotlin.coroutines.CoroutineContext
 internal val appJob = Job()
+
+object CommandGroupList {
+    lateinit var oneBot: Bot
+    lateinit var welcomeGroupList:LinkedList<Long>
+    lateinit var welcomeGroupTalk:MutableMap<Long,MessageChain>
+}
+
+
+
 object BotsManager : CoroutineScope {
     suspend fun loginBot(): Bot {
         return Bot(

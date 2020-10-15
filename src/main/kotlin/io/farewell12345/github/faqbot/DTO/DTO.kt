@@ -17,3 +17,9 @@ data class Answer (
     val atList :LinkedList<Long>,
     val text : String
 )
+
+object Welcome:Table<Nothing>("welcome") {
+    val id =int("id").primaryKey()
+    val group = long("group")
+    val talk = varchar("talk")
+}

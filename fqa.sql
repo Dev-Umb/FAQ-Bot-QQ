@@ -1,81 +1,45 @@
--- phpMyAdmin SQL Dump
--- version 5.0.2
--- https://www.phpmyadmin.net/
---
--- 主机： 127.0.0.1
--- 生成日期： 2020-10-15 13:23:10
--- 服务器版本： 10.4.14-MariaDB
--- PHP 版本： 7.4.9
+/*
+ Navicat Premium Data Transfer
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
+ Source Server         : localhost_3306
+ Source Server Type    : MySQL
+ Source Server Version : 100411
+ Source Host           : localhost:3306
+ Source Schema         : fqa
 
+ Target Server Type    : MySQL
+ Target Server Version : 100411
+ File Encoding         : 65001
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+ Date: 15/10/2020 22:08:55
+*/
 
---
--- 数据库： `fqa`
---
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
 
--- --------------------------------------------------------
-
---
--- 表的结构 `question`
---
-
-CREATE TABLE `question` (
-  `id` int(3) NOT NULL,
+-- ----------------------------
+-- Table structure for question
+-- ----------------------------
+DROP TABLE IF EXISTS `question`;
+CREATE TABLE `question`  (
+  `id` int(2) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT,
   `group_id` bigint(20) NOT NULL,
-  `question` varchar(255) NOT NULL COMMENT '每个群问题只能有一个',
-  `answer` text DEFAULT NULL,
-  `last_edit_user` bigint(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+  `question` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '每个群问题只能有一个',
+  `answer` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
+  `last_edit_user` bigint(255) NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `question`(`question`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
---
--- 转存表中的数据 `question`
---
+-- ----------------------------
+-- Table structure for welcome
+-- ----------------------------
+DROP TABLE IF EXISTS `welcome`;
+CREATE TABLE `welcome`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `group` bigint(255) NOT NULL,
+  `talk` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
-INSERT INTO `question` (`id`, `group_id`, `question`, `answer`, `last_edit_user`) VALUES
-(0, 1009647596, '实验室内景', '{\"imgList\":[\"{ECF3D708-44C4-4E34-D871-E8FC08D35804}.mirai\",\"{AA275776-3652-7EBB-EE18-256553CB1517}.mirai\",\"{1056BBCA-202F-DC42-378B-BBC0EEA87B92}.mirai\"],\"atList\":[],\"text\":\"\"}', 123),
-(1, 820740615, '实验室内景', '{\"imgList\":[\"{ECF3D708-44C4-4E34-D871-E8FC08D35804}.mirai\",\"{AA275776-3652-7EBB-EE18-256553CB1517}.mirai\",\"{1056BBCA-202F-DC42-378B-BBC0EEA87B92}.mirai\"],\"atList\":[],\"text\":\"\"}', 1149558764),
-(2, 820740615, '实验室详细介绍', '{\"imgList\":[],\"atList\":[],\"text\":\"中北大学AI+移动互联创新实验室（原Android创新实验室）建立于2011年4月，在熊继军老师的大力支持下，由于一老师、闫晓燕老师、陈川老师（Mars），岳正校友联合创建，是我校早期少数学生创新实验室之一。成立时，实验室地址在西区3号教学楼2层207室。2012年9月份开始，在秦品乐老师、王东老师的带领下发展壮大，持续突破，影响力逐年提升。在杨晓东老师的指导与推动下，并入学院新动力梦工厂创新平台，至今已有近十年的发展历史。目前实验室研究方向包括Android开发、机器学习、Web开发、UI设计与研究、计算机视觉、嵌入式开发等领域。\\r实验室自成立以来，先后在互联网+大学生创新创业比赛、中国大学生计算机设计大赛、蓝桥杯、华北五省计算机应用大赛、Google应用开发中国大学生挑战赛等诸多比赛中斩获众多国家级奖项。\\r实验室拥有全院最为丰富的师资与硬件资源，旨在使得学生通过真实项目与竞赛等方式实践培养创新能力、实践精神和综合素质，全面践行“致知于行”的校训，并逐步形成了教学一体的学习模式：由学生自主学习、研究；建立了递进式的培养路线，积累了独具特色的团队文化。实验室系统地提出了“在学习中不断实践”、“在实践中自由发挥”的创新人才培养模式，成功走出一条“教学相长”的道路，为高校本科人才培养提供一种新的范例。\"}', 1149558764),
-(3, 820740615, '实验室培训方案', '{\"imgList\":[\"{77087095-ABF2-18F1-46C6-477122930A06}.mirai\"],\"atList\":[],\"text\":\"\"}', 1149558764),
-(4, 1009647596, '实验室详细介绍', '{\"imgList\":[],\"atList\":[],\"text\":\"中北大学AI+移动互联创新实验室（原Android创新实验室）建立于2011年4月，在熊继军老师的大力支持下，由于一老师、闫晓燕老师、陈川老师（Mars），岳正校友联合创建，是我校早期少数学生创新实验室之一。成立时，实验室地址在西区3号教学楼2层207室。2012年9月份开始，在秦品乐老师、王东老师的带领下发展壮大，持续突破，影响力逐年提升。在杨晓东老师的指导与推动下，并入学院新动力梦工厂创新平台，至今已有近十年的发展历史。目前实验室研究方向包括Android开发、机器学习、Web开发、UI设计与研究、计算机视觉、嵌入式开发等领域。\\r实验室自成立以来，先后在互联网+大学生创新创业比赛、中国大学生计算机设计大赛、蓝桥杯、华北五省计算机应用大赛、Google应用开发中国大学生挑战赛等诸多比赛中斩获众多国家级奖项。\\r实验室拥有全院最为丰富的师资与硬件资源，旨在使得学生通过真实项目与竞赛等方式实践培养创新能力、实践精神和综合素质，全面践行“致知于行”的校训，并逐步形成了教学一体的学习模式：由学生自主学习、研究；建立了递进式的培养路线，积累了独具特色的团队文化。实验室系统地提出了“在学习中不断实践”、“在实践中自由发挥”的创新人才培养模式，成功走出一条“教学相长”的道路，为高校本科人才培养提供一种新的范例。\"}', 1149558764),
-(5, 1009647596, '实验室培训方案', '{\"imgList\":[\"{77087095-ABF2-18F1-46C6-477122930A06}.mirai\"],\"atList\":[],\"text\":\"\"}', 1149558764),
-(6, 982715633, '实验室内景', '{\"imgList\":[\"{ECF3D708-44C4-4E34-D871-E8FC08D35804}.mirai\",\"{AA275776-3652-7EBB-EE18-256553CB1517}.mirai\",\"{1056BBCA-202F-DC42-378B-BBC0EEA87B92}.mirai\"],\"atList\":[],\"text\":\"\"}', 1149558764),
-(7, 982715633, '实验室详细介绍', '{\"imgList\":[],\"atList\":[],\"text\":\"中北大学AI+移动互联创新实验室（原Android创新实验室）建立于2011年4月，在熊继军老师的大力支持下，由于一老师、闫晓燕老师、陈川老师（Mars），岳正校友联合创建，是我校早期少数学生创新实验室之一。成立时，实验室地址在西区3号教学楼2层207室。2012年9月份开始，在秦品乐老师、王东老师的带领下发展壮大，持续突破，影响力逐年提升。在杨晓东老师的指导与推动下，并入学院新动力梦工厂创新平台，至今已有近十年的发展历史。目前实验室研究方向包括Android开发、机器学习、Web开发、UI设计与研究、计算机视觉、嵌入式开发等领域。\\r实验室自成立以来，先后在互联网+大学生创新创业比赛、中国大学生计算机设计大赛、蓝桥杯、华北五省计算机应用大赛、Google应用开发中国大学生挑战赛等诸多比赛中斩获众多国家级奖项。\\r实验室拥有全院最为丰富的师资与硬件资源，旨在使得学生通过真实项目与竞赛等方式实践培养创新能力、实践精神和综合素质，全面践行“致知于行”的校训，并逐步形成了教学一体的学习模式：由学生自主学习、研究；建立了递进式的培养路线，积累了独具特色的团队文化。实验室系统地提出了“在学习中不断实践”、“在实践中自由发挥”的创新人才培养模式，成功走出一条“教学相长”的道路，为高校本科人才培养提供一种新的范例。\"}', 1149558764),
-(8, 982715633, '实验室培训方案', '{\"imgList\":[\"{77087095-ABF2-18F1-46C6-477122930A06}.mirai\"],\"atList\":[],\"text\":\"\"}', 1149558764),
-(11, 820740615, '实验室组别介绍', '{\"imgList\":[],\"atList\":[],\"text\":\"程序组：程序组旨在研究具体技术的工作原理，同时负责将技术运用到实际、开发具体应用程序，是实验室的核心。\\n\\nUI设计组：UI组以设计与美化移动端和网页端界面、思考与制定相关项目的交互设计为目标，\\n旨在与实验室其他小组一起协同合作出更加完美与健全的项目。\"}', 1149558764),
-(12, 820740615, '如何加入实验室', '{\"imgList\":[],\"atList\":[],\"text\":\"实验室开学后会进行面试，以c语言的基础知识点为主要提问要点（非常简单），配合对个人学习态度的考量（闲聊），进行选拔，因此建议没有基础的同学在假期提前自学c语言。\\n注：c语言只是针对没有编程基础的大部分同学而作的要求，如果你是会Java，Python，JavaScript等编程语言或者有其它的技能树的大佬，我们也十分欢迎。\"}', 1149558764),
-(13, 912306370, '召唤小月', '{\"imgList\":[],\"atList\":[2689514022],\"text\":\" \"}', 1149558764),
-(14, 820740615, '纳新时间', '{\"imgList\":[],\"atList\":[],\"text\":\"大概十月底左右\"}', 2792937315);
-
---
--- 转储表的索引
---
-
---
--- 表的索引 `question`
---
-ALTER TABLE `question`
-  ADD PRIMARY KEY (`id`) USING BTREE,
-  ADD KEY `question` (`question`) USING BTREE;
-
---
--- 在导出的表使用AUTO_INCREMENT
---
-
---
--- 使用表AUTO_INCREMENT `question`
---
-ALTER TABLE `question`
-  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+SET FOREIGN_KEY_CHECKS = 1;

@@ -14,12 +14,17 @@ public class AppConfig {
     public String dbPwd;
     public Long BotQQ;
     public String BotPwd;
+    public Long SuperUser;
     private AppConfig() throws FileNotFoundException {
         Yaml yml = new Yaml();
         Map<String,String> data = yml.load(new FileReader( new File("config.yml")));
         dbUrl=data.get("dbUrl");
+        if (dbUrl==null){
+            dbUrl = "jdbc:mysql://localhost:3306/fqa?serverTimezone=UTC&characterEncoding=UTF-8";
+        }
         dbUser=data.get("dbUser");
         dbPwd=data.get("dbPwd");
+        SuperUser = Long.valueOf(data.get("superUser"));
         BotQQ= Long.valueOf(data.get("botQQ"));
         BotPwd=data.get("botPwd");
         logger().info("配置加载完成！"+dbUrl);

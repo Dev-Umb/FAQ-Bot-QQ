@@ -2,6 +2,7 @@ package io.farewell12345.github.faqbot.Listener
 
 
 import com.google.gson.Gson
+import io.farewell12345.github.faqbot.AppConfig
 import io.farewell12345.github.faqbot.BotManager.Session
 import io.farewell12345.github.faqbot.BotManager.SessionManager
 import io.farewell12345.github.faqbot.BotManager.*
@@ -30,16 +31,27 @@ class BotMsgListener : BaseListeners() {
     @EventHandler
     suspend fun GroupMessageEvent.onEvent() {
         route (prefix = ".command",delimiter = " "){
-            if (event.sender.permission.ordinal==0){
+            if (event.sender.permission.ordinal==0
+                    && event.sender.id !=AppConfig.getInstance().SuperUser){
                 return@route
             }
-            case("welcome","开关迎新词"){
-                if (!(event.group.id in CommandGroupList.welcomeGroupList)) {
+            case("close","关闭迎新"){
+                if (event.group.id in CommandGroupList.welcomeGroupList){
+                    CommandGroupList.welcomeGroupList.remove(event.group.id)
+                }
+                reply("本群迎新功能已关闭")
+                return@route
+            }
+            case("welcome","开启迎新词"){
+                if (event.group.id !in CommandGroupList.welcomeGroupList) {
                     CommandGroupList.welcomeGroupList.add(this.group.id)
                     val query = searchWelcomeTalk(group)
                     if (query == null) {
-                        val talk =
-                            Answer(atList = LinkedList(), imgList = LinkedList(), text = "欢迎来到 ${this.group.name} 群")
+                        val talk = Answer(
+                                atList = LinkedList(),
+                                imgList = LinkedList(),
+                                text = "欢迎来到 ${this.group.name}"
+                            )
                         if (appendWelcomeTalk(group, talk)) {
                             reply("启动迎新成功！您可使用change指令修改迎新词")
                             return@route
@@ -47,6 +59,7 @@ class BotMsgListener : BaseListeners() {
                     }
                 }
                 reply("已开启迎新功能")
+                return@route
             }
             case("change","修改迎新词"){
                 if (searchWelcomeTalk(group)!=null &&
@@ -65,9 +78,8 @@ class BotMsgListener : BaseListeners() {
                 }else{
                     reply("此群暂未开启迎新！")
                 }
-
+                return@route
             }
-
         }
         route(prefix = "", delimiter = " ")  {
             // 优先进行会话处理
@@ -77,31 +89,7 @@ class BotMsgListener : BaseListeners() {
                     return@route
                 }
             }
-            furry("#","快速索引"){
-                try {
-                    val id = event.message[PlainText]?.contentToString()?.replace("#", "")?.toInt()
-                    if (id!=null) {
-                        val queryRowSet = quickSearchQuestion(id, group)
-                        if (queryRowSet!=null) {
-                            val tryAnswer = getAnswer(queryRowSet)
-                            if (tryAnswer != null) {
-                                reply(tryAnswer)
-                                return@route
-                            }
-                        }
-                    }else{
-                        throw NumberFormatException("参数错误！请输入问题序号")
-                    }
-                }catch (e:NumberFormatException){
-                    logger.info(e)
-                }catch (e:NullPointerException){
-                    logger.info(e)
-                }catch (e:Exception){
-                    logger.info(e)
-                }
 
-                return@route
-            }
 
             // 根据问题名称获取回答
             val tryGetAnswer = searchQuestion(
@@ -143,8 +131,8 @@ class BotMsgListener : BaseListeners() {
             }
 
             case("修改问题","修改一个问题"){
-                val question = event.message
-                        .get(PlainText)?.contentToString()?.replace("修改问题 ","")
+                var question = event.message
+                        .get(PlainText)?.toString()?.replace("修改问题 ","")
                 var query = question?.let {
                     searchQuestion(it, event.group)
                 }
@@ -152,6 +140,7 @@ class BotMsgListener : BaseListeners() {
                     try {
                         val id = question?.replace("#", "")?.toInt()
                         query = quickSearchQuestion(id!!, group)
+                        question = query?.get(Question.question)
                     }catch (e:Exception) {
                         reply("问题$question 不存在")
                         return@route
@@ -181,17 +170,40 @@ class BotMsgListener : BaseListeners() {
                 if (deleteQuestion(question!!,event.group)){
                     reply("已删除问题$question")
                 }else{
-                    val id = question.replace("#", "").toInt()
-                    val query = quickSearchQuestion(id, group)
-                    if (query!=null)
-                        question = query[Question.question]
-                        if (deleteQuestion(question!!,event.group)){
+                    val id = question?.replace("#", "")?.toInt()
+                    val query = quickSearchQuestion(id!!, group)
+                    question = query?.get(Question.question)
+                    if (deleteQuestion(question!!,event.group)){
                             reply("已删除问题$question")
-                        }
+                    }
                 }
                 return@route
             }
 
+            furry("#","快速索引"){
+                try {
+                    val id = event.message[PlainText]?.contentToString()?.replace("#", "")?.toInt()
+                    if (id!=null) {
+                        val queryRowSet = quickSearchQuestion(id, group)
+                        if (queryRowSet!=null) {
+                            val tryAnswer = getAnswer(queryRowSet)
+                            if (tryAnswer != null) {
+                                reply(tryAnswer)
+                                return@route
+                            }
+                        }
+                    }else{
+                        throw NumberFormatException("参数错误！请输入问题序号")
+                    }
+                }catch (e:NumberFormatException){
+                    logger.info(e)
+                }catch (e:NullPointerException){
+                    logger.info(e)
+                }catch (e:Exception){
+                    logger.info(e)
+                }
+                return@route
+            }
             case("列表",desc = "获取此群的问题列表"){
                 val query =  database
                         .from(Question)

@@ -24,7 +24,6 @@ internal val appJob = Job()
 object CommandGroupList {
     lateinit var oneBot: Bot
     lateinit var welcomeGroupList:LinkedList<Long>
-    lateinit var welcomeGroupTalk:MutableMap<Long,MessageChain>
 }
 
 

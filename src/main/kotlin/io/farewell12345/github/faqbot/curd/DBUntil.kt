@@ -56,6 +56,7 @@ fun appendWelcomeTalk(group: Group,talk:Answer):Boolean{
             set(Welcome.group,group.id)
             set(Welcome.talk,gson.toJson(talk))
         }
+        return true
     }
     return false
 }
@@ -188,8 +189,9 @@ fun upDateQuestionAnswer(message: GroupMessageEvent, session: Session): Boolean 
 
 fun upDate(answer: Answer, session: Session){
     val gson = Gson()
+    val json = gson.toJson(answer)
     DB.database.update(Question) {
-        it.answer to gson.toJson(answer)
+        it.answer to json
         it.lastEditUser to session.user
         where {
             (Question.question eq session.question) and (Question.group eq session.group)

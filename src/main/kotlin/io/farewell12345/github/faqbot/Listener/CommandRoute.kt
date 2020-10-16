@@ -34,13 +34,16 @@ class CommandRoute<T : MessageEvent>( val args: List<String>?,  val event: T) : 
         if (args?.size == 0){
             return
         }
-        val pattern = Regex(args.toString())
-        val test = pattern.find(case)
-        if (!alreadyCalled && pattern.find(case)!=null) {
-            alreadyCalled = true
-            kotlin.runCatching { event.receiver(args?.subList(1, args.size)) }.also {
-                handleException(it.exceptionOrNull())
+        try {
+            val pattern = Regex(args.toString())
+            if (!alreadyCalled && pattern.find(case) != null) {
+                alreadyCalled = true
+                kotlin.runCatching { event.receiver(args?.subList(1, args.size)) }.also {
+                    handleException(it.exceptionOrNull())
+                }
             }
+        }catch (e:Exception){
+            logger().info(e)
         }
     }
 

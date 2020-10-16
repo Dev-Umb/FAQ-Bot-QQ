@@ -3,3 +3,4 @@ dbUser: "" # 数据库用户名
 dbPwd: "" # 数据库密码
 botQQ: "" # 机器人的QQ
 botPwd: "" # 机器人的密码
+superUser: "" # 超级管理员QQ（可写可不写）

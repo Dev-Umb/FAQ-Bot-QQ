@@ -2,7 +2,9 @@ package io.farewell12345.github.faqbot;
 
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.Map;
 
 import static io.farewell12345.github.faqbot.curd.DBUntilKt.logger;

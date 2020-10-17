@@ -20,6 +20,7 @@ import net.mamoe.mirai.message.data.At
 import net.mamoe.mirai.message.data.MessageChain
 import net.mamoe.mirai.message.data.OnlineGroupImage
 import net.mamoe.mirai.message.data.PlainText
+import org.apache.logging.log4j.LogManager.*
 import org.apache.logging.log4j.Logger
 import org.apache.logging.log4j.util.StackLocatorUtil
 import java.io.File
@@ -29,7 +30,7 @@ import java.util.*
 import kotlin.math.log
 
 fun logger(): Logger {
-    return org.apache.logging.log4j.LogManager.getLogger(StackLocatorUtil.getStackTraceElement(2).className)
+    return getLogger(StackLocatorUtil.getStackTraceElement(2).className)
 }
 
 fun searchWelcomeTalk(group:Group): String? {
@@ -82,6 +83,7 @@ fun deleteQuestion(question: String,group: Group):Boolean{
         if (searchQuestion(question,group) !=null) {
             DB.database.delete(Question) {
                 it.question eq question
+                it.group eq group.id
             }
             return true
         }
@@ -98,7 +100,7 @@ fun changeWelcome(group:Group,messageChain: MessageChain){
     messageChain.forEach {
         when(it){
             is OnlineGroupImage ->{
-                downImg(it)
+                //downImg(it)
                 imgList.add(it.imageId)
             }
             is At ->{
@@ -164,7 +166,7 @@ fun upDateQuestionAnswer(message: GroupMessageEvent, session: Session): Boolean 
     message.message.forEach {
         when(it){
             is OnlineGroupImage ->{
-                downImg(it)
+                //downImg(it)
                 imgList.add(it.imageId)
             }
             is At ->{

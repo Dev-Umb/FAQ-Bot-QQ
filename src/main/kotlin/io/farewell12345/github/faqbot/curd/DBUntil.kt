@@ -173,7 +173,7 @@ fun upDateQuestionAnswer(message: GroupMessageEvent, session: Session): Boolean 
                 atList.add(it.target)
             }
             is PlainText ->{
-                text =it.content
+                text += it.content
             }
         }
     }

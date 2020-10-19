@@ -85,17 +85,18 @@ class BotMsgListener : BaseListeners() {
             // 优先进行会话处理
             case("取消","停止会话录入"){
                 if (SessionManager.hasSession(event.sender.id)) {
-                    SessionManager.removeSesssion(event.sender.id)
+                    SessionManager.removeSession(event.sender.id)
+                    SessionManager.removeQuestion(event.sender.id)
                     reply("取消会话成功！")
                 }
             }
 
             if(!SessionManager.SessionsIsEmpty()) {
                 if (SessionManager.performSession(event)) {
-                    SessionManager.removeSesssion(event.sender.id)
                     reply("录入成功！")
+                    SessionManager.removeSession(event.sender.id)
                     return@route
-                }else{
+                }else if(SessionManager.hasSession(event.sender.id)){
                     reply("格式有误！答案与问题不能相同，请重新检查录入答案格式或发送‘取消’停止当前对话")
                 }
             }
@@ -118,7 +119,7 @@ class BotMsgListener : BaseListeners() {
                         .get(PlainText)?.contentToString()?.replace("添加问题","")
                         ?.replace(" ","")
                 if (question!!.isEmpty()) return@route
-                val furry =  Regex("""#d""")
+                val furry =  Regex("""#\d""")
                 if (furry.matches(question!!)){
                     reply("问题不能与索引重名")
                     return@case
@@ -134,17 +135,17 @@ class BotMsgListener : BaseListeners() {
                             set(it.group, event.sender.group.id)
                             set(it.question, question)
                         }
+                        reply("问题${question}已被录入,请问如何回答?")
                         // 新建会话
                         SessionManager.addSession(
                                 user = event.sender.id,
                                 session = Session(
                                         user = event.sender.id,
-                                        question = question!!,
+                                        question = question,
                                         type = "addUpDate",
                                         group = event.group.id
                                 )
                         )
-                        reply("问题${question}已被录入,请问如何回答?")
                     }
                 }
                 return@route
@@ -231,9 +232,9 @@ class BotMsgListener : BaseListeners() {
             case("列表",desc = "获取此群的问题列表"){
                 val query =  database
                         .from(Question)
-                        .select(Question.question, Question.id)
+                        .select()
                         .where {
-                    (Question.group eq this.group.id)
+                    (Question.group eq event.group.id)
                 }
                 reply(buildString{
                     query.forEach {

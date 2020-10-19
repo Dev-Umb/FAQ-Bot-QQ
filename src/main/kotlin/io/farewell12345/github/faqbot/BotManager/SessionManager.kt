@@ -28,12 +28,14 @@ object SessionManager{
     }
 
 
-
-
-    fun removeSesssion(id:Long){
+    fun removeQuestion(id:Long){
         if (Sessions[id]?.type == "addUpDate"){
             deleteQuestion(searchQuestion(Sessions[id]!!.question, Sessions[id]!!.group)!!)
         }
+    }
+
+
+    fun removeSession(id:Long){
         Sessions.remove(id)
     }
 

@@ -78,15 +78,12 @@ fun upDateWelcomeTalk(group:Group,talk:Answer):Boolean{
     return false
 }
 
-fun deleteQuestion(question: String,group: Group):Boolean{
+fun deleteQuestion(question: QueryRowSet,group: Group):Boolean{
     try {
-        if (searchQuestion(question,group) !=null) {
             DB.database.delete(Question) {
-                it.question eq question
-                it.group eq group.id
+                it.id eq question[Question.id]!!.toInt()
             }
             return true
-        }
     }catch (e:Exception){
         logger().info(e)
     }
@@ -178,20 +175,23 @@ fun upDateQuestionAnswer(message: GroupMessageEvent, session: Session): Boolean 
         }
     }
     try {
-        upDate(
+        return upDate(
             answer = Answer(imgList, atList, text) ,
             session = session
         )
-        return true
-    }catch (e: Exception){
+    }catch (e:Exception){
         logger().info(e)
     }
     return false
 }
 
-fun upDate(answer: Answer, session: Session){
+fun upDate(answer: Answer, session: Session):Boolean{
     val gson = Gson()
     val json = gson.toJson(answer)
+    val furry =  Regex("""#+\d""")
+    if (session.question == answer.text && furry.matches(session.question)){
+        return false
+    }
     DB.database.update(Question) {
         it.answer to json
         it.lastEditUser to session.user
@@ -199,4 +199,5 @@ fun upDate(answer: Answer, session: Session){
             (Question.question eq session.question) and (Question.group eq session.group)
         }
     }
+    return true
 }

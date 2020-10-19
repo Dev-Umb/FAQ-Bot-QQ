@@ -103,7 +103,8 @@ class BotMsgListener : BaseListeners() {
 
             case("添加问题","添加问题"){
                 val question = event.message
-                        .get(PlainText)?.contentToString()?.replace("添加问题 ","")
+                        .get(PlainText)?.contentToString()?.replace("添加问题","")
+                        ?.replace(" ","")
                 val query = question?.let {
                     searchQuestion(it, event.group)
                 }
@@ -132,7 +133,8 @@ class BotMsgListener : BaseListeners() {
 
             case("修改问题","修改一个问题"){
                 var question = event.message
-                        .get(PlainText)?.toString()?.replace("修改问题 ","")
+                        .get(PlainText)?.toString()?.replace("修改问题","")
+                        ?.replace(" ","")
                 var query = question?.let {
                     searchQuestion(it, event.group)
                 }
@@ -166,16 +168,19 @@ class BotMsgListener : BaseListeners() {
 
             case("删除问题","删除一个问题"){
                 var question = event.message
-                        .get(PlainText)?.contentToString()?.replace("删除问题 ","")
-                if (deleteQuestion(question!!,event.group)){
+                        .get(PlainText)?.contentToString()?.replace(" ","")
+                        ?.replace("删除问题","")
+                var query = searchQuestion(question!!,group)
+                if (query==null){
+                    val id = question?.replace("#", "")?.toInt()
+                    query = quickSearchQuestion(id!!, group)
+
+                }
+                if (query!=null) {
+                    deleteQuestion(query!!, event.group)
                     reply("已删除问题$question")
                 }else{
-                    val id = question?.replace("#", "")?.toInt()
-                    val query = quickSearchQuestion(id!!, group)
-                    question = query?.get(Question.question)
-                    if (deleteQuestion(question!!,event.group)){
-                            reply("已删除问题$question")
-                    }
+                    reply("没有找到这个问题！")
                 }
                 return@route
             }

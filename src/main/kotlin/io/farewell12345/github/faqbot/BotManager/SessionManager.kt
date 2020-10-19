@@ -4,12 +4,15 @@ import io.farewell12345.github.faqbot.DTO.Answer
 import io.farewell12345.github.faqbot.DTO.Question
 import com.google.gson.Gson
 import io.farewell12345.github.faqbot.curd.changeWelcome
+import io.farewell12345.github.faqbot.curd.deleteQuestion
+import io.farewell12345.github.faqbot.curd.searchQuestion
 import io.farewell12345.github.faqbot.curd.upDateQuestionAnswer
 import me.liuwj.ktorm.dsl.*
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.contact.Group
 import net.mamoe.mirai.message.*
 import net.mamoe.mirai.message.data.*
+import java.lang.NullPointerException
 
 data class Session(
         val group:Long,
@@ -19,6 +22,22 @@ data class Session(
 )
 object SessionManager{
     private var Sessions= mutableMapOf<Long, Session>()
+
+    fun hasSession(id:Long): Boolean {
+        return id in Sessions.keys
+    }
+
+
+
+
+    fun removeSesssion(id:Long){
+        if (Sessions[id]?.type == "addUpDate"){
+            deleteQuestion(searchQuestion(Sessions[id]!!.question, Sessions[id]!!.group)!!)
+        }
+        Sessions.remove(id)
+    }
+
+
 
     fun SessionsIsEmpty():Boolean{
         return Sessions.isEmpty()
@@ -34,10 +53,11 @@ object SessionManager{
         if (session!=null){
             flag=true
             when(session.type){
-                "upDate"-> upDateQuestionAnswer(messageEvent,session)
-                "changeWelcome" -> changeWelcome(messageEvent.group,messageEvent.message)
+                "addUpDate" -> return upDateQuestionAnswer(messageEvent,session)
+                "changeUpDate"-> return upDateQuestionAnswer(messageEvent,session)
+                "changeWelcome" ->return changeWelcome(messageEvent.group,messageEvent.message)
             }
-            Sessions.remove(messageEvent.sender.id)
+
         }
         return flag
     }
@@ -66,5 +86,9 @@ fun analyticalAnswer(query: QueryRowSet):MessageChain{
 }
 
 fun getAnswer(query: QueryRowSet): MessageChain? {
-    return analyticalAnswer(query)
+    try {
+        return analyticalAnswer(query)
+    }catch (e:NullPointerException){
+        return null
+    }
 }

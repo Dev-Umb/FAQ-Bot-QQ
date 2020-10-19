@@ -83,17 +83,29 @@ class BotMsgListener : BaseListeners() {
         }
         route(prefix = "", delimiter = " ")  {
             // 优先进行会话处理
+            case("取消","停止会话录入"){
+                if (SessionManager.hasSession(event.sender.id)) {
+                    SessionManager.removeSesssion(event.sender.id)
+                    reply("取消会话成功！")
+                }
+            }
+
             if(!SessionManager.SessionsIsEmpty()) {
                 if (SessionManager.performSession(event)) {
+                    SessionManager.removeSesssion(event.sender.id)
                     reply("录入成功！")
                     return@route
+                }else{
+                    reply("格式有误！答案与问题不能相同，请重新检查录入答案格式或发送‘取消’停止当前对话")
                 }
             }
 
 
             // 根据问题名称获取回答
             val tryGetAnswer = searchQuestion(
-                    event.message[PlainText].toString(), group)?.let {
+                    event.message[PlainText].toString()
+                    , group.id)
+                    ?.let {
                     getAnswer(it)
             }
             if (tryGetAnswer != null) {
@@ -105,28 +117,35 @@ class BotMsgListener : BaseListeners() {
                 val question = event.message
                         .get(PlainText)?.contentToString()?.replace("添加问题","")
                         ?.replace(" ","")
-                val query = question?.let {
-                    searchQuestion(it, event.group)
-                }
-                if (query != null) {
-                    reply("问题${query[Question.question]}已经存在")
-                } else {
-                    DB.database.insert(Question) {
-                        set(it.lastEditUser, event.sender.id)
-                        set(it.group, event.sender.group.id)
-                        set(it.question, question)
+                if (question!!.isEmpty()) return@route
+                val furry =  Regex("""#d""")
+                if (furry.matches(question!!)){
+                    reply("问题不能与索引重名")
+                    return@case
+                }else {
+                    val query = question?.let {
+                        searchQuestion(it, event.group.id)
                     }
-                    // 新建会话
-                    SessionManager.addSession(
-                            user = event.sender.id,
-                            session = Session(
-                                    user = event.sender.id,
-                                    question = question!!,
-                                    type = "upDate",
-                                    group = event.group.id
-                            )
-                    )
-                    reply("问题${question}已被录入,请问如何回答?")
+                    if (query != null) {
+                        reply("问题${query[Question.question]}已经存在")
+                    } else {
+                        DB.database.insert(Question) {
+                            set(it.lastEditUser, event.sender.id)
+                            set(it.group, event.sender.group.id)
+                            set(it.question, question)
+                        }
+                        // 新建会话
+                        SessionManager.addSession(
+                                user = event.sender.id,
+                                session = Session(
+                                        user = event.sender.id,
+                                        question = question!!,
+                                        type = "addUpDate",
+                                        group = event.group.id
+                                )
+                        )
+                        reply("问题${question}已被录入,请问如何回答?")
+                    }
                 }
                 return@route
             }
@@ -136,12 +155,12 @@ class BotMsgListener : BaseListeners() {
                         .get(PlainText)?.toString()?.replace("修改问题","")
                         ?.replace(" ","")
                 var query = question?.let {
-                    searchQuestion(it, event.group)
+                    searchQuestion(it, event.group.id)
                 }
                 if (query == null){
                     try {
                         val id = question?.replace("#", "")?.toInt()
-                        query = quickSearchQuestion(id!!, group)
+                        query = quickSearchQuestion(id!!)
                         question = query?.get(Question.question)
                     }catch (e:Exception) {
                         reply("问题$question 不存在")
@@ -155,7 +174,7 @@ class BotMsgListener : BaseListeners() {
                             session =  Session(
                                     user = event.sender.id,
                                     question = question!!,
-                                    type = "upDate",
+                                    type = "changeUpDate",
                                     group = event.group.id
                             )
                     )
@@ -170,14 +189,14 @@ class BotMsgListener : BaseListeners() {
                 var question = event.message
                         .get(PlainText)?.contentToString()?.replace(" ","")
                         ?.replace("删除问题","")
-                var query = searchQuestion(question!!,group)
+                var query = searchQuestion(question!!,group.id)
                 if (query==null){
                     val id = question?.replace("#", "")?.toInt()
-                    query = quickSearchQuestion(id!!, group)
+                    query = quickSearchQuestion(id!!)
 
                 }
                 if (query!=null) {
-                    deleteQuestion(query!!, event.group)
+                    deleteQuestion(query!!)
                     reply("已删除问题$question")
                 }else{
                     reply("没有找到这个问题！")
@@ -189,7 +208,7 @@ class BotMsgListener : BaseListeners() {
                 try {
                     val id = event.message[PlainText]?.contentToString()?.replace("#", "")?.toInt()
                     if (id!=null) {
-                        val queryRowSet = quickSearchQuestion(id, group)
+                        val queryRowSet = quickSearchQuestion(id)
                         if (queryRowSet!=null) {
                             val tryAnswer = getAnswer(queryRowSet)
                             if (tryAnswer != null) {
@@ -241,7 +260,7 @@ class BotMsgListener : BaseListeners() {
                             }
                     var QuestionNum = 0;
                     for (i in questions){
-                        if (searchQuestion(question= i[Question.question].toString(),group = event.group) ==null) {
+                        if (searchQuestion(question= i[Question.question].toString(),groupID = event.group.id) ==null) {
                             DB.database.insert(Question) {
                                 it.lastEditUser to i[Question.lastEditUser]
                                 it.group to event.sender.group.id

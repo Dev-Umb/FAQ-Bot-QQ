@@ -78,7 +78,7 @@ fun upDateWelcomeTalk(group:Group,talk:Answer):Boolean{
     return false
 }
 
-fun deleteQuestion(question: QueryRowSet,group: Group):Boolean{
+fun deleteQuestion(question: QueryRowSet):Boolean{
     try {
             DB.database.delete(Question) {
                 it.id eq question[Question.id]!!.toInt()
@@ -90,7 +90,7 @@ fun deleteQuestion(question: QueryRowSet,group: Group):Boolean{
     return false
 }
 
-fun changeWelcome(group:Group,messageChain: MessageChain){
+fun changeWelcome(group:Group,messageChain: MessageChain):Boolean{
     var imgList = LinkedList<String>()
     var atList = LinkedList<Long>()
     var text = ""
@@ -108,16 +108,16 @@ fun changeWelcome(group:Group,messageChain: MessageChain){
             }
         }
     }
-    upDateWelcomeTalk(group, Answer(imgList, atList, text))
+    return upDateWelcomeTalk(group, Answer(imgList, atList, text))
 }
 
-fun searchQuestion(question:String,group: Group): QueryRowSet? {
+fun searchQuestion(question:String,groupID: Long): QueryRowSet? {
     try {
         val query = DB.database
                 .from(Question)
                 .select()
                 .where {
-                    (Question.question eq question) and (Question.group eq group.id)
+                    (Question.question eq question) and (Question.group eq groupID)
                 }
         query.forEach {
             return it
@@ -128,12 +128,12 @@ fun searchQuestion(question:String,group: Group): QueryRowSet? {
     return null
 }
 
-fun quickSearchQuestion(id:Int,group: Group): QueryRowSet? {
+fun quickSearchQuestion(id:Int): QueryRowSet? {
     val query= DB.database
             .from(Question)
             .select()
             .where {
-                (Question.id eq id) and (Question.group eq group.id)
+                (Question.id eq id)
             }
     query.forEach {
         return it
@@ -188,8 +188,7 @@ fun upDateQuestionAnswer(message: GroupMessageEvent, session: Session): Boolean 
 fun upDate(answer: Answer, session: Session):Boolean{
     val gson = Gson()
     val json = gson.toJson(answer)
-    val furry =  Regex("""#+\d""")
-    if (session.question == answer.text && furry.matches(session.question)){
+    if (session.question == answer.text){
         return false
     }
     DB.database.update(Question) {

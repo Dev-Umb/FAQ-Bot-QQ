@@ -42,6 +42,20 @@ class BotMsgListener : BaseListeners() {
                 reply("本群迎新功能已关闭")
                 return@route
             }
+            case("manage","仅限管理员进行操作"){
+                if (event.group.id !in CommandGroupList.welcomeGroupList){
+                    CommandGroupList.managerGroupList.add(event.group.id)
+                }
+                reply("开启词条管理！")
+                return@route
+            }
+            case("dismanage","关闭仅限管理员进行操作"){
+                if (event.group.id in CommandGroupList.welcomeGroupList){
+                    CommandGroupList.managerGroupList.remove(event.group.id)
+                }
+                reply("关闭词条管理！")
+                return@route
+            }
             case("welcome","开启迎新词"){
                 if (event.group.id !in CommandGroupList.welcomeGroupList) {
                     CommandGroupList.welcomeGroupList.add(this.group.id)
@@ -82,6 +96,7 @@ class BotMsgListener : BaseListeners() {
             }
         }
         route(prefix = "", delimiter = " ")  {
+
             // 优先进行会话处理
             case("取消","停止会话录入"){
                 if (SessionManager.hasSession(event.sender.id)) {
@@ -112,6 +127,58 @@ class BotMsgListener : BaseListeners() {
             if (tryGetAnswer != null) {
                 reply(tryGetAnswer)
                 return@route
+            }
+
+            furry("#","快速索引"){
+                try {
+                    val id = event.message[PlainText]?.contentToString()?.replace("#", "")?.toInt()
+                    if (id!=null) {
+                        val queryRowSet = quickSearchQuestion(id)
+                        if (queryRowSet!=null) {
+                            val tryAnswer = getAnswer(queryRowSet)
+                            if (tryAnswer != null) {
+                                reply(tryAnswer)
+                                return@route
+                            }
+                        }
+                    }else{
+                        throw NumberFormatException("参数错误！请输入问题序号")
+                    }
+                }catch (e:NumberFormatException){
+                    logger.info(e)
+                }catch (e:NullPointerException){
+                    logger.info(e)
+                }catch (e:Exception){
+                    logger.info(e)
+                }
+                return@route
+            }
+
+            case("列表",desc = "获取此群的问题列表"){
+                val query =  database
+                        .from(Question)
+                        .select()
+                        .where {
+                            (Question.group eq event.group.id)
+                        }
+                reply(buildString{
+                    query.forEach {
+                        append("#${it[Question.id]} ${it.get(Question.question)} \n")
+                    }
+                })
+                return@route
+            }
+
+            case("帮助","获取帮助指令"){
+                reply(getHelp())
+                return@route
+            }
+
+            if (event.group.id in CommandGroupList.managerGroupList){
+                if (event.sender.permission.ordinal==0
+                        && event.sender.id !=AppConfig.getInstance().SuperUser){
+                    return@route
+                }
             }
 
             case("添加问题","添加问题"){
@@ -202,50 +269,6 @@ class BotMsgListener : BaseListeners() {
                 }else{
                     reply("没有找到这个问题！")
                 }
-                return@route
-            }
-
-            furry("#","快速索引"){
-                try {
-                    val id = event.message[PlainText]?.contentToString()?.replace("#", "")?.toInt()
-                    if (id!=null) {
-                        val queryRowSet = quickSearchQuestion(id)
-                        if (queryRowSet!=null) {
-                            val tryAnswer = getAnswer(queryRowSet)
-                            if (tryAnswer != null) {
-                                reply(tryAnswer)
-                                return@route
-                            }
-                        }
-                    }else{
-                        throw NumberFormatException("参数错误！请输入问题序号")
-                    }
-                }catch (e:NumberFormatException){
-                    logger.info(e)
-                }catch (e:NullPointerException){
-                    logger.info(e)
-                }catch (e:Exception){
-                    logger.info(e)
-                }
-                return@route
-            }
-            case("列表",desc = "获取此群的问题列表"){
-                val query =  database
-                        .from(Question)
-                        .select()
-                        .where {
-                    (Question.group eq event.group.id)
-                }
-                reply(buildString{
-                    query.forEach {
-                        append("#${it[Question.id]} ${it.get(Question.question)} \n")
-                    }
-                })
-                return@route
-            }
-
-            case("帮助","获取帮助指令"){
-                reply(getHelp())
                 return@route
             }
 

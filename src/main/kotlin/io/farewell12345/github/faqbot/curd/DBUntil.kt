@@ -91,20 +91,19 @@ fun deleteQuestion(question: QueryRowSet):Boolean{
 }
 
 fun changeWelcome(group:Group,messageChain: MessageChain):Boolean{
-    var imgList = LinkedList<String>()
-    var atList = LinkedList<Long>()
+    val imgList = LinkedList<String>()
+    val atList = LinkedList<Long>()
     var text = ""
     messageChain.forEach {
         when(it){
             is OnlineGroupImage ->{
-                //downImg(it)
                 imgList.add(it.imageId)
             }
             is At ->{
                 atList.add(it.target)
             }
             is PlainText ->{
-                text =it.content
+                text +=it.content
             }
         }
     }

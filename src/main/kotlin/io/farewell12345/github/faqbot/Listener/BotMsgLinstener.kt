@@ -35,6 +35,10 @@ class BotMsgListener : BaseListeners() {
                     && event.sender.id !=AppConfig.getInstance().SuperUser){
                 return@route
             }
+            case("help","获取指令"){
+                reply(getHelp())
+                return@route
+            }
             case("close","关闭迎新"){
                 if (event.group.id in CommandGroupList.welcomeGroupList){
                     CommandGroupList.welcomeGroupList.remove(event.group.id)

@@ -127,12 +127,12 @@ fun searchQuestion(question:String,groupID: Long): QueryRowSet? {
     return null
 }
 
-fun quickSearchQuestion(id:Int): QueryRowSet? {
+fun quickSearchQuestion(id:Int,group: Group): QueryRowSet? {
     val query= DB.database
             .from(Question)
             .select()
             .where {
-                (Question.id eq id)
+                (Question.id eq id) and (Question.group eq group.id)
             }
     query.forEach {
         return it

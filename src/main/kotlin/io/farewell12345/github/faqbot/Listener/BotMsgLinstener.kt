@@ -104,8 +104,8 @@ class BotMsgListener : BaseListeners() {
             // 优先进行会话处理
             case("取消","停止会话录入"){
                 if (SessionManager.hasSession(event.sender.id)) {
-                    SessionManager.removeSession(event.sender.id)
                     SessionManager.removeQuestion(event.sender.id)
+                    SessionManager.removeSession(event.sender.id)
                     reply("取消会话成功！")
                 }
             }
@@ -133,30 +133,6 @@ class BotMsgListener : BaseListeners() {
                 return@route
             }
 
-            furry("#","快速索引"){
-                try {
-                    val id = event.message[PlainText]?.contentToString()?.replace("#", "")?.toInt()
-                    if (id!=null) {
-                        val queryRowSet = quickSearchQuestion(id)
-                        if (queryRowSet!=null) {
-                            val tryAnswer = getAnswer(queryRowSet)
-                            if (tryAnswer != null) {
-                                reply(tryAnswer)
-                                return@route
-                            }
-                        }
-                    }else{
-                        throw NumberFormatException("参数错误！请输入问题序号")
-                    }
-                }catch (e:NumberFormatException){
-                    logger.info(e)
-                }catch (e:NullPointerException){
-                    logger.info(e)
-                }catch (e:Exception){
-                    logger.info(e)
-                }
-                return@route
-            }
 
             case("列表",desc = "获取此群的问题列表"){
                 val query =  database
@@ -232,7 +208,7 @@ class BotMsgListener : BaseListeners() {
                 if (query == null){
                     try {
                         val id = question?.replace("#", "")?.toInt()
-                        query = quickSearchQuestion(id!!)
+                        query = quickSearchQuestion(id!!,group)
                         question = query?.get(Question.question)
                     }catch (e:Exception) {
                         reply("问题$question 不存在")
@@ -264,8 +240,7 @@ class BotMsgListener : BaseListeners() {
                 var query = searchQuestion(question!!,group.id)
                 if (query==null){
                     val id = question?.replace("#", "")?.toInt()
-                    query = quickSearchQuestion(id!!)
-
+                    query = quickSearchQuestion(id!!,group)
                 }
                 if (query!=null) {
                     deleteQuestion(query!!)
@@ -276,6 +251,31 @@ class BotMsgListener : BaseListeners() {
                 return@route
             }
 
+            furry("#","快速索引"){
+                try {
+                    val id = event.message[PlainText]?.contentToString()?.replace("#", "")?.toInt()
+                    if (id!=null) {
+                        val queryRowSet = quickSearchQuestion(id,group)
+                        if (queryRowSet!=null) {
+                            val tryAnswer = getAnswer(queryRowSet)
+                            if (tryAnswer != null) {
+                                reply(tryAnswer)
+                                return@route
+                            }
+                        }else{
+                            reply("此群不存在该序号的问题！")
+                        }
+                    }else{
+                        throw NumberFormatException("参数错误！请输入问题序号")
+                    }
+                }catch (e:NumberFormatException){
+                    logger.info(e)
+                }catch (e:NullPointerException){
+                    logger.info(e)
+                }catch (e:Exception){
+                    logger.info(e)
+                }
+            }
             case("同步问答","同步不同群的问答消息会将本群问题覆盖"){
                 val signGroup = event.message
                         .get(PlainText)?.contentToString()?.replace("同步问答 ","")

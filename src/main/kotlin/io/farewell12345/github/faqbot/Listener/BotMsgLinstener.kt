@@ -276,6 +276,7 @@ class BotMsgListener : BaseListeners() {
                     logger.info(e)
                 }
             }
+
             case("同步问答","同步不同群的问答消息会将本群问题覆盖"){
                 val signGroup = event.message
                         .get(PlainText)?.contentToString()?.replace("同步问答 ","")
@@ -305,6 +306,44 @@ class BotMsgListener : BaseListeners() {
                 }
             }
 
+            case("删除抽签","删除抽签"){
+                DrawManager.deleteDraw(group.id)
+                reply("删除成功！")
+                return@route
+            }
+
+            case("创建抽签","创建抽签") {
+                val signGroup = event.message
+                        .get(PlainText)?.contentToString()?.replace("创建抽签", "")?.replace(" ","")
+                if (signGroup != null) {
+                    val numList = signGroup.split(",")
+                    if (numList.size == 2) {
+                        val star = numList[0].toInt()
+                        val end = numList[1].toInt()
+                        if(DrawManager.createDraw(group.id,star,end)){
+                            reply("创建成功！")
+                            return@route
+                        }else{
+                            reply("创建失败，或已有抽签活动在进行中")
+                            return@route
+                        }
+                    }else{
+                        reply("只能包括开始和结束两个参数！")
+                    }
+                }else{
+                    reply("缺少参数！")
+                }
+                return@route
+            }
+
+            case("抽签","群内抽签设置"){
+                val x = DrawManager.getInt(group.id)
+                if (x==-1){
+                    reply("暂无抽签活动或本次抽签已经结束！")
+                    return@route
+                }
+                reply(At(event.sender).plus(x.toString()))
+            }
         }
     }
 }

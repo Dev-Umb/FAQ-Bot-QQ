@@ -13,6 +13,7 @@ import net.mamoe.mirai.contact.Group
 import net.mamoe.mirai.message.*
 import net.mamoe.mirai.message.data.*
 import java.lang.NullPointerException
+import kotlin.random.Random
 
 data class Session(
         val group:Long,
@@ -27,19 +28,15 @@ object SessionManager{
         return id in Sessions.keys
     }
 
-
     fun removeQuestion(id:Long){
         if (Sessions[id]?.type == "addUpDate"){
             deleteQuestion(searchQuestion(Sessions[id]!!.question, Sessions[id]!!.group)!!)
         }
     }
 
-
     fun removeSession(id:Long){
         Sessions.remove(id)
     }
-
-
 
     fun SessionsIsEmpty():Boolean{
         return Sessions.isEmpty()
@@ -92,5 +89,33 @@ fun getAnswer(query: QueryRowSet): MessageChain? {
         return analyticalAnswer(query)
     }catch (e:NullPointerException){
         return null
+    }
+}
+
+
+object DrawManager{
+    private var groupList = mutableMapOf<Long, ArrayList<Int>>()
+    fun createDraw(group: Long,star:Int,end:Int):Boolean{
+        val tempIntList = ArrayList<Int>()
+        if (groupList[group] == null||groupList[group]!!.isEmpty()) {
+            for (i in star..end) {
+                tempIntList.add(i)
+            }
+            groupList[group] = tempIntList
+            return true
+        }
+        return false
+    }
+    fun deleteDraw(group: Long):Boolean{
+        groupList.remove(group)
+        return true
+    }
+    fun getInt(group: Long):Int{
+        if (groupList[group] == null || groupList[group]!!.isEmpty())
+            return -1
+        val x = (groupList[group]!!.indices).random()
+        val num = groupList[group]?.get(x)!!
+        groupList[group]!!.minusAssign(num);
+        return num
     }
 }

@@ -7,6 +7,7 @@
 )
 package io.farewell12345.github.faqbot.BotManager
 import io.farewell12345.github.faqbot.AppConfig
+import io.farewell12345.github.faqbot.Task.GameMorningTask
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -25,6 +26,8 @@ object CommandGroupList {
     lateinit var oneBot: Bot
     lateinit var welcomeGroupList:LinkedList<Long>
     lateinit var managerGroupList:LinkedList<Long>
+    lateinit var GameMorningGroupList:LinkedList<Long>
+    lateinit var DisRepetitionGroupList:LinkedList<Long>
 }
 
 

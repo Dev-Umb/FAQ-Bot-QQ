@@ -1,5 +1,6 @@
 package io.farewell12345.github.faqbot;
 
+import io.farewell12345.github.faqbot.BotManager.DisRepetition;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
@@ -21,7 +22,9 @@ public class AppConfig {
     public Long BotQQ;
     public String BotPwd;
     public Long SuperUser;
+    public String gameAPI;
     public ArrayList<String> times;
+    public String[] DisRepetitionScence = new String[]{"复 读 禁 止", "禁 止 复 读"};
     private AppConfig() throws FileNotFoundException {
         Yaml yml = new Yaml();
         Map<String, Object> data = yml.load(new FileReader( new File("config.yml")));
@@ -29,6 +32,7 @@ public class AppConfig {
         if (dbUrl==null){
             dbUrl = "jdbc:mysql://localhost:3306/fqa?serverTimezone=UTC&characterEncoding=UTF-8";
         }
+        gameAPI = (String) data.get("GameAPI");
         dbUser= (String) data.get("dbUser");
         dbPwd= (String) data.get("dbPwd");
         SuperUser = Long.valueOf((String) data.get("superUser"));

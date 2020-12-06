@@ -1,7 +1,11 @@
 package io.farewell12345.github.faqbot.Listener
 
 
+import FuckOkhttp.FuckOkhttp
+import FuckOkhttp.HeiHe
+import FuckOkhttp.XiaoHeiHe
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import io.farewell12345.github.faqbot.AppConfig
 import io.farewell12345.github.faqbot.BotManager.Session
 import io.farewell12345.github.faqbot.BotManager.SessionManager
@@ -30,9 +34,39 @@ class BotMsgListener : BaseListeners() {
     // 重写Event监听事件
     @EventHandler
     suspend fun GroupMessageEvent.onEvent() {
+
         route (prefix = ".command",delimiter = " "){
+
             if (event.sender.permission.ordinal==0
                     && event.sender.id !=AppConfig.getInstance().SuperUser){
+                return@route
+            }
+            case("addGame","开启游戏推荐"){
+                if (event.group.id !in CommandGroupList.GameMorningGroupList){
+                    CommandGroupList.GameMorningGroupList.add(event.group.id)
+                }
+                reply("本群游戏推荐已开启")
+                return@route
+            }
+            case("closeGame","关闭游戏推荐"){
+                if (event.group.id in CommandGroupList.GameMorningGroupList){
+                    CommandGroupList.GameMorningGroupList.remove(event.group.id)
+                }
+                reply("本群游戏推荐已关闭")
+                return@route
+            }
+            case("Dis","开启反复读"){
+                if (event.group.id !in CommandGroupList.DisRepetitionGroupList){
+                    CommandGroupList.DisRepetitionGroupList.add(event.group.id)
+                }
+                reply("反复读已开启")
+                return@route
+            }
+            case("closeDis","关闭反复读"){
+                if (event.group.id in CommandGroupList.DisRepetitionGroupList){
+                    CommandGroupList.DisRepetitionGroupList.remove(event.group.id)
+                }
+                reply("反复读已关闭")
                 return@route
             }
             case("help","获取指令"){
@@ -343,6 +377,28 @@ class BotMsgListener : BaseListeners() {
                     return@route
                 }
                 reply(At(event.sender).plus(x.toString()))
+            }
+
+            case("游戏推荐","游戏推荐"){
+                if (event.group.id !in CommandGroupList.GameMorningGroupList)
+                    return@route
+                val data = FuckOkhttp("https://api.xiaoheihe.cn/game/web/all_recommend/?os_type=web&version=999.0.0&hkey=1f91644ab2fe0ad174f345ccb25282c3&_time="+Date().time).getData()
+                var GameIndex = GsonBuilder().create().fromJson(data, XiaoHeiHe::class.java).result.overview
+                reply(buildString {
+                    for (i in (0..4)){
+                        val item = GameIndex[(GameIndex.indices).random()].list
+                        val game = item[(item.indices).random()]
+                        append("《%s》\n现价：%s\n评分：%s\n平台：%s\n\n".format(game.gameName,game.price.current,game.score,game.gameType))
+                    }
+                })
+                return@route
+            }
+            if (DisRepetition.thisMessageIsRepetition(event) && (group.id in CommandGroupList.DisRepetitionGroupList)){
+                if (event.message[PlainText].toString()!=AppConfig.getInstance().DisRepetitionScence[0]) {
+                    reply(AppConfig.getInstance().DisRepetitionScence[0])
+                }else{
+                    reply(AppConfig.getInstance().DisRepetitionScence[1])
+                }
             }
         }
     }

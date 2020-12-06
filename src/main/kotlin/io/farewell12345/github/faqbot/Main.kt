@@ -24,6 +24,8 @@ suspend fun main() {
     CommandGroupList.oneBot = BotsManager.loginBot()  //登录bot
     CommandGroupList.welcomeGroupList= LinkedList()
     CommandGroupList.managerGroupList = LinkedList()
+    CommandGroupList.GameMorningGroupList = LinkedList()
+    CommandGroupList.DisRepetitionGroupList = LinkedList()
     val logger = logger() // 打印日志
     joinAll(BotsManager.jobs) // 将BotsManager的监听事件加入协程
 }

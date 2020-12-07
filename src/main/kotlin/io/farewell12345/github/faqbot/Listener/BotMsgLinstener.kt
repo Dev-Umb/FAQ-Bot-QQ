@@ -385,10 +385,10 @@ class BotMsgListener : BaseListeners() {
                 val data = FuckOkhttp("https://api.xiaoheihe.cn/game/web/all_recommend/?os_type=web&version=999.0.0&hkey=1f91644ab2fe0ad174f345ccb25282c3&_time="+Date().time).getData()
                 var GameIndex = GsonBuilder().create().fromJson(data, XiaoHeiHe::class.java).result.overview
                 reply(buildString {
-                    for (i in (0..4)){
+                    for (i in (0..2)){
                         val item = GameIndex[(GameIndex.indices).random()].list
                         val game = item[(item.indices).random()]
-                        append("《%s》\n现价：%s\n评分：%s\n平台：%s\n\n".format(game.gameName,game.price.current,game.score,game.gameType))
+                        append("<%s>\n现价：%s\n评分：%s\n平台：%s\n\n".format(game.gameName,game.price.current,game.score,game.gameType))
                     }
                 })
                 return@route

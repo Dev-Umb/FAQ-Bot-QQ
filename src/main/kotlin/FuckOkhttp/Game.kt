@@ -5,15 +5,18 @@ import java.util.*
 
 object Game{
     private var Time = Date().time
-    private val url = "https://api.xiaoheihe.cn/game/web/all_recommend/?os_type=web&version=999.0.0&hkey=1f91644ab2fe0ad174f345ccb25282c3&_time=$Time"
+    private val url = "https://api.xiaoheihe.cn/game/web/all_recommend/game_comments/?os_type=web&version=999.0.0&hkey=c348018bc694bf3c962d5fbe08f544a2&_time=$Time&limit=15&offset=0"
     private var data = FuckOkhttp(url).getData()
-    private var GameIndex = GsonBuilder().create().fromJson(data, XiaoHeiHe::class.java).result.overview
-    fun getGames(): List<XiaoHeiHe.Result.Overview> {
-        if (Date().time - Time >= 24*60*60*1000){
+    private var GameIndex = GsonBuilder().create().fromJson(data, XiaoHeiHe::class.java).result.list
+    fun getGames(): List<XiaoHeiHe.Result.Gamer> {
+        if (Date().time - Time >= 60*60*1000){
             Time = Date().time
             data = FuckOkhttp(url).getData()
-            GameIndex = GsonBuilder().create().fromJson(data, XiaoHeiHe::class.java).result.overview
+            GameIndex = GsonBuilder().create().fromJson(data, XiaoHeiHe::class.java).result.list
         }
         return GameIndex
+    }
+    fun getGame(): XiaoHeiHe.Result.Gamer {
+        return getGames()[(GameIndex.indices).random()]
     }
 }

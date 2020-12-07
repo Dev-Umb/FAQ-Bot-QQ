@@ -23,6 +23,6 @@ class FuckOkhttp(url:String?){
 fun main() {
     val data = FuckOkhttp("https://api.xiaoheihe.cn/game/web/all_recommend/?os_type=web&version=999.0.0&hkey=1f91644ab2fe0ad174f345ccb25282c3&_time=\"+Date().time").getData()
     var GameIndexs = GsonBuilder().create().fromJson(data, XiaoHeiHe::class.java)
-    val GameIndex = GameIndexs.result.overview
-    print(GameIndex[0].list[0].gameName)
+    val GameIndex = GameIndexs.result.list
+    print(GameIndex[0].game.name)
 }

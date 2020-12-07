@@ -2,9 +2,7 @@ package io.farewell12345.github.faqbot.Listener
 
 
 import FuckOkhttp.FuckOkhttp
-import FuckOkhttp.HeiHe
-import FuckOkhttp.XiaoHeiHe
-import com.google.gson.Gson
+import FuckOkhttp.Game
 import com.google.gson.GsonBuilder
 import io.farewell12345.github.faqbot.AppConfig
 import io.farewell12345.github.faqbot.BotManager.Session
@@ -16,17 +14,13 @@ import io.farewell12345.github.faqbot.DB.DB
 import io.farewell12345.github.faqbot.DB.DB.database
 import io.farewell12345.github.faqbot.BotManager.getAnswer
 import io.farewell12345.github.faqbot.DTO.Answer
-import io.farewell12345.github.faqbot.DTO.Welcome
 import io.farewell12345.github.faqbot.curd.deleteQuestion
 import io.farewell12345.github.faqbot.curd.quickSearchQuestion
 import io.farewell12345.github.faqbot.curd.searchQuestion
 import me.liuwj.ktorm.dsl.*
-import net.mamoe.mirai.Bot
 import net.mamoe.mirai.event.EventHandler
-import net.mamoe.mirai.event.events.MemberJoinEvent
 import net.mamoe.mirai.message.GroupMessageEvent
 import net.mamoe.mirai.message.data.*
-import java.awt.SystemColor.text
 import java.util.*
 
 class BotMsgListener : BaseListeners() {
@@ -382,14 +376,14 @@ class BotMsgListener : BaseListeners() {
             case("游戏推荐","游戏推荐"){
                 if (event.group.id !in CommandGroupList.GameMorningGroupList)
                     return@route
-                val data = FuckOkhttp("https://api.xiaoheihe.cn/game/web/all_recommend/?os_type=web&version=999.0.0&hkey=1f91644ab2fe0ad174f345ccb25282c3&_time="+Date().time).getData()
-                var GameIndex = GsonBuilder().create().fromJson(data, XiaoHeiHe::class.java).result.overview
+                val GameIndex = Game.getGame()
                 reply(buildString {
-                    for (i in (0..2)){
-                        val item = GameIndex[(GameIndex.indices).random()].list
-                        val game = item[(item.indices).random()]
-                        append("<%s>\n现价：%s\n评分：%s\n平台：%s\n\n".format(game.gameName,game.price.current,game.score,game.gameType))
-                    }
+                        append("<%s>\n现价：%s\n评分：%s\n平台：%s\n点评：%s".format(
+                                GameIndex.game.name,
+                                GameIndex.game.price.current,
+                                GameIndex.game.score,
+                                GameIndex.game.gameType,
+                                GameIndex.description))
                 })
                 return@route
             }

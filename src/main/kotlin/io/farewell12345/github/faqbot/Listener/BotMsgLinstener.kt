@@ -3,6 +3,7 @@ package io.farewell12345.github.faqbot.Listener
 
 import FuckOkhttp.FuckOkhttp
 import FuckOkhttp.Game
+import FuckOkhttp.PicManager
 import com.google.gson.GsonBuilder
 import io.farewell12345.github.faqbot.AppConfig
 import io.farewell12345.github.faqbot.BotManager.Session
@@ -17,10 +18,12 @@ import io.farewell12345.github.faqbot.DTO.Answer
 import io.farewell12345.github.faqbot.curd.deleteQuestion
 import io.farewell12345.github.faqbot.curd.quickSearchQuestion
 import io.farewell12345.github.faqbot.curd.searchQuestion
+import kotlinx.coroutines.runBlocking
 import me.liuwj.ktorm.dsl.*
 import net.mamoe.mirai.event.EventHandler
 import net.mamoe.mirai.message.GroupMessageEvent
 import net.mamoe.mirai.message.data.*
+import java.net.URL
 import java.util.*
 
 class BotMsgListener : BaseListeners() {
@@ -63,11 +66,25 @@ class BotMsgListener : BaseListeners() {
                 reply("反复读已关闭")
                 return@route
             }
+            case("Animation","开启二刺螈图"){
+                if (event.group.id !in CommandGroupList.AnimationGroupList){
+                    CommandGroupList.AnimationGroupList.add(event.group.id)
+                }
+                reply("二次元图片发送已开启")
+                return@route
+            }
+            case("closeAnim","关闭反复读"){
+                if (event.group.id in CommandGroupList.AnimationGroupList){
+                    CommandGroupList.AnimationGroupList.remove(event.group.id)
+                }
+                reply("二次元图片发送已关闭")
+                return@route
+            }
             case("help","获取指令"){
                 reply(getHelp())
                 return@route
             }
-            case("close","关闭迎新"){
+            case("closeWel","关闭迎新"){
                 if (event.group.id in CommandGroupList.welcomeGroupList){
                     CommandGroupList.welcomeGroupList.remove(event.group.id)
                 }
@@ -387,6 +404,28 @@ class BotMsgListener : BaseListeners() {
                 })
                 return@route
             }
+
+            case("图来","二次元图") {
+                if (group.id in CommandGroupList.AnimationGroupList) {
+                    Thread {
+                        val url = PicManager.getPic()
+                        runBlocking {
+                            if (url == "") {
+                                reply("太快了，休息一下吧")
+                            } else {
+                                try {
+                                    URL(url).openConnection().getInputStream().sendAsImage()
+                                }catch (e:Exception){
+                                    Thread.sleep(500)
+                                    URL(PicManager.getPic()).openConnection().getInputStream().sendAsImage()
+                                }
+                            }
+                        }
+                    }.start()
+                    return@route
+                }
+            }
+
             if (DisRepetition.thisMessageIsRepetition(event) && (group.id in CommandGroupList.DisRepetitionGroupList)){
                 if (event.message[PlainText].toString()!=AppConfig.getInstance().DisRepetitionScence[0]) {
                     reply(AppConfig.getInstance().DisRepetitionScence[0])

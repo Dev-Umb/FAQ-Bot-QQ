@@ -28,6 +28,7 @@ object CommandGroupList {
     lateinit var managerGroupList:LinkedList<Long>
     lateinit var GameMorningGroupList:LinkedList<Long>
     lateinit var DisRepetitionGroupList:LinkedList<Long>
+    lateinit var AnimationGroupList:LinkedList<Long>
 }
 
 

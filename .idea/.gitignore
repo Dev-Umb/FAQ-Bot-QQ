@@ -6,3 +6,16 @@
 /dataSources.local.xml
 # Editor-based HTTP Client requests
 /httpRequests/
+.idea/
+compiler.xml
+gradle.xml
+jarRepositories.xml
+misc.xml
+vcs.xml
+workspace.xml
+uiDesigner.xml
+../.idea/
+../img/
+../logs/
+../device.json/
+../devices/

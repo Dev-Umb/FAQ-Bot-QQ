@@ -1,5 +1,6 @@
-package FuckOkhttp
+package io.farewell12345.github.faqbot.DTO
 
+import FuckOkhttp.FuckOkhttp
 import com.google.gson.GsonBuilder
 import java.util.*
 

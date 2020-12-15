@@ -1,120 +1,120 @@
-package FuckOkhttp
+package io.farewell12345.github.faqbot.DTO
 
 
 import com.google.gson.annotations.SerializedName
 
 data class XiaoHeiHe(
-    @SerializedName("msg")
+        @SerializedName("msg")
     val msg: String,
-    @SerializedName("result")
+        @SerializedName("result")
     val result: Result,
-    @SerializedName("status")
+        @SerializedName("status")
     val status: String,
-    @SerializedName("version")
+        @SerializedName("version")
     val version: String
 ) {
     data class Result(
-        @SerializedName("list")
+            @SerializedName("list")
         val list: List<Gamer>,
-        @SerializedName("total_page")
+            @SerializedName("total_page")
         val totalPage: Int
     ) {
         data class Gamer(
-            @SerializedName("appid")
+                @SerializedName("appid")
             val appid: Int,
-            @SerializedName("click")
+                @SerializedName("click")
             val click: Int,
-            @SerializedName("comment_num")
+                @SerializedName("comment_num")
             val commentNum: Int,
-            @SerializedName("create_at")
+                @SerializedName("create_at")
             val createAt: String,
-            @SerializedName("description")
+                @SerializedName("description")
             val description: String,
-            @SerializedName("game")
+                @SerializedName("game")
             val game: Game,
-            @SerializedName("has_video")
+                @SerializedName("has_video")
             val hasVideo: Int,
-            @SerializedName("imgs")
+                @SerializedName("imgs")
             val imgs: List<Any>,
-            @SerializedName("is_web")
+                @SerializedName("is_web")
             val isWeb: Int,
-            @SerializedName("link_award_num")
+                @SerializedName("link_award_num")
             val linkAwardNum: Int,
-            @SerializedName("link_tag")
+                @SerializedName("link_tag")
             val linkTag: Int,
-            @SerializedName("link_type")
+                @SerializedName("link_type")
             val linkType: Int,
-            @SerializedName("linkid")
+                @SerializedName("linkid")
             val linkid: Int,
-            @SerializedName("modify_at")
+                @SerializedName("modify_at")
             val modifyAt: String,
-            @SerializedName("rec_cnt")
+                @SerializedName("rec_cnt")
             val recCnt: Int,
-            @SerializedName("score")
+                @SerializedName("score")
             val score: String,
-            @SerializedName("share_url")
+                @SerializedName("share_url")
             val shareUrl: String,
-            @SerializedName("special_type")
+                @SerializedName("special_type")
             val specialType: Int,
-            @SerializedName("title")
+                @SerializedName("title")
             val title: String,
-            @SerializedName("topics")
+                @SerializedName("topics")
             val topics: List<Topic>,
-            @SerializedName("up")
+                @SerializedName("up")
             val up: Int,
-            @SerializedName("user")
+                @SerializedName("user")
             val user: User
         ) {
             data class Game(
-                @SerializedName("appicon")
+                    @SerializedName("appicon")
                 val appicon: String,
-                @SerializedName("bundle_id")
+                    @SerializedName("bundle_id")
                 val bundleId: String,
-                @SerializedName("download_url_android")
+                    @SerializedName("download_url_android")
                 val downloadUrlAndroid: String,
-                @SerializedName("follow_state")
+                    @SerializedName("follow_state")
                 val followState: String,
-                @SerializedName("game_type")
+                    @SerializedName("game_type")
                 val gameType: String,
-                @SerializedName("genres")
+                    @SerializedName("genres")
                 val genres: List<Any>,
-                @SerializedName("has_achievement")
+                    @SerializedName("has_achievement")
                 val hasAchievement: Int,
-                @SerializedName("hidden_type")
+                    @SerializedName("hidden_type")
                 val hiddenType: String,
-                @SerializedName("hs_inventory")
+                    @SerializedName("hs_inventory")
                 val hsInventory: Int,
-                @SerializedName("image")
+                    @SerializedName("image")
                 val image: String,
-                @SerializedName("is_bundle")
+                    @SerializedName("is_bundle")
                 val isBundle: String,
-                @SerializedName("is_free")
+                    @SerializedName("is_free")
                 val isFree: Boolean,
-                @SerializedName("is_release")
+                    @SerializedName("is_release")
                 val isRelease: Boolean,
-                @SerializedName("name")
+                    @SerializedName("name")
                 val name: String,
-                @SerializedName("online_player")
+                    @SerializedName("online_player")
                 val onlinePlayer: Int,
-                @SerializedName("peak_user_num")
+                    @SerializedName("peak_user_num")
                 val peakUserNum: String,
-                @SerializedName("platform_infos")
+                    @SerializedName("platform_infos")
                 val platformInfos: List<PlatformInfo>,
-                @SerializedName("platforms")
+                    @SerializedName("platforms")
                 val platforms: List<String>,
-                @SerializedName("platforms_icon")
+                    @SerializedName("platforms_icon")
                 val platformsIcon: List<String>,
-                @SerializedName("platforms_url")
+                    @SerializedName("platforms_url")
                 val platformsUrl: List<String>,
-                @SerializedName("price")
+                    @SerializedName("price")
                 val price: Price,
-                @SerializedName("release_date")
+                    @SerializedName("release_date")
                 val releaseDate: String,
-                @SerializedName("score")
+                    @SerializedName("score")
                 val score: String,
-                @SerializedName("steam_appid")
+                    @SerializedName("steam_appid")
                 val steamAppid: Int,
-                @SerializedName("type")
+                    @SerializedName("type")
                 val type: String
             ) {
                 data class PlatformInfo(

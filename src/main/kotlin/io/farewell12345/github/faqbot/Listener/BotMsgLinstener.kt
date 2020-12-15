@@ -2,8 +2,9 @@ package io.farewell12345.github.faqbot.Listener
 
 
 import FuckOkhttp.FuckOkhttp
-import FuckOkhttp.Game
-import FuckOkhttp.PicManager
+import io.farewell12345.github.faqbot.DTO.Game
+import io.farewell12345.github.faqbot.DTO.Hitokto
+import io.farewell12345.github.faqbot.DTO.PicManager
 import com.google.gson.GsonBuilder
 import io.farewell12345.github.faqbot.AppConfig
 import io.farewell12345.github.faqbot.BotManager.Session
@@ -66,22 +67,18 @@ class BotMsgListener : BaseListeners() {
                 reply("反复读已关闭")
                 return@route
             }
-            case("Animation","开启二刺螈图"){
+            case("Animation","开启发图"){
                 if (event.group.id !in CommandGroupList.AnimationGroupList){
                     CommandGroupList.AnimationGroupList.add(event.group.id)
                 }
-                reply("二次元图片发送已开启")
+                reply("图片发送已开启")
                 return@route
             }
             case("closeAnim","关闭反复读"){
                 if (event.group.id in CommandGroupList.AnimationGroupList){
                     CommandGroupList.AnimationGroupList.remove(event.group.id)
                 }
-                reply("二次元图片发送已关闭")
-                return@route
-            }
-            case("help","获取指令"){
-                reply(getHelp())
+                reply("图片发送已关闭")
                 return@route
             }
             case("closeWel","关闭迎新"){
@@ -143,6 +140,10 @@ class BotMsgListener : BaseListeners() {
                 }
                 return@route
             }
+            case("help","获取指令"){
+                reply(getHelp())
+                return@route
+            }
         }
         route(prefix = "", delimiter = " ")  {
 
@@ -154,7 +155,6 @@ class BotMsgListener : BaseListeners() {
                     reply("取消会话成功！")
                 }
             }
-
             if(!SessionManager.SessionsIsEmpty()) {
                 if (SessionManager.performSession(event)) {
                     reply("录入成功！")
@@ -164,8 +164,6 @@ class BotMsgListener : BaseListeners() {
                     reply("格式有误！答案与问题不能相同，请重新检查录入答案格式或发送‘取消’停止当前对话")
                 }
             }
-
-
             // 根据问题名称获取回答
             val tryGetAnswer = searchQuestion(
                     event.message[PlainText].toString()
@@ -177,8 +175,6 @@ class BotMsgListener : BaseListeners() {
                 reply(tryGetAnswer)
                 return@route
             }
-
-
             case("列表",desc = "获取此群的问题列表"){
                 val query =  database
                         .from(Question)
@@ -193,19 +189,12 @@ class BotMsgListener : BaseListeners() {
                 })
                 return@route
             }
-
-            case("帮助","获取帮助指令"){
-                reply(getHelp())
-                return@route
-            }
-
             if (event.group.id in CommandGroupList.managerGroupList){
                 if (event.sender.permission.ordinal==0
                         && event.sender.id !=AppConfig.getInstance().SuperUser){
                     return@route
                 }
             }
-
             case("添加问题","添加问题"){
                 val question = event.message
                         .get(PlainText)?.contentToString()?.replace("添加问题","")
@@ -242,7 +231,6 @@ class BotMsgListener : BaseListeners() {
                 }
                 return@route
             }
-
             case("修改问题","修改一个问题"){
                 var question = event.message
                         .get(PlainText)?.toString()?.replace("修改问题","")
@@ -277,7 +265,6 @@ class BotMsgListener : BaseListeners() {
                 reply("问题$question 不存在")
                 return@route
             }
-
             case("删除问题","删除一个问题"){
                 var question = event.message
                         .get(PlainText)?.contentToString()?.replace(" ","")
@@ -295,7 +282,6 @@ class BotMsgListener : BaseListeners() {
                 }
                 return@route
             }
-
             furry("#","快速索引"){
                 try {
                     val id = event.message[PlainText]?.contentToString()?.replace("#", "")?.toInt()
@@ -321,7 +307,6 @@ class BotMsgListener : BaseListeners() {
                     logger.info(e)
                 }
             }
-
             case("同步问答","同步不同群的问答消息会将本群问题覆盖"){
                 val signGroup = event.message
                         .get(PlainText)?.contentToString()?.replace("同步问答 ","")
@@ -350,13 +335,11 @@ class BotMsgListener : BaseListeners() {
                     return@route
                 }
             }
-
             case("删除抽签","删除抽签"){
                 DrawManager.deleteDraw(group.id)
                 reply("删除成功！")
                 return@route
             }
-
             case("创建抽签","创建抽签") {
                 val signGroup = event.message
                         .get(PlainText)?.contentToString()?.replace("创建抽签", "")?.replace(" ","")
@@ -380,7 +363,6 @@ class BotMsgListener : BaseListeners() {
                 }
                 return@route
             }
-
             case("抽签","群内抽签设置"){
                 val x = DrawManager.getInt(group.id)
                 if (x==-1){
@@ -389,7 +371,6 @@ class BotMsgListener : BaseListeners() {
                 }
                 reply(At(event.sender).plus(x.toString()))
             }
-
             case("游戏推荐","游戏推荐"){
                 if (event.group.id !in CommandGroupList.GameMorningGroupList)
                     return@route
@@ -404,7 +385,6 @@ class BotMsgListener : BaseListeners() {
                 })
                 return@route
             }
-
             case("图来","二次元图") {
                 if (group.id in CommandGroupList.AnimationGroupList) {
                     Thread {
@@ -425,7 +405,16 @@ class BotMsgListener : BaseListeners() {
                     return@route
                 }
             }
+//            case("科普推荐","网易云热评"){
+//                val data = FuckOkhttp(" https://v1.alapi.cn/api/comment").getData()
+//                val hitokto = GsonBuilder().create().fromJson(data, Hitokto::class.java)
+//
+//            }
 
+            case("帮助","获取帮助指令"){
+                reply(getHelp())
+                return@route
+            }
             if (DisRepetition.thisMessageIsRepetition(event) && (group.id in CommandGroupList.DisRepetitionGroupList)){
                 if (event.message[PlainText].toString()!=AppConfig.getInstance().DisRepetitionScence[0]) {
                     reply(AppConfig.getInstance().DisRepetitionScence[0])

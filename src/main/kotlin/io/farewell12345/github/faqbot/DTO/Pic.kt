@@ -1,9 +1,9 @@
-package FuckOkhttp
+package io.farewell12345.github.faqbot.DTO
 
 
+import FuckOkhttp.FuckOkhttp
 import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
-import net.mamoe.mirai.message.data.Image
 
 data class Pic(
     @SerializedName("code")

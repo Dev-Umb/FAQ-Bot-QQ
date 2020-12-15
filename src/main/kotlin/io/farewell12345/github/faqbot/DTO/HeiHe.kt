@@ -1,14 +1,14 @@
-package FuckOkhttp
+package io.farewell12345.github.faqbot.DTO
 
 
 import com.google.gson.annotations.SerializedName
 
 data class HeiHe(
-    @SerializedName("code")
+        @SerializedName("code")
     val code: Int,
-    @SerializedName("items")
+        @SerializedName("items")
     var items: List<Item>,
-    @SerializedName("msg")
+        @SerializedName("msg")
     val msg: String
 ) {
     data class Item(

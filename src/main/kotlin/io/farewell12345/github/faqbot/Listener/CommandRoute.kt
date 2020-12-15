@@ -17,7 +17,9 @@ class CommandRoute<T : MessageEvent>( val args: List<String>?,  val event: T) : 
         get() = Dispatchers.Default + job
 
     suspend inline fun case(case: String, desc: String = "暂无描述", receiver:  T.(List<String>?) -> Unit) {
-        helpMap[case]=desc
+        synchronized(helpMap) {
+            helpMap[case] = desc
+        }
         if (args?.size == 0){
             return
         }
@@ -55,7 +57,9 @@ class CommandRoute<T : MessageEvent>( val args: List<String>?,  val event: T) : 
 
     fun getHelp():String = buildString{
         append("指令帮助\n")
-        append(helpMap.asSequence().joinToString(separator = "\n") { "${it.key} : ${it.value}" })
+        helpMap.forEach { s, s2 ->
+            append("${s}:${s2}\n")
+        }
     }
 }
 

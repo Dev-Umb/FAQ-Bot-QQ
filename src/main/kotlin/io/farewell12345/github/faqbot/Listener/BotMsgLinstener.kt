@@ -386,16 +386,16 @@ class BotMsgListener : BaseListeners() {
             case("涩图来","ST") {
                 if (group.id in CommandGroupList.AnimationGroupList) {
                     Thread {
-                        val url = PicManager.getSTPic()
                         runBlocking {
+                            val url = PicManager.getSex()
                             if (url == "") {
                                 reply("太快了，休息一下吧")
                             } else {
                                 try {
-                                    URL(url).openConnection().getInputStream().sendAsImage()
+                                    PicManager.getStream()?.sendAsImage()
                                 } catch (e: Exception) {
                                     Thread.sleep(500)
-                                    URL(PicManager.getPic()).openConnection().getInputStream().sendAsImage()
+                                    PicManager.getStream()?.sendAsImage()
                                 }
                             }
                         }

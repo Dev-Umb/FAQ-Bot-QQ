@@ -387,7 +387,7 @@ class BotMsgListener : BaseListeners() {
                 if (group.id in CommandGroupList.AnimationGroupList) {
                     Thread {
                         runBlocking {
-                            val url = PicManager.getSex()
+                            val url = PicManager.getSTPic()
                             if (url == "") {
                                 reply("太快了，休息一下吧")
                             } else {

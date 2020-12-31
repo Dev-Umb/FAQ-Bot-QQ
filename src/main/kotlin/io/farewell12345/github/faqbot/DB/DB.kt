@@ -12,3 +12,4 @@ object DB{
         password = appConfig.dbPwd
     )
 }
+

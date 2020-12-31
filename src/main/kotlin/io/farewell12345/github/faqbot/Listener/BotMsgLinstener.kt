@@ -2,20 +2,16 @@ package io.farewell12345.github.faqbot.Listener
 
 
 import FuckOkhttp.FuckOkhttp
-import io.farewell12345.github.faqbot.DTO.Game
-import io.farewell12345.github.faqbot.DTO.Hitokto
-import io.farewell12345.github.faqbot.DTO.PicManager
 import com.google.gson.GsonBuilder
 import io.farewell12345.github.faqbot.AppConfig
 import io.farewell12345.github.faqbot.BotManager.Session
 import io.farewell12345.github.faqbot.BotManager.SessionManager
 import io.farewell12345.github.faqbot.BotManager.*
-import io.farewell12345.github.faqbot.DTO.Question
 import io.farewell12345.github.faqbot.curd.*
 import io.farewell12345.github.faqbot.DB.DB
 import io.farewell12345.github.faqbot.DB.DB.database
 import io.farewell12345.github.faqbot.BotManager.getAnswer
-import io.farewell12345.github.faqbot.DTO.Answer
+import io.farewell12345.github.faqbot.DTO.*
 import io.farewell12345.github.faqbot.curd.deleteQuestion
 import io.farewell12345.github.faqbot.curd.quickSearchQuestion
 import io.farewell12345.github.faqbot.curd.searchQuestion
@@ -24,6 +20,7 @@ import me.liuwj.ktorm.dsl.*
 import net.mamoe.mirai.event.EventHandler
 import net.mamoe.mirai.message.GroupMessageEvent
 import net.mamoe.mirai.message.data.*
+import java.io.File
 import java.net.URL
 import java.util.*
 
@@ -121,6 +118,7 @@ class BotMsgListener : BaseListeners() {
                 reply("已开启迎新功能")
                 return@route
             }
+
             case("change","修改迎新词"){
                 if (searchWelcomeTalk(group)!=null &&
                     event.group.id in CommandGroupList.welcomeGroupList
@@ -385,6 +383,26 @@ class BotMsgListener : BaseListeners() {
                 })
                 return@route
             }
+            case("涩图来","ST") {
+                if (group.id in CommandGroupList.AnimationGroupList) {
+                    Thread {
+                        val url = PicManager.getSTPic()
+                        runBlocking {
+                            if (url == "") {
+                                reply("太快了，休息一下吧")
+                            } else {
+                                try {
+                                    URL(url).openConnection().getInputStream().sendAsImage()
+                                } catch (e: Exception) {
+                                    Thread.sleep(500)
+                                    URL(PicManager.getPic()).openConnection().getInputStream().sendAsImage()
+                                }
+                            }
+                        }
+                    }.start()
+                }
+                return@route
+            }
             case("图来","二次元图") {
                 if (group.id in CommandGroupList.AnimationGroupList) {
                     Thread {
@@ -404,6 +422,9 @@ class BotMsgListener : BaseListeners() {
                     }.start()
                     return@route
                 }
+            }
+            case("法律","法律"){
+                reply(FuckOkhttp("http://holk.tech:8886").getData())
             }
 //            case("科普推荐","网易云热评"){
 //                val data = FuckOkhttp(" https://v1.alapi.cn/api/comment").getData()

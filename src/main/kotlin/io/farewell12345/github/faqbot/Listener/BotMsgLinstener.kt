@@ -20,6 +20,7 @@ import me.liuwj.ktorm.dsl.*
 import net.mamoe.mirai.event.EventHandler
 import net.mamoe.mirai.message.GroupMessageEvent
 import net.mamoe.mirai.message.data.*
+import net.mamoe.mirai.message.sendAsImageTo
 import java.io.File
 import java.net.URL
 import java.util.*
@@ -392,10 +393,16 @@ class BotMsgListener : BaseListeners() {
                                 reply("太快了，休息一下吧")
                             } else {
                                 try {
-                                    PicManager.getStream()?.sendAsImage()
+                                    URL(url).openConnection().getInputStream()?.sendAsImageTo(bot.getFriend(event.sender.id))
+                                    reply(url)
                                 } catch (e: Exception) {
                                     Thread.sleep(500)
-                                    PicManager.getStream()?.sendAsImage()
+                                    try {
+                                        URL(url).openConnection().getInputStream()?.sendAsImageTo(bot.getFriend(event.sender.id))
+                                        reply(url)
+                                    }catch (e:NoSuchElementException){
+                                        reply("发送失败，请加我好友")
+                                    }
                                 }
                             }
                         }

@@ -388,6 +388,7 @@ class BotMsgListener : BaseListeners() {
                 if (group.id in CommandGroupList.AnimationGroupList) {
                     Thread {
                         runBlocking {
+                            reply("涩图太涩了，让我先自己康康再给你，久等一下")
                             val url = PicManager.getSTPic()
                             if (url == "") {
                                 reply("太快了，休息一下吧")
@@ -401,7 +402,7 @@ class BotMsgListener : BaseListeners() {
                                         URL(url).openConnection().getInputStream()?.sendAsImageTo(bot.getFriend(event.sender.id))
                                         reply(url)
                                     }catch (e:NoSuchElementException){
-                                        reply("发送失败，请加我好友")
+                                        reply("发送失败，请加我好友$url"+At(event.sender))
                                     }
                                 }
                             }

@@ -402,7 +402,7 @@ class BotMsgListener : BaseListeners() {
                                         URL(url).openConnection().getInputStream()?.sendAsImageTo(bot.getFriend(event.sender.id))
                                         reply(url)
                                     }catch (e:NoSuchElementException){
-                                        reply("发送失败，请加我好友$url"+At(event.sender))
+                                        reply("发送失败，请加我好友$url  "+At(event.sender))
                                     }
                                 }
                             }

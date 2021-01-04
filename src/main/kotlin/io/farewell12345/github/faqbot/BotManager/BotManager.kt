@@ -8,6 +8,7 @@
 package io.farewell12345.github.faqbot.BotManager
 import io.farewell12345.github.faqbot.AppConfig
 import io.farewell12345.github.faqbot.Task.GameMorningTask
+import io.farewell12345.github.faqbot.Task.TimerSessionManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -34,6 +35,7 @@ object CommandGroupList {
 
 
 object BotsManager : CoroutineScope {
+    val task = TimerSessionManager()  // 命令调度器
     suspend fun loginBot(): Bot {
         return Bot(
                 qq = AppConfig.getInstance().BotQQ.toLong(),

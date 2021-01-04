@@ -1,18 +1,14 @@
 package io.farewell12345.github.faqbot;
 
-import io.farewell12345.github.faqbot.BotManager.DisRepetition;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import java.util.Timer;
 
-import static io.farewell12345.github.faqbot.curd.DBUntilKt.logger;
+import static io.farewell12345.github.faqbot.DTO.model.DBUntilKt.logger;
 
 public class AppConfig {
     private static AppConfig INSTANCE = null;

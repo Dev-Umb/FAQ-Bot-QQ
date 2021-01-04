@@ -1,7 +1,7 @@
 package FuckOkhttp
 
 import com.google.gson.GsonBuilder
-import io.farewell12345.github.faqbot.DTO.XiaoHeiHe
+import io.farewell12345.github.faqbot.DTO.model.XiaoHeiHe
 import okhttp3.OkHttpClient
 import okhttp3.Request
 

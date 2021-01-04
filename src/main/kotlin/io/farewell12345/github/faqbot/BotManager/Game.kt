@@ -1,7 +1,8 @@
-package io.farewell12345.github.faqbot.DTO
+package io.farewell12345.github.faqbot.BotManager
 
 import FuckOkhttp.FuckOkhttp
 import com.google.gson.GsonBuilder
+import io.farewell12345.github.faqbot.DTO.model.XiaoHeiHe
 import java.util.*
 
 object Game{

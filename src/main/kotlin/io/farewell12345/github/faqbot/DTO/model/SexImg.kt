@@ -1,20 +1,20 @@
-package io.farewell12345.github.faqbot.DTO
+package io.farewell12345.github.faqbot.DTO.model
 
 
 import com.google.gson.annotations.SerializedName
 
 data class SexImg(
-    @SerializedName("code")
+        @SerializedName("code")
     val code: Int,
-    @SerializedName("count")
+        @SerializedName("count")
     val count: Int,
-    @SerializedName("data")
+        @SerializedName("data")
     val `data`: List<Data>,
-    @SerializedName("msg")
+        @SerializedName("msg")
     val msg: String,
-    @SerializedName("quota")
+        @SerializedName("quota")
     val quota: Int,
-    @SerializedName("quota_min_ttl")
+        @SerializedName("quota_min_ttl")
     val quotaMinTtl: Int
 ) {
     data class Data(

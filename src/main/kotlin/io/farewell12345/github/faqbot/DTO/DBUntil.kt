@@ -5,14 +5,11 @@
     "INVISIBLE_REFERENCE",
     "INVISIBLE_MEMBER"
 )
-package io.farewell12345.github.faqbot.curd
+package io.farewell12345.github.faqbot.DTO.model
 
 import io.farewell12345.github.faqbot.BotManager.Session
 import io.farewell12345.github.faqbot.DB.DB
-import io.farewell12345.github.faqbot.DTO.Answer
-import io.farewell12345.github.faqbot.DTO.Question
 import com.google.gson.Gson
-import io.farewell12345.github.faqbot.DTO.Welcome
 import me.liuwj.ktorm.dsl.*
 import net.mamoe.mirai.contact.Group
 import net.mamoe.mirai.message.GroupMessageEvent
@@ -27,7 +24,6 @@ import java.io.File
 import java.lang.Exception
 import java.net.URL
 import java.util.*
-import kotlin.math.log
 
 fun logger(): Logger {
     return getLogger(StackLocatorUtil.getStackTraceElement(2).className)
@@ -51,7 +47,7 @@ fun searchWelcomeTalk(group:Group): String? {
 }
 
 fun appendWelcomeTalk(group: Group,talk:Answer):Boolean{
-    if (searchWelcomeTalk(group)==null){
+    if (searchWelcomeTalk(group) ==null){
         val gson = Gson()
         DB.database.insert(Welcome){
             set(Welcome.group,group.id)
@@ -141,17 +137,17 @@ fun quickSearchQuestion(id:Int,group: Group): QueryRowSet? {
 }
 
 
-fun downImg(imgUrl:OnlineGroupImage){
-    val file = File("img",imgUrl.imageId)
-    if (!file.exists()){
-        file.createNewFile()
-    }
-    val output = file.outputStream()
-    URL(imgUrl.originUrl).openStream().use {
-        it.copyTo(output)
-    }
-    output.close()
-}
+//fun downImg(imgUrl:OnlineGroupImage){
+//    val file = File("img",imgUrl.imageId)
+//    if (!file.exists()){
+//        file.createNewFile()
+//    }
+//    val output = file.outputStream()
+//    URL(imgUrl.originUrl).openStream().use {
+//        it.copyTo(output)
+//    }
+//    output.close()
+//}
 
 
 

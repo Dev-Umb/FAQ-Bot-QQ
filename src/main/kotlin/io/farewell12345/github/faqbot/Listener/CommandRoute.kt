@@ -1,6 +1,7 @@
 package io.farewell12345.github.faqbot.Listener
 
-import io.farewell12345.github.faqbot.curd.logger
+import io.farewell12345.github.faqbot.BotManager.BotsManager
+import io.farewell12345.github.faqbot.DTO.model.logger
 import kotlinx.coroutines.*
 import net.mamoe.mirai.message.MessageEvent
 import net.mamoe.mirai.message.data.Message
@@ -23,11 +24,14 @@ class CommandRoute<T : MessageEvent>( val args: List<String>?,  val event: T) : 
         if (args?.size == 0){
             return
         }
-        if (!alreadyCalled && args?.find { it.equals(case) }!=null ) {
+        if (!alreadyCalled && args?.find { it.replace(" ","").equals(case) }!=null ) {
+            if(!BotsManager.task.CanUseBot(event.sender.id))
+                return
             alreadyCalled = true
             kotlin.runCatching { event.receiver(args.subList(1, args.size)) }.also {
                 handleException(it.exceptionOrNull())
             }
+            BotsManager.task.addUser(event.sender.id)
         }
     }
 

@@ -2,26 +2,21 @@ package io.farewell12345.github.faqbot.Listener
 
 
 import FuckOkhttp.FuckOkhttp
-import com.google.gson.GsonBuilder
 import io.farewell12345.github.faqbot.AppConfig
 import io.farewell12345.github.faqbot.BotManager.Session
 import io.farewell12345.github.faqbot.BotManager.SessionManager
 import io.farewell12345.github.faqbot.BotManager.*
-import io.farewell12345.github.faqbot.curd.*
 import io.farewell12345.github.faqbot.DB.DB
 import io.farewell12345.github.faqbot.DB.DB.database
 import io.farewell12345.github.faqbot.BotManager.getAnswer
-import io.farewell12345.github.faqbot.DTO.*
-import io.farewell12345.github.faqbot.curd.deleteQuestion
-import io.farewell12345.github.faqbot.curd.quickSearchQuestion
-import io.farewell12345.github.faqbot.curd.searchQuestion
+import io.farewell12345.github.faqbot.DTO.model.*
 import kotlinx.coroutines.runBlocking
 import me.liuwj.ktorm.dsl.*
 import net.mamoe.mirai.event.EventHandler
+import net.mamoe.mirai.message.FriendMessageEvent
 import net.mamoe.mirai.message.GroupMessageEvent
 import net.mamoe.mirai.message.data.*
 import net.mamoe.mirai.message.sendAsImageTo
-import java.io.File
 import java.net.URL
 import java.util.*
 
@@ -30,9 +25,7 @@ class BotMsgListener : BaseListeners() {
     // 重写Event监听事件
     @EventHandler
     suspend fun GroupMessageEvent.onEvent() {
-
         route (prefix = ".command",delimiter = " "){
-
             if (event.sender.permission.ordinal==0
                     && event.sender.id !=AppConfig.getInstance().SuperUser){
                 return@route
@@ -121,7 +114,7 @@ class BotMsgListener : BaseListeners() {
             }
 
             case("change","修改迎新词"){
-                if (searchWelcomeTalk(group)!=null &&
+                if (searchWelcomeTalk(group) !=null &&
                     event.group.id in CommandGroupList.welcomeGroupList
                 ){
                     SessionManager.addSession(
@@ -145,7 +138,6 @@ class BotMsgListener : BaseListeners() {
             }
         }
         route(prefix = "", delimiter = " ")  {
-
             // 优先进行会话处理
             case("取消","停止会话录入"){
                 if (SessionManager.hasSession(event.sender.id)) {
@@ -198,6 +190,10 @@ class BotMsgListener : BaseListeners() {
                 val question = event.message
                         .get(PlainText)?.contentToString()?.replace("添加问题","")
                         ?.replace(" ","")
+                if (question in helpMap.keys){
+                    reply("问题与模块名冲突！,模块名：${helpMap[question]}")
+                    return@route
+                }
                 if (question!!.isEmpty()) return@route
                 val furry =  Regex("""#\d""")
                 if (furry.matches(question!!)){
@@ -392,6 +388,7 @@ class BotMsgListener : BaseListeners() {
                             val url = PicManager.getSTPic()
                             if (url == "") {
                                 reply("太快了，休息一下吧")
+                                return@runBlocking
                             } else {
                                 try {
                                     URL(url).openConnection().getInputStream()?.sendAsImageTo(bot.getFriend(event.sender.id))
@@ -402,7 +399,10 @@ class BotMsgListener : BaseListeners() {
                                         URL(url).openConnection().getInputStream()?.sendAsImageTo(bot.getFriend(event.sender.id))
                                         reply(url)
                                     }catch (e:NoSuchElementException){
-                                        reply("发送失败，请加我好友$url  "+At(event.sender))
+                                        val messageChain=MessageChainBuilder()
+                                        messageChain.add("发送失败，请加我好友$url  ")
+                                        messageChain.add(At(event.sender))
+                                        reply(messageChain.asMessageChain())
                                     }
                                 }
                             }
@@ -431,7 +431,7 @@ class BotMsgListener : BaseListeners() {
                     return@route
                 }
             }
-            case("法律","法律"){
+            case("普法","法律"){
                 reply(FuckOkhttp("http://holk.tech:8886").getData())
             }
 //            case("科普推荐","网易云热评"){
@@ -450,6 +450,56 @@ class BotMsgListener : BaseListeners() {
                 }else{
                     reply(AppConfig.getInstance().DisRepetitionScence[1])
                 }
+            }
+        }
+    }
+    @EventHandler
+    suspend fun FriendMessageEvent.onEvent(){
+        route {
+            case("涩图来","ST") {
+                    Thread {
+                        runBlocking {
+                            reply("涩图太涩了，让我先自己康康再给你，久等一下")
+                            val url = PicManager.getSTPic()
+                            if (url == "") {
+                                reply("太快了，休息一下吧")
+                            } else {
+                                try {
+                                    URL(url).openConnection().getInputStream()?.sendAsImageTo(bot.getFriend(event.sender.id))
+                                    reply(url)
+                                } catch (e: Exception) {
+                                    Thread.sleep(500)
+                                    try {
+                                        URL(url).openConnection().getInputStream()?.sendAsImageTo(bot.getFriend(event.sender.id))
+                                        reply(url)
+                                    }catch (e:NoSuchElementException){
+                                        val messageChain=MessageChainBuilder()
+                                        messageChain.add("发送失败，请加我好友$url  ")
+                                        reply(message)
+                                    }
+                                }
+                            }
+                        }
+                    }.start()
+                return@route
+            }
+            case("图来","二次元图") {
+                Thread {
+                    val url = PicManager.getPic()
+                    runBlocking {
+                        if (url == "") {
+                            reply("太快了，休息一下吧")
+                        } else {
+                            try {
+                                URL(url).openConnection().getInputStream().sendAsImage()
+                            } catch (e: Exception) {
+                                Thread.sleep(500)
+                                URL(PicManager.getPic()).openConnection().getInputStream().sendAsImage()
+                            }
+                        }
+                    }
+                }.start()
+                return@route
             }
         }
     }

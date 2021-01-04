@@ -1,11 +1,9 @@
-package io.farewell12345.github.faqbot.DTO
+package io.farewell12345.github.faqbot.DTO.model
 
 
 import FuckOkhttp.FuckOkhttp
 import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
-import java.io.InputStream
-import java.net.URL
 
 data class Pic(
     @SerializedName("code")

@@ -2,9 +2,6 @@ package io.farewell12345.github.faqbot.BotManager
 
 import net.mamoe.mirai.message.GroupMessageEvent
 import net.mamoe.mirai.message.data.*
-/*
-* 
-* */
 object DisRepetition{
     var groupMap = mutableMapOf<Long, MessageChain>()
     fun thisMessageIsRepetition(msg: GroupMessageEvent):Boolean{

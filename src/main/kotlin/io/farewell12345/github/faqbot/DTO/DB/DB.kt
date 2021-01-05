@@ -1,4 +1,4 @@
-package io.farewell12345.github.faqbot.DB
+package io.farewell12345.github.faqbot.DTO.DB
 
 import io.farewell12345.github.faqbot.AppConfig
 import me.liuwj.ktorm.database.Database

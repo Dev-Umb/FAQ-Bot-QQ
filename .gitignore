@@ -1,5 +1,5 @@
 # Default ignored files
-/shelf/
+/.idea/shelf/
 /workspace.xml
 # Datasource local storage ignored files
 /../../../../../:\works\TimeTableBot\QABotRefect\.idea/dataSources/
@@ -19,3 +19,8 @@ uiDesigner.xml
 ../logs/
 ../device.json/
 ../devices/
+/img/
+/logs/
+/devices/
+/build/
+/.idea/

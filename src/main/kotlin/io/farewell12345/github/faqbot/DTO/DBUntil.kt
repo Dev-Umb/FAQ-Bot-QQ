@@ -8,7 +8,7 @@
 package io.farewell12345.github.faqbot.DTO.model
 
 import io.farewell12345.github.faqbot.BotManager.Session
-import io.farewell12345.github.faqbot.DB.DB
+import io.farewell12345.github.faqbot.DTO.DB.DB
 import com.google.gson.Gson
 import me.liuwj.ktorm.dsl.*
 import net.mamoe.mirai.contact.Group
@@ -20,9 +20,7 @@ import net.mamoe.mirai.message.data.PlainText
 import org.apache.logging.log4j.LogManager.*
 import org.apache.logging.log4j.Logger
 import org.apache.logging.log4j.util.StackLocatorUtil
-import java.io.File
 import java.lang.Exception
-import java.net.URL
 import java.util.*
 
 fun logger(): Logger {

@@ -25,13 +25,15 @@ class CommandRoute<T : MessageEvent>( val args: List<String>?,  val event: T) : 
             return
         }
         if (!alreadyCalled && args?.find { it.replace(" ","").equals(case) }!=null ) {
-            if(!BotsManager.task.CanUseBot(event.sender.id))
+            if(!BotsManager.task.CanUseBot(event.sender.id)) {
+                event.reply("技能冷却中（你发这么快急着投胎嘛，要不我送你一程）")
                 return
+            }
             alreadyCalled = true
+            BotsManager.task.flushUser(event.sender.id)
             kotlin.runCatching { event.receiver(args.subList(1, args.size)) }.also {
                 handleException(it.exceptionOrNull())
             }
-            BotsManager.task.addUser(event.sender.id)
         }
     }
 

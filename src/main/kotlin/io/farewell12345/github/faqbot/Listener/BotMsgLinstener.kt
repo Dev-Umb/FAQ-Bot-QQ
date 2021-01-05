@@ -1,13 +1,13 @@
 package io.farewell12345.github.faqbot.Listener
 
 
-import FuckOkhttp.FuckOkhttp
+import io.farewell12345.github.faqbot.FuckOkhttp.FuckOkhttp
 import io.farewell12345.github.faqbot.AppConfig
 import io.farewell12345.github.faqbot.BotManager.Session
 import io.farewell12345.github.faqbot.BotManager.SessionManager
 import io.farewell12345.github.faqbot.BotManager.*
-import io.farewell12345.github.faqbot.DB.DB
-import io.farewell12345.github.faqbot.DB.DB.database
+import io.farewell12345.github.faqbot.DTO.DB.DB
+import io.farewell12345.github.faqbot.DTO.DB.DB.database
 import io.farewell12345.github.faqbot.BotManager.getAnswer
 import io.farewell12345.github.faqbot.DTO.model.*
 import kotlinx.coroutines.runBlocking
@@ -369,7 +369,7 @@ class BotMsgListener : BaseListeners() {
             case("游戏推荐","游戏推荐"){
                 if (event.group.id !in CommandGroupList.GameMorningGroupList)
                     return@route
-                val GameIndex = Game.getGame()
+                val GameIndex = GameManage.getGame()
                 reply(buildString {
                         append("<%s>\n现价：%s\n评分：%s\n平台：%s\n点评：%s".format(
                                 GameIndex.game.name,

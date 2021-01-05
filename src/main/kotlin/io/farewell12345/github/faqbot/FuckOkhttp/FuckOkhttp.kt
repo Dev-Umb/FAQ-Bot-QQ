@@ -1,4 +1,4 @@
-package FuckOkhttp
+package io.farewell12345.github.faqbot.FuckOkhttp
 
 import com.google.gson.GsonBuilder
 import io.farewell12345.github.faqbot.DTO.model.XiaoHeiHe

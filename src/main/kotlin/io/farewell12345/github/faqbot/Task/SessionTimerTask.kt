@@ -1,25 +1,22 @@
 package io.farewell12345.github.faqbot.Task
 
-import io.farewell12345.github.faqbot.BotManager.SessionManager
 import java.util.*
+import kotlin.collections.HashMap
 
 
-
-class TimerSessionManager(): TimerTask(){
-    private var UserSessionManager: ArrayDeque<Long> = ArrayDeque() // 用户调用队列
+class TimerSessionManager(): TimerTask(){ // 时间调度器
+    private var UserSessionManager: HashMap<Long,Long> = HashMap() // 用户调用队列
     override fun run() {
-        if (UserSessionManager.isEmpty()){
-            return
-        }
-        UserSessionManager.pollFirst()
+
     }
     fun CanUseBot(id:Long): Boolean {
-        return !(id in UserSessionManager)
-    }
-    fun addUser(id: Long){
-        if (id in UserSessionManager){
-            return
+        if (id !in UserSessionManager.keys) {
+            return flushUser(id)
         }
-        UserSessionManager.push(id)
+        return (Date().time - UserSessionManager[id]!!)/2000 > 4
+    }
+    fun flushUser(id: Long): Boolean {
+        UserSessionManager[id] = Date().time
+        return true
     }
 }

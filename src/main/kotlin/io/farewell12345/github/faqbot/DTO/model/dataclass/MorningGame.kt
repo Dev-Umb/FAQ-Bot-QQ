@@ -1,4 +1,4 @@
-package io.farewell12345.github.faqbot.BotManager
+package io.farewell12345.github.faqbot.DTO.model.dataclass
 
 
 import com.google.gson.annotations.SerializedName

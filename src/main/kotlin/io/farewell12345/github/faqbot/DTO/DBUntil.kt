@@ -7,26 +7,53 @@
 )
 package io.farewell12345.github.faqbot.DTO.model
 
-import io.farewell12345.github.faqbot.BotManager.Session
 import io.farewell12345.github.faqbot.DTO.DB.DB
 import com.google.gson.Gson
+import io.farewell12345.github.faqbot.DTO.model.dataclass.Answer
+import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
 import me.liuwj.ktorm.dsl.*
+import net.mamoe.mirai.Bot
 import net.mamoe.mirai.contact.Group
 import net.mamoe.mirai.message.GroupMessageEvent
-import net.mamoe.mirai.message.data.At
-import net.mamoe.mirai.message.data.MessageChain
-import net.mamoe.mirai.message.data.OnlineGroupImage
-import net.mamoe.mirai.message.data.PlainText
+import net.mamoe.mirai.message.data.*
 import org.apache.logging.log4j.LogManager.*
 import org.apache.logging.log4j.Logger
 import org.apache.logging.log4j.util.StackLocatorUtil
 import java.lang.Exception
+import java.lang.NullPointerException
 import java.util.*
 
 fun logger(): Logger {
     return getLogger(StackLocatorUtil.getStackTraceElement(2).className)
 }
-
+fun analyticalAnswer(query: QueryRowSet):MessageChain{
+    val answerJson = query[Question.answer]
+    val gson = Gson()
+    val answer =gson.fromJson(answerJson, Answer::class.java)
+    val messageChain= MessageChainBuilder()
+    messageChain.add(answer.text)
+    if (answer.atList.size>0) {
+        answer.atList.forEach {
+            messageChain.add(At(
+                Bot.botInstances[0]
+                    .getGroup(query[Question.group]!!)[it]
+            ))
+        }
+    }
+    if (answer.imgList.size>0) {
+        answer.imgList.forEach {
+            messageChain.add(Image(it))
+        }
+    }
+    return messageChain.build()
+}
+fun getAnswer(query: QueryRowSet): MessageChain? {
+    try {
+        return analyticalAnswer(query)
+    }catch (e: NullPointerException){
+        return null
+    }
+}
 fun searchWelcomeTalk(group:Group): String? {
     try{
         val query = DB.database
@@ -44,7 +71,7 @@ fun searchWelcomeTalk(group:Group): String? {
     return null
 }
 
-fun appendWelcomeTalk(group: Group,talk:Answer):Boolean{
+fun appendWelcomeTalk(group: Group,talk: Answer):Boolean{
     if (searchWelcomeTalk(group) ==null){
         val gson = Gson()
         DB.database.insert(Welcome){
@@ -56,7 +83,7 @@ fun appendWelcomeTalk(group: Group,talk:Answer):Boolean{
     return false
 }
 
-fun upDateWelcomeTalk(group:Group,talk:Answer):Boolean{
+fun upDateWelcomeTalk(group:Group,talk: Answer):Boolean{
     try {
         val gson = Gson()
         DB.database.update(Welcome) {

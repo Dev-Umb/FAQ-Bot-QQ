@@ -1,20 +1,10 @@
 package io.farewell12345.github.faqbot.BotManager
 
-import com.google.gson.Gson
 import io.farewell12345.github.faqbot.DTO.model.*
-import me.liuwj.ktorm.dsl.*
-import net.mamoe.mirai.Bot
+import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
 import net.mamoe.mirai.message.*
-import net.mamoe.mirai.message.data.*
-import java.lang.NullPointerException
-import java.util.*
 
-data class Session(
-        val group:Long,
-        val user:Long,
-        val question:String,
-        val type:String
-)
+
 object SessionManager{
     private var Sessions= mutableMapOf<Long, Session>()
 
@@ -57,31 +47,3 @@ object SessionManager{
     }
 }
 
-fun analyticalAnswer(query: QueryRowSet):MessageChain{
-    val answerJson = query[Question.answer]
-    val gson = Gson()
-    val answer =gson.fromJson(answerJson, Answer::class.java)
-    val messageChain=MessageChainBuilder()
-    messageChain.add(answer.text)
-    if (answer.atList.size>0) {
-        answer.atList.forEach {
-            messageChain.add(At(
-                    Bot.botInstances[0]
-                        .getGroup(query[Question.group]!!)[it]
-                ))
-        }
-    }
-    if (answer.imgList.size>0) {
-        answer.imgList.forEach {
-            messageChain.add(Image(it))
-        }
-    }
-    return messageChain.build()
-}
-fun getAnswer(query: QueryRowSet): MessageChain? {
-    try {
-        return analyticalAnswer(query)
-    }catch (e:NullPointerException){
-        return null
-    }
-}

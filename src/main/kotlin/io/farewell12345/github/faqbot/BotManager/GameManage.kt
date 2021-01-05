@@ -2,7 +2,7 @@ package io.farewell12345.github.faqbot.BotManager
 
 import io.farewell12345.github.faqbot.FuckOkhttp.FuckOkhttp
 import com.google.gson.GsonBuilder
-import io.farewell12345.github.faqbot.DTO.model.XiaoHeiHe
+import io.farewell12345.github.faqbot.DTO.model.dataclass.XiaoHeiHe
 import java.util.*
 
 object GameManage{

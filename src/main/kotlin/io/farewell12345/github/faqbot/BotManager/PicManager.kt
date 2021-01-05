@@ -1,8 +1,8 @@
 package io.farewell12345.github.faqbot.BotManager
 
 import com.google.gson.GsonBuilder
-import io.farewell12345.github.faqbot.DTO.model.Pic
-import io.farewell12345.github.faqbot.DTO.model.SexImg
+import io.farewell12345.github.faqbot.DTO.model.dataclass.Pic
+import io.farewell12345.github.faqbot.DTO.model.dataclass.SexImg
 import io.farewell12345.github.faqbot.FuckOkhttp.FuckOkhttp
 
 object PicManager{

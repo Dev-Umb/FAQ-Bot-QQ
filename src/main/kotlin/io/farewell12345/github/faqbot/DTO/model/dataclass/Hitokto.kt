@@ -1,16 +1,16 @@
-package io.farewell12345.github.faqbot.DTO.model
+package io.farewell12345.github.faqbot.DTO.model.dataclass
 
 
 import com.google.gson.annotations.SerializedName
 
 data class Hitokto(
-        @SerializedName("author")
+    @SerializedName("author")
     val author: Author,
-        @SerializedName("code")
+    @SerializedName("code")
     val code: Int,
-        @SerializedName("data")
+    @SerializedName("data")
     val `data`: Data,
-        @SerializedName("msg")
+    @SerializedName("msg")
     val msg: String
 ) {
     data class Author(

@@ -1,4 +1,4 @@
-package io.farewell12345.github.faqbot.DTO.model
+package io.farewell12345.github.faqbot.DTO.model.dataclass
 
 
 class ArrayLaw : ArrayList<ArrayLaw.ArrayLawSubList>(){

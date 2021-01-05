@@ -3,13 +3,13 @@ package io.farewell12345.github.faqbot.Listener
 
 import io.farewell12345.github.faqbot.FuckOkhttp.FuckOkhttp
 import io.farewell12345.github.faqbot.AppConfig
-import io.farewell12345.github.faqbot.BotManager.Session
 import io.farewell12345.github.faqbot.BotManager.SessionManager
 import io.farewell12345.github.faqbot.BotManager.*
 import io.farewell12345.github.faqbot.DTO.DB.DB
 import io.farewell12345.github.faqbot.DTO.DB.DB.database
-import io.farewell12345.github.faqbot.BotManager.getAnswer
 import io.farewell12345.github.faqbot.DTO.model.*
+import io.farewell12345.github.faqbot.DTO.model.dataclass.Answer
+import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
 import kotlinx.coroutines.runBlocking
 import me.liuwj.ktorm.dsl.*
 import net.mamoe.mirai.event.EventHandler

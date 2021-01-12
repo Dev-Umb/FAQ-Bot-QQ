@@ -17,6 +17,7 @@ import net.mamoe.mirai.message.FriendMessageEvent
 import net.mamoe.mirai.message.GroupMessageEvent
 import net.mamoe.mirai.message.data.*
 import net.mamoe.mirai.message.sendAsImageTo
+import net.mamoe.mirai.utils.sendTo
 import java.net.URL
 import java.util.*
 
@@ -138,6 +139,13 @@ class BotMsgListener : BaseListeners() {
             }
         }
         route(prefix = "", delimiter = " ")  {
+            if (DisRepetition.thisMessageIsRepetition(event) && (group.id in CommandGroupList.DisRepetitionGroupList)){
+                if (event.message[PlainText].toString()!=AppConfig.getInstance().DisRepetitionScence[0]) {
+                    reply(AppConfig.getInstance().DisRepetitionScence[0])
+                }else{
+                    reply(AppConfig.getInstance().DisRepetitionScence[1])
+                }
+            }
             // 优先进行会话处理
             case("取消","停止会话录入"){
                 if (SessionManager.hasSession(event.sender.id)) {
@@ -385,22 +393,20 @@ class BotMsgListener : BaseListeners() {
                     Thread {
                         runBlocking {
                             reply("涩图太涩了，让我先自己康康再给你，久等一下")
-                            val url = PicManager.getSTPic()
-                            if (url == "") {
+                            val st = PicManager.getSTPic()
+                            if (st == null) {
                                 reply("太快了，休息一下吧")
                                 return@runBlocking
                             } else {
                                 try {
-                                    URL(url).openConnection().getInputStream()?.sendAsImageTo(bot.getFriend(event.sender.id))
-                                    reply(url)
+                                    st.sendTo(bot.getFriend(sender.id))
                                 } catch (e: Exception) {
                                     Thread.sleep(500)
                                     try {
-                                        URL(url).openConnection().getInputStream()?.sendAsImageTo(bot.getFriend(event.sender.id))
-                                        reply(url)
+                                        st.sendTo(bot.getFriend(sender.id))
                                     }catch (e:NoSuchElementException){
                                         val messageChain=MessageChainBuilder()
-                                        messageChain.add("发送失败，请加我好友$url  ")
+                                        messageChain.add("发送失败，请加我好友 ")
                                         messageChain.add(At(event.sender))
                                         reply(messageChain.asMessageChain())
                                     }
@@ -444,13 +450,7 @@ class BotMsgListener : BaseListeners() {
                 reply(getHelp())
                 return@route
             }
-            if (DisRepetition.thisMessageIsRepetition(event) && (group.id in CommandGroupList.DisRepetitionGroupList)){
-                if (event.message[PlainText].toString()!=AppConfig.getInstance().DisRepetitionScence[0]) {
-                    reply(AppConfig.getInstance().DisRepetitionScence[0])
-                }else{
-                    reply(AppConfig.getInstance().DisRepetitionScence[1])
-                }
-            }
+
         }
     }
     @EventHandler
@@ -460,21 +460,19 @@ class BotMsgListener : BaseListeners() {
                     Thread {
                         runBlocking {
                             reply("涩图太涩了，让我先自己康康再给你，久等一下")
-                            val url = PicManager.getSTPic()
-                            if (url == "") {
+                            val st = PicManager.getSTPic()
+                            if (st == null) {
                                 reply("太快了，休息一下吧")
                             } else {
                                 try {
-                                    URL(url).openConnection().getInputStream()?.sendAsImageTo(bot.getFriend(event.sender.id))
-                                    reply(url)
+                                    st.sendTo(bot.getFriend(sender.id))
                                 } catch (e: Exception) {
                                     Thread.sleep(500)
                                     try {
-                                        URL(url).openConnection().getInputStream()?.sendAsImageTo(bot.getFriend(event.sender.id))
-                                        reply(url)
+                                        st.sendTo(bot.getFriend(sender.id))
                                     }catch (e:NoSuchElementException){
                                         val messageChain=MessageChainBuilder()
-                                        messageChain.add("发送失败，请加我好友$url  ")
+                                        messageChain.add("发送失败，请加我好友")
                                         reply(message)
                                     }
                                 }

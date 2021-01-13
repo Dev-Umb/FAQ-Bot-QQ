@@ -28,10 +28,13 @@ object PicManager {
                     Pic::class.java
             ).acgurl
     private lateinit var sexImgPool: Queue<ExternalImage>
+    fun Queue<ExternalImage>.isFull(): Boolean = run {
+        return this.size >= MAX_PIC_SIZE
+    }
     class PicPoolManage(){
         private fun pushPicToPool(){
             while (true){
-                if (sexImgPool.size < MAX_PIC_SIZE){
+                if (!sexImgPool.isFull()){
                     PicPool.execute {
                         val tempPic = URL(
                                 GsonBuilder().create().fromJson(

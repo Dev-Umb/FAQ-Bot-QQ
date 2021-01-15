@@ -1,4 +1,4 @@
-package io.farewell12345.github.faqbot.DTO.model
+package io.farewell12345.github.faqbot.DTO.model.QAmodel
 
 import me.liuwj.ktorm.schema.Table
 import me.liuwj.ktorm.schema.int

@@ -9,6 +9,8 @@ package io.farewell12345.github.faqbot.DTO.model
 
 import io.farewell12345.github.faqbot.DTO.DB.DB
 import com.google.gson.Gson
+import io.farewell12345.github.faqbot.DTO.model.QAmodel.Question
+import io.farewell12345.github.faqbot.DTO.model.QAmodel.Welcome
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Answer
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
 import me.liuwj.ktorm.dsl.*

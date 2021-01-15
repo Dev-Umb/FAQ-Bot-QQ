@@ -8,24 +8,14 @@ import io.farewell12345.github.faqbot.BotManager.*
 import io.farewell12345.github.faqbot.DTO.DB.DB
 import io.farewell12345.github.faqbot.DTO.DB.DB.database
 import io.farewell12345.github.faqbot.DTO.model.*
-import io.farewell12345.github.faqbot.DTO.model.dataclass.Answer
+import io.farewell12345.github.faqbot.DTO.model.QAmodel.Question
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
-import kotlinx.coroutines.runBlocking
 import me.liuwj.ktorm.dsl.*
-import net.mamoe.mirai.Bot
-import net.mamoe.mirai.contact.Contact.Companion.sendImage
 import net.mamoe.mirai.event.EventHandler
-import net.mamoe.mirai.event.ListenerHost
-import net.mamoe.mirai.event.events.FriendMessageEvent
 import net.mamoe.mirai.event.events.GroupMessageEvent
-import net.mamoe.mirai.event.events.MessageEvent
 import net.mamoe.mirai.message.data.*
-import net.mamoe.mirai.utils.ExternalResource.Companion.sendAsImageTo
-import net.mamoe.mirai.utils.ExternalResource.Companion.toExternalResource
 import net.mamoe.mirai.utils.MiraiInternalApi
-import java.net.URL
 import java.util.*
-import net.mamoe.mirai.message.data.buildMessageChain as buildMessageChain1
 
 class BotGroupMsgListener : BaseListeners() {
     // 重写Event监听事件

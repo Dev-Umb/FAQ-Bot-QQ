@@ -58,42 +58,6 @@ class BotGroupMsgListener : BaseListeners() {
                     subject.sendMessage("格式有误！答案与问题不能相同，请重新检查录入答案格式或发送‘取消’停止当前对话")
                 }
             }
-            // 根据问题名称获取回答
-            val tryGetAnswer = searchQuestion(
-                event.message.firstIsInstanceOrNull<PlainText>().toString(), group.id
-            )
-                ?.let {
-                    getAnswer(it)
-                }
-            if (tryGetAnswer != null) {
-                subject.sendMessage(tryGetAnswer)
-                return@route
-            }
-            furry("#", "快速索引") {
-                try {
-                    val id = event.message.filterIsInstance<PlainText>()[0].content.replace("#", "").toInt()
-                    if (id != null) {
-                        val queryRowSet = quickSearchQuestion(id, group)
-                        if (queryRowSet != null) {
-                            val tryAnswer = getAnswer(queryRowSet)
-                            if (tryAnswer != null) {
-                                subject.sendMessage(tryAnswer)
-                                return@route
-                            }
-                        } else {
-                            subject.sendMessage("此群不存在该序号的问题！")
-                        }
-                    } else {
-                        throw NumberFormatException("参数错误！请输入问题序号")
-                    }
-                } catch (e: NumberFormatException) {
-                    logger.info(e)
-                } catch (e: NullPointerException) {
-                    logger.info(e)
-                } catch (e: Exception) {
-                    logger.info(e)
-                }
-            }
             case("列表", desc = "获取此群的问题列表") {
                 val query = database
                     .from(Question)
@@ -179,6 +143,42 @@ class BotGroupMsgListener : BaseListeners() {
             case("帮助", "获取帮助指令") {
                 subject.sendMessage(getHelp())
                 return@route
+            }
+            // 根据问题名称获取回答
+            val tryGetAnswer = searchQuestion(
+                event.message.firstIsInstanceOrNull<PlainText>().toString(), group.id
+            )
+                ?.let {
+                    getAnswer(it)
+                }
+            if (tryGetAnswer != null) {
+                subject.sendMessage(tryGetAnswer)
+                return@route
+            }
+            furry("#", "快速索引") {
+                try {
+                    val id = event.message.filterIsInstance<PlainText>()[0].content.replace("#", "").toInt()
+                    if (id != null) {
+                        val queryRowSet = quickSearchQuestion(id, group)
+                        if (queryRowSet != null) {
+                            val tryAnswer = getAnswer(queryRowSet)
+                            if (tryAnswer != null) {
+                                subject.sendMessage(tryAnswer)
+                                return@route
+                            }
+                        } else {
+                            subject.sendMessage("此群不存在该序号的问题！")
+                        }
+                    } else {
+                        throw NumberFormatException("参数错误！请输入问题序号")
+                    }
+                } catch (e: NumberFormatException) {
+                    logger.info(e)
+                } catch (e: NullPointerException) {
+                    logger.info(e)
+                } catch (e: Exception) {
+                    logger.info(e)
+                }
             }
             if (event.group.id in CommandGroupList.managerGroupList) {
                 if (event.sender.permission.ordinal == 0

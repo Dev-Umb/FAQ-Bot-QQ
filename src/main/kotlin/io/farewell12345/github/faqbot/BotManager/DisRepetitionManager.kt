@@ -6,14 +6,16 @@ object DisRepetition{
     var groupMap = mutableMapOf<Long, MessageChain>()
     fun thisMessageIsRepetition(msg: GroupMessageEvent):Boolean{
         if (groupMap[msg.group.id]!=null){
-            val a = groupMap[msg.group.id]?.filterIsInstance<PlainText>().hashCode()+
-                    groupMap[msg.group.id]?.filterIsInstance<Face>().hashCode()+
-                    groupMap[msg.group.id]?.filterIsInstance<Image>().hashCode()+
-                    groupMap[msg.group.id]?.filterIsInstance<At>().hashCode()
-            val b = msg.message.filterIsInstance<PlainText>().hashCode()+
-                    msg.message.filterIsInstance<Face>().hashCode()+
-                    msg.message[Image].hashCode()+
-                    msg.message.filterIsInstance<At>().hashCode()
+            val a = buildString {
+                groupMap[msg.group.id]?.forEach {
+                    append(it.contentToString())
+                }
+            }
+            val b = buildString {
+                msg.message.forEach {
+                    append(it.contentToString())
+                }
+            }
             if (a == b){
                 groupMap.remove(msg.group.id)
                 return true

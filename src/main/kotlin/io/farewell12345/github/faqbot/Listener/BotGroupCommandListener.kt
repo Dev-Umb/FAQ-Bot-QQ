@@ -23,70 +23,70 @@ class BotGroupCommandListener:BaseListeners() {
             ) {
                 return@route
             }
-            case("addGame", "开启游戏推荐") {
+            case("addGame", "开启游戏推荐",false) {
                 if (event.group.id !in CommandGroupList.GameMorningGroupList) {
                     CommandGroupList.GameMorningGroupList.add(event.group.id)
                 }
                 subject.sendMessage("本群游戏推荐已开启")
                 return@route
             }
-            case("closeGame", "关闭游戏推荐") {
+            case("closeGame", "关闭游戏推荐",false) {
                 if (event.group.id in CommandGroupList.GameMorningGroupList) {
                     CommandGroupList.GameMorningGroupList.remove(event.group.id)
                 }
                 subject.sendMessage("本群游戏推荐已关闭")
                 return@route
             }
-            case("Dis", "开启反复读") {
+            case("Dis", "开启反复读",false) {
                 if (event.group.id !in CommandGroupList.DisRepetitionGroupList) {
                     CommandGroupList.DisRepetitionGroupList.add(event.group.id)
                 }
                 subject.sendMessage("反复读已开启")
                 return@route
             }
-            case("closeDis", "关闭反复读") {
+            case("closeDis", "关闭反复读",false) {
                 if (event.group.id in CommandGroupList.DisRepetitionGroupList) {
                     CommandGroupList.DisRepetitionGroupList.remove(event.group.id)
                 }
                 subject.sendMessage("反复读已关闭")
                 return@route
             }
-            case("Animation", "开启发图") {
+            case("Animation", "开启发图",false) {
                 if (event.group.id !in CommandGroupList.AnimationGroupList) {
                     CommandGroupList.AnimationGroupList.add(event.group.id)
                 }
                 subject.sendMessage("图片发送已开启")
                 return@route
             }
-            case("closeAnim", "关闭反复读") {
+            case("closeAnim", "关闭反复读",false) {
                 if (event.group.id in CommandGroupList.AnimationGroupList) {
                     CommandGroupList.AnimationGroupList.remove(event.group.id)
                 }
                 subject.sendMessage("图片发送已关闭")
                 return@route
             }
-            case("closeWel", "关闭迎新") {
+            case("closeWel", "关闭迎新",false) {
                 if (event.group.id in CommandGroupList.welcomeGroupList) {
                     CommandGroupList.welcomeGroupList.remove(event.group.id)
                 }
                 subject.sendMessage("本群迎新功能已关闭")
                 return@route
             }
-            case("manage", "仅限管理员进行操作") {
+            case("manage", "仅限管理员进行操作",false) {
                 if (event.group.id !in CommandGroupList.welcomeGroupList) {
                     CommandGroupList.managerGroupList.add(event.group.id)
                 }
                 subject.sendMessage("开启词条管理！")
                 return@route
             }
-            case("dismanage", "关闭仅限管理员进行操作") {
+            case("dismanage", "关闭仅限管理员进行操作",false) {
                 if (event.group.id in CommandGroupList.welcomeGroupList) {
                     CommandGroupList.managerGroupList.remove(event.group.id)
                 }
                 subject.sendMessage("关闭词条管理！")
                 return@route
             }
-            case("welcome", "开启迎新词") {
+            case("welcome", "开启迎新词",false) {
                 if (event.group.id !in CommandGroupList.welcomeGroupList) {
                     CommandGroupList.welcomeGroupList.add(this.group.id)
                     val query = searchWelcomeTalk(group)
@@ -106,7 +106,7 @@ class BotGroupCommandListener:BaseListeners() {
                 subject.sendMessage("已开启迎新功能")
                 return@route
             }
-            case("change", "修改迎新词") {
+            case("change", "修改迎新词",false) {
                 if (searchWelcomeTalk(group) != null &&
                     event.group.id in CommandGroupList.welcomeGroupList
                 ) {
@@ -125,7 +125,7 @@ class BotGroupCommandListener:BaseListeners() {
                 }
                 return@route
             }
-            case("help", "获取指令") {
+            case("help", "获取指令",false) {
                 subject.sendMessage(getHelp())
                 return@route
             }

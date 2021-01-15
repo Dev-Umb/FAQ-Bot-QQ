@@ -14,17 +14,25 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import net.mamoe.mirai.Bot
+import net.mamoe.mirai.BotFactory
 import net.mamoe.mirai.alsoLogin
+import net.mamoe.mirai.event.EventChannel
+import net.mamoe.mirai.event.GlobalEventChannel
+import net.mamoe.mirai.event.globalEventChannel
 import net.mamoe.mirai.message.data.MessageChain
-import net.mamoe.mirai.utils.internal.logging.Log4jLogger
+import net.mamoe.mirai.utils.LoggerAdapters.asMiraiLogger
+import net.mamoe.mirai.utils.MiraiLogger
 import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.spi.ExtendedLogger
+import org.apache.logging.slf4j.Log4jLogger
+import org.apache.logging.slf4j.Log4jLoggerFactory
 import java.io.File
 import java.util.*
+import java.util.logging.Logger
 import kotlin.coroutines.CoroutineContext
 internal val appJob = Job()
 
 object CommandGroupList {
-    lateinit var oneBot: Bot
     lateinit var welcomeGroupList:LinkedList<Long>
     lateinit var managerGroupList:LinkedList<Long>
     lateinit var GameMorningGroupList:LinkedList<Long>
@@ -34,10 +42,11 @@ object CommandGroupList {
 
 
 
-object BotsManager : CoroutineScope {
+object BotsManager : CoroutineScope,EventListener {
+    var oneBot: Bot? = null
     val task = TimerSessionManager()  // 命令调度器
-    suspend fun loginBot(): Bot {
-        return Bot(
+    suspend fun loginBot():Bot {
+        oneBot =  BotFactory.newBot(
                 qq = AppConfig.getInstance().BotQQ.toLong(),
                 password = AppConfig.getInstance().BotPwd
         ) {
@@ -48,12 +57,14 @@ object BotsManager : CoroutineScope {
             fileBasedDeviceInfo(File(deviceInfoFolder,
                     "${AppConfig.getInstance().BotQQ.toLong()}.json").absolutePath)
             botLoggerSupplier = { _ ->
-                Log4jLogger(LogManager.getLogger("BOT"))
+                MiraiLogger.create("Bot")
             }
             networkLoggerSupplier = { _ ->
-                Log4jLogger(LogManager.getLogger("NETWORK"))
+                MiraiLogger.create("NetWork")
             }
-        }.alsoLogin()
+        }
+        oneBot?.login()
+        return oneBot as Bot
     }
     val jobs = Job()
     override val coroutineContext: CoroutineContext

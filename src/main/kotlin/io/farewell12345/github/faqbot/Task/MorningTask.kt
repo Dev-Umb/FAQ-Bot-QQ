@@ -15,7 +15,7 @@ class GameMorningTask : TimerTask(){
     override fun run() {
         runBlocking {
             for (i in CommandGroupList.GameMorningGroupList) {
-                CommandGroupList.oneBot.getGroup(i).sendMessage("hello!")
+                BotsManager.oneBot?.getGroup(i)?.sendMessage("hello!")
             }
         }
     }

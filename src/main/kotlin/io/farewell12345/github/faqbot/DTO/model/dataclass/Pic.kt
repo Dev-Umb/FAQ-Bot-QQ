@@ -10,7 +10,7 @@ data class Pic(
     val code: Int,
     @SerializedName("height")
     val height: String,
-    @SerializedName("acgurl")
+    @SerializedName("imgurl")
     val acgurl: String,
     @SerializedName("width")
     val width: String,

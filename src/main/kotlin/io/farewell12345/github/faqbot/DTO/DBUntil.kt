@@ -14,8 +14,9 @@ import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
 import me.liuwj.ktorm.dsl.*
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.contact.Group
-import net.mamoe.mirai.message.GroupMessageEvent
+import net.mamoe.mirai.event.events.GroupMessageEvent
 import net.mamoe.mirai.message.data.*
+import net.mamoe.mirai.utils.MiraiInternalApi
 import org.apache.logging.log4j.LogManager.*
 import org.apache.logging.log4j.Logger
 import org.apache.logging.log4j.util.StackLocatorUtil
@@ -30,22 +31,19 @@ fun analyticalAnswer(query: QueryRowSet):MessageChain{
     val answerJson = query[Question.answer]
     val gson = Gson()
     val answer =gson.fromJson(answerJson, Answer::class.java)
-    val messageChain= MessageChainBuilder()
-    messageChain.add(answer.text)
-    if (answer.atList.size>0) {
-        answer.atList.forEach {
-            messageChain.add(At(
-                Bot.botInstances[0]
-                    .getGroup(query[Question.group]!!)[it]
-            ))
-        }
-    }
-    if (answer.imgList.size>0) {
+    val messageChain= buildMessageChain {
+        +PlainText(answer.text)
         answer.imgList.forEach {
-            messageChain.add(Image(it))
+            append(Image(it))
+        }
+        answer.atList.forEach {
+            Bot.instances[0]
+                .getGroup(query[Question.group]!!)?.get(it)?.let { it1 ->
+                   append(At(it1))
+                }
         }
     }
-    return messageChain.build()
+    return messageChain
 }
 fun getAnswer(query: QueryRowSet): MessageChain? {
     try {
@@ -111,13 +109,14 @@ fun deleteQuestion(question: QueryRowSet):Boolean{
     return false
 }
 
-fun changeWelcome(group:Group,messageChain: MessageChain):Boolean{
+@MiraiInternalApi
+fun changeWelcome(group:Group, messageChain: MessageChain):Boolean{
     val imgList = LinkedList<String>()
     val atList = LinkedList<Long>()
     var text = ""
     messageChain.forEach {
         when(it){
-            is OnlineGroupImage ->{
+            is GroupImage ->{
                 imgList.add(it.imageId)
             }
             is At ->{
@@ -176,13 +175,14 @@ fun quickSearchQuestion(id:Int,group: Group): QueryRowSet? {
 
 
 
+@MiraiInternalApi
 fun upDateQuestionAnswer(message: GroupMessageEvent, session: Session): Boolean {
     val imgList = LinkedList<String>()
     val atList = LinkedList<Long>()
     var text = ""
     message.message.forEach {
         when(it){
-            is OnlineGroupImage ->{
+            is GroupImage ->{
                 //downImg(it)
                 imgList.add(it.imageId)
             }

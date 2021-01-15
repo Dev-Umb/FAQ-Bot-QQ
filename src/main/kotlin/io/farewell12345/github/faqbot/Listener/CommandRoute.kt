@@ -3,12 +3,15 @@ package io.farewell12345.github.faqbot.Listener
 import io.farewell12345.github.faqbot.BotManager.BotsManager
 import io.farewell12345.github.faqbot.DTO.model.logger
 import kotlinx.coroutines.*
-import net.mamoe.mirai.message.MessageEvent
+import net.mamoe.mirai.event.ListenerHost
+import net.mamoe.mirai.event.events.MessageEvent
 import net.mamoe.mirai.message.data.Message
+import net.mamoe.mirai.message.data.MessageChain
+import net.mamoe.mirai.message.data.PlainText
 import kotlin.coroutines.CoroutineContext
 
 val unCompleteValue = hashMapOf<Long, CompletableDeferred<String>>()
-class CommandRoute<T : MessageEvent>( val args: List<String>?,  val event: T) : CoroutineScope {
+class CommandRoute<T : MessageEvent>(val args: List<String>?, val event: T) : CoroutineScope {
     val helpMap = hashMapOf<String,String>()
     var alreadyCalled = false
     val job = Job()
@@ -16,8 +19,7 @@ class CommandRoute<T : MessageEvent>( val args: List<String>?,  val event: T) : 
     var errHandler: (suspend (Throwable) -> Message?)? = null
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Default + job
-
-    suspend inline fun case(case: String, desc: String = "暂无描述", receiver:  T.(List<String>?) -> Unit) {
+    suspend inline fun case(case: String, desc: String = "暂无描述",canRepetition:Boolean = true,receiver:  T.(List<String>?) -> Unit) {
         synchronized(helpMap) {
             helpMap[case] = desc
         }
@@ -25,8 +27,8 @@ class CommandRoute<T : MessageEvent>( val args: List<String>?,  val event: T) : 
             return
         }
         if (!alreadyCalled && args?.find { it.replace(" ","").equals(case) }!=null ) {
-            if(!BotsManager.task.CanUseBot(event.sender.id)) {
-                event.reply("技能冷却中（你发这么快急着投胎嘛，要不我送你一程）")
+            if(!BotsManager.task.CanUseBot(event.sender.id) && canRepetition) {
+                event.subject.sendMessage(PlainText("技能冷却中（你发这么快急着投胎嘛，要不我送你一程）"))
                 return
             }
             alreadyCalled = true
@@ -58,7 +60,7 @@ class CommandRoute<T : MessageEvent>( val args: List<String>?,  val event: T) : 
     suspend fun handleException(throwable: Throwable?) {
         logger.error(throwable?:return)
         val repMsg = errHandler?.let { it1 -> it1(throwable) }
-        event.reply(repMsg ?: return)
+        event.subject.sendMessage(repMsg ?: return)
     }
 
     fun getHelp():String = buildString{

@@ -1,6 +1,9 @@
 package io.farewell12345.github.faqbot.Listener
 
+import net.mamoe.mirai.event.EventHandler
+import net.mamoe.mirai.event.ListenerHost
 import net.mamoe.mirai.event.SimpleListenerHost
+import net.mamoe.mirai.event.events.GroupMessageEvent
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.apache.logging.log4j.util.StackLocatorUtil
@@ -14,12 +17,14 @@ abstract class BaseListeners : SimpleListenerHost() {
     override fun handleException(context: CoroutineContext, exception: Throwable) {
         logger.error(exception)
     }
+
     companion object {
         val listeners = listOf(
-
-                BotMsgListener(),
+            BotGroupCommandListener(),
+            BotFriendMsgListener(),
+            BotGroupMsgListener(),
             NewGroupMemberListener(),
-                NewFriendMember()
+            NewFriendMember()
         )
     }
 }

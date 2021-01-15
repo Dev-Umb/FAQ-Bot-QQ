@@ -4,87 +4,108 @@ import com.google.gson.GsonBuilder
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Pic
 import io.farewell12345.github.faqbot.DTO.model.dataclass.SexImg
 import io.farewell12345.github.faqbot.FuckOkhttp.FuckOkhttp
+import kotlinx.coroutines.runBlocking
 import net.mamoe.mirai.contact.Contact
-import net.mamoe.mirai.message.data.Image
-import net.mamoe.mirai.message.sendAsImageTo
-import net.mamoe.mirai.utils.ExternalImage
-import net.mamoe.mirai.utils.sendTo
-import net.mamoe.mirai.utils.toExternalImage
+import net.mamoe.mirai.event.events.MessageEvent
+import net.mamoe.mirai.message.data.*
+import net.mamoe.mirai.utils.ExternalResource
+import net.mamoe.mirai.utils.ExternalResource.Companion.toExternalResource
+import net.mamoe.mirai.utils.ExternalResource.Companion.uploadAsImage
+import okhttp3.internal.wait
+import java.io.FileNotFoundException
+import java.io.InputStream
+import java.lang.Exception
 import java.net.URL
 import java.util.*
-import java.util.concurrent.ArrayBlockingQueue
-import java.util.concurrent.LinkedBlockingDeque
-import java.util.concurrent.ThreadPoolExecutor
-import java.util.concurrent.TimeUnit
+import java.util.concurrent.*
 
 object PicManager {
     val LOLICON = "https://api.lolicon.app/setu/?apikey=705545485e92e380931b56"
+    val TENAPI = "https://tenapi.cn/acg/?return=json"
     val MAX_PIC_SIZE = 20
-    val PicPool = ThreadPoolExecutor(5, 20, 2,
-            TimeUnit.HOURS, LinkedBlockingDeque<Runnable>(MAX_PIC_SIZE))
-    private var imgurl = GsonBuilder()
-            .create().fromJson(
-                    FuckOkhttp("https://tenapi.cn/acg/?return=json").getData(),
-                    Pic::class.java
-            ).acgurl
-    private lateinit var sexImgPool: Queue<ExternalImage>
-    fun Queue<ExternalImage>.isFull(): Boolean = run {
+    val PicPool = ThreadPoolExecutor(5, 20, 4,
+            TimeUnit.HOURS, LinkedBlockingDeque(MAX_PIC_SIZE))
+    private var sexImgPool: Queue<Image> = LinkedList()
+    fun Queue<Image>.isFull(): Boolean = run {
         return this.size >= MAX_PIC_SIZE
     }
+    private val PoolManage = PicPoolManage()
     class PicPoolManage(){
-        private fun pushPicToPool(){
-            while (true){
-                if (!sexImgPool.isFull()){
+        init {
+            Thread{
+                pushPicPool()
+            }.start()
+        }
+        fun getImgUrl():String{
+            return  GsonBuilder().create().fromJson(
+                FuckOkhttp(TENAPI).getData(),
+                Pic::class.java
+            ).acgurl
+        }
+        fun getImageExternalResource(): ExternalResource {
+            return URL(
+                getImgUrl()
+            ).openConnection().getInputStream().toExternalResource()
+        }
+        private fun pushPicPool(){
+            (0..20).forEach {
+                try {
                     PicPool.execute {
-                        val tempPic = URL(
-                                GsonBuilder().create().fromJson(
-                                        FuckOkhttp(LOLICON).getData(),
-                                        SexImg::class.java
-                                ).data[0].url
-                        ).openConnection().getInputStream().toExternalImage()
                         synchronized(sexImgPool) {
-                            sexImgPool.add(tempPic)
+                            runBlocking {
+
+                                sexImgPool.add(getImageExternalResource().uploadAsImage(BotsManager.oneBot!!.asFriend))
+                            }
                         }
                     }
+                } catch (e: RejectedExecutionException) {
+
+                } catch (e: FileNotFoundException) {
+
                 }
             }
         }
     }
 
-
-    fun getPic(): String {
-        val url = imgurl
-        imgurl = ""
-        flush()
-        return url
-    }
-
-    fun getSTPic(): ExternalImage? {
+    fun getSTPic(contact: Contact): Image? {
+        if (sexImgPool.isEmpty()){
+            return null
+        }
+        PicPool.execute {
+            synchronized(sexImgPool) {
+                runBlocking {
+                    sexImgPool.add(PoolManage.getImageExternalResource().uploadAsImage(contact))
+                    println("弹药装填${sexImgPool.size}")
+                }
+            }
+        }
         return sexImgPool.poll()
     }
-
-//    private fun flushSex() {
-//        Thread {
-//            synchronized(sexUrl) {
-//                sexUrl = GsonBuilder()
-//                        .create().fromJson(
-//                                FuckOkhttp("https://api.lolicon.app/setu/?apikey=705545485e92e380931b56").getData(),
-//                                SexImg::class.java
-//                        ).data[0].url
-//            }
-//        }.start()
-//    }
-
-    private fun flush() {
+    fun stImgSend(subject:Contact,event:MessageEvent){
         Thread {
-            synchronized(imgurl) {
-                imgurl = GsonBuilder()
-                        .create().fromJson(
-                                FuckOkhttp("https://api.blogbig.cn/random/api.php?return=json").getData(),
-                                Pic::class.java
-                        ).acgurl
+            runBlocking {
+                val st = PicManager.getSTPic(subject)
+                subject.sendMessage("涩图太涩了，让我先自己康康再给你，久等一下")
+                if (st == null) {
+                    subject.sendMessage("弹药装填中...")
+                    return@runBlocking
+                } else {
+                    try {
+                        subject.sendMessage(st)
+                    } catch (e: Exception) {
+                        Thread.sleep(500)
+                        try {
+                            subject.sendMessage(st)
+                        } catch (e: NoSuchElementException) {
+                            val messageChain = buildMessageChain {
+                                +PlainText("发送失败，请加我好友")
+                                add(At(event.sender))
+                            }
+                            subject.sendMessage(messageChain)
+                        }
+                    }
+                }
             }
         }.start()
     }
-
 }

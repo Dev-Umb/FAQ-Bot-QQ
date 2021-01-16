@@ -17,6 +17,7 @@
         dbPwd: "" # 数据库密码
         botQQ: "" # 机器人的QQ
         botPwd: "" # 机器人的密码
+        gameDBUrl: "" # 活动群组数据库链接（参见nuc_game.sql)
       ``` 
   3. 打开数据库，编译Main.Kt开始使用
   
@@ -30,7 +31,10 @@
 6. 同步问答 目标同步群号 （同步不同群的问答）
 7. 游戏推荐（需要开启指令）
 8. 创建抽签（创建一个抽签活动，格式：创建抽签 数字1,数字2）
-详细可见BotMsgListener.Kt文件
+
+**(详细可见BotGroupCommandListener.Kt文件**
+
+**或向bot发送帮助和'.command help'查看功能列表和指令列表)**
 
 ## 使用场景：
 

@@ -20,7 +20,6 @@ public class AppConfig {
     public Long SuperUser;
     public String gameAPI;
     public String gameDBUrl;
-    public ArrayList<String> times;
     public String[] DisRepetitionScence = new String[]{"复 读 禁 止", "禁 止 复 读"};
     private AppConfig() throws FileNotFoundException {
         Yaml yml = new Yaml();
@@ -36,7 +35,6 @@ public class AppConfig {
         SuperUser = Long.valueOf((String) data.get("superUser"));
         BotQQ= Long.valueOf((String) data.get("botQQ"));
         BotPwd= (String) data.get("botPwd");
-        times = (ArrayList<String>) data.get("time");
         logger().info("配置加载完成！"+dbUrl);
     }
 

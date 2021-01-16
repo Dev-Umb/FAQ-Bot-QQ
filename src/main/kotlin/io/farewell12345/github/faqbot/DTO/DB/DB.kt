@@ -11,5 +11,11 @@ object DB{
         user = appConfig.dbUser,
         password = appConfig.dbPwd
     )
+
+    val gameDB = Database.connect(
+        url= appConfig.gameDBUrl,
+        user = appConfig.dbUser,
+        password = appConfig.dbPwd
+    )
 }
 

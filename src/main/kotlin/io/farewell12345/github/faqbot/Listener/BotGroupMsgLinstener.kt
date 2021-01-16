@@ -8,6 +8,9 @@ import io.farewell12345.github.faqbot.BotManager.*
 import io.farewell12345.github.faqbot.DTO.DB.DB
 import io.farewell12345.github.faqbot.DTO.DB.DB.database
 import io.farewell12345.github.faqbot.DTO.model.*
+import io.farewell12345.github.faqbot.DTO.model.Games.Game
+import io.farewell12345.github.faqbot.DTO.model.Games.GameDBUntil
+import io.farewell12345.github.faqbot.DTO.model.Games.User
 import io.farewell12345.github.faqbot.DTO.model.QAmodel.Question
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
 import me.liuwj.ktorm.dsl.*
@@ -32,6 +35,58 @@ class BotGroupMsgListener : BaseListeners() {
                 }
             }
             // 优先进行会话处理
+            case("加入活动","将该用户加入目标活动，如果没有活动，则创建新的活动"){
+                val activity = this.message.filterIsInstance<PlainText>().firstOrNull()?.
+                    content?.replace("加入活动 ","")
+                if (activity?.length!! < 2)return@route
+                if(GameDBUntil.addMemberToGame(activity,group.id,sender.id)){
+                    subject.sendMessage("已加入活动$activity")
+                }else{
+                    subject.sendMessage("你已在活动$activity 中")
+                }
+            }
+            case("退出活动"){
+                val activity = this.message.filterIsInstance<PlainText>().firstOrNull()?.
+                content?.replace("退出活动 ","")
+                if (activity?.length!! < 2)return@route
+                if(GameDBUntil.rollbackGame(activity,sender.id,group.id)){
+                    subject.sendMessage("退出成功")
+                }else{
+                    subject.sendMessage("退出失败，你没有加入这个活动或该活动不存在")
+                }
+            }
+            case("活动列表"){
+                var activityList = buildString {
+                    GameDBUntil.getGroupGamesRowSet(group.id).query.forEach {
+                            append(it[Game.name])
+                            append("\n")
+                    }
+                }
+                if (activityList.length < 2){
+                    activityList = "此群暂无活动"
+                }
+                subject.sendMessage(activityList)
+            }
+            case("来","召唤活动参与者们"){
+                val activity: String = message.filterIsInstance<PlainText>()
+                    .firstOrNull()?.content?.replace("来 ","") ?: return@route
+                val members = buildMessageChain {
+                    GameDBUntil.getGameMember(activity,group.id).query.forEach {
+                        +At(it[User.qq] as Long)
+                    }
+                }
+                if (members.size <1)return@route
+                subject.sendMessage(members)
+            }
+            case("删除活动"){
+                val activity = this.message.filterIsInstance<PlainText>().firstOrNull()?.
+                content?.replace("删除活动 ","")?: return@route
+                if(!GameDBUntil.deleteGame(activity,group.id)){
+                    subject.sendMessage("不存在此活动")
+                }else{
+                    subject.sendMessage("删除成功")
+                }
+            }
             case("取消", "停止会话录入") {
                 if (SessionManager.hasSession(event.sender.id)) {
                     SessionManager.removeQuestion(event.sender.id)
@@ -69,24 +124,20 @@ class BotGroupMsgListener : BaseListeners() {
             }
             case("创建抽签", "创建抽签") {
                 val signGroup = event.message.filterIsInstance<PlainText>()[0].content
-                    .replace("创建抽签", "")?.replace(" ", "")
-                if (signGroup != null) {
-                    val numList = signGroup.split(",")
-                    if (numList.size == 2) {
-                        val star = numList[0].toInt()
-                        val end = numList[1].toInt()
-                        if (DrawManager.createDraw(group.id, star, end)) {
-                            subject.sendMessage("创建成功！")
-                            return@route
-                        } else {
-                            subject.sendMessage("创建失败，或已有抽签活动在进行中")
-                            return@route
-                        }
+                    .replace("创建抽签", "").replace(" ", "")
+                val numList = signGroup.split(",")
+                if (numList.size == 2) {
+                    val star = numList[0].toInt()
+                    val end = numList[1].toInt()
+                    if (DrawManager.createDraw(group.id, star, end)) {
+                        subject.sendMessage("创建成功！")
+                        return@route
                     } else {
-                        subject.sendMessage("只能包括开始和结束两个参数！")
+                        subject.sendMessage("创建失败，或已有抽签活动在进行中")
+                        return@route
                     }
                 } else {
-                    subject.sendMessage("缺少参数！")
+                    subject.sendMessage("只能包括开始和结束两个参数！")
                 }
                 return@route
             }
@@ -123,7 +174,7 @@ class BotGroupMsgListener : BaseListeners() {
             }
             case("图来", "二次元图") {
                 if (group.id in CommandGroupList.AnimationGroupList) {
-                    PicManager.stImgSend(subject,event)
+                    PicManager.imgSend(subject,event)
                     return@route
                 }
             }

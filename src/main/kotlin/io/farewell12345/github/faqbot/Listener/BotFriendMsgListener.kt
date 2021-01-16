@@ -13,7 +13,7 @@ class BotFriendMsgListener:BaseListeners() {
                 return@route
             }
             case("图来", "二次元图") {
-                PicManager.stImgSend(subject,event)
+                PicManager.imgSend(subject,event)
                 return@route
             }
         }

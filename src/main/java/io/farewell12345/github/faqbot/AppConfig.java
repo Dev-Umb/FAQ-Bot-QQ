@@ -19,6 +19,7 @@ public class AppConfig {
     public String BotPwd;
     public Long SuperUser;
     public String gameAPI;
+    public String gameDBUrl;
     public ArrayList<String> times;
     public String[] DisRepetitionScence = new String[]{"复 读 禁 止", "禁 止 复 读"};
     private AppConfig() throws FileNotFoundException {
@@ -28,6 +29,7 @@ public class AppConfig {
         if (dbUrl==null){
             dbUrl = "jdbc:mysql://localhost:3306/fqa?serverTimezone=UTC&characterEncoding=UTF-8";
         }
+        gameDBUrl =(String) data.get("gameDBUrl");
         gameAPI = (String) data.get("GameAPI");
         dbUser= (String) data.get("dbUser");
         dbPwd= (String) data.get("dbPwd");

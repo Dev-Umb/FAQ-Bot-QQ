@@ -10,6 +10,7 @@ package io.farewell12345.github.faqbot
 
 import io.farewell12345.github.faqbot.BotManager.BotsManager
 import io.farewell12345.github.faqbot.BotManager.CommandGroupList
+import io.farewell12345.github.faqbot.BotManager.PicManager
 import io.farewell12345.github.faqbot.Listener.BaseListeners
 import io.farewell12345.github.faqbot.DTO.model.logger
 import io.farewell12345.github.faqbot.Task.TimerSessionManager
@@ -23,6 +24,7 @@ suspend fun main() {
     BaseListeners.listeners.forEach {
         bot.eventChannel.registerListenerHost(it)
     }
+    PicManager
     CommandGroupList.welcomeGroupList= LinkedList()
     CommandGroupList.managerGroupList = LinkedList()
     CommandGroupList.GameMorningGroupList = LinkedList()

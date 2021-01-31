@@ -67,16 +67,16 @@ dependencies {
     implementation "net.mamoe:mirai-core:$CORE_VERSION"// 替换为你需要的版本号
 
     // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
-    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.13.3'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.13.3'
 
     // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api
-    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.13.3'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.13.3'
 
     // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api
-    compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.13.3'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.13.3'
 
     // https://mvnrepository.com/artifact/org.yaml/snakeyaml
-    compile group: 'org.yaml', name: 'snakeyaml', version: '1.26'
+    implementation group: 'org.yaml', name: 'snakeyaml', version: '1.26'
 
 //    // https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12
 //    compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.30'
@@ -86,12 +86,12 @@ dependencies {
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.21'
 
     // https://mvnrepository.com/artifact/org.quartz-scheduler/quartz
-    compile group: 'org.quartz-scheduler', name: 'quartz', version: '2.3.2'
-    compile "me.liuwj.ktorm:ktorm-core:3.1.0"
+    implementation group: 'org.quartz-scheduler', name: 'quartz', version: '2.3.2'
+    implementation "me.liuwj.ktorm:ktorm-core:3.1.0"
 
-    compile 'com.squareup.okhttp3:okhttp:4.8.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.8.0'
     implementation "com.google.code.gson:gson:2.8.5"
 
     // https://mvnrepository.com/artifact/org.jsoup/jsoup
-    compile group: 'org.jsoup', name: 'jsoup', version: '1.13.1'
+    implementation group: 'org.jsoup', name: 'jsoup', version: '1.13.1'
 }

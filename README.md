@@ -17,7 +17,6 @@
         dbPwd: "" # 数据库密码
         botQQ: "" # 机器人的QQ
         botPwd: "" # 机器人的密码
-        gameDBUrl: "" # 活动群组数据库链接（参见nuc_game.sql)
       ``` 
   3. 打开数据库，编译Main.Kt开始使用
   

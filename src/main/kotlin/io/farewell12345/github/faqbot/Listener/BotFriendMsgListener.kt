@@ -62,7 +62,6 @@ class BotFriendMsgListener : BaseListeners() {
                         return@forEach
                     }
                     val group = bot.getGroup(it)
-                    group?.sendMessage(message+"\n---- 来自"+At(user)+"的消息")
                     ++num
                     try {
                         group?.checkBotPermission(MemberPermission.ADMINISTRATOR)
@@ -70,6 +69,8 @@ class BotFriendMsgListener : BaseListeners() {
                             group?.sendMessage(AtAll)
                         }
                     }catch (e: PermissionDeniedException){
+
+                    }catch (e:NullPointerException){
 
                     }
                 }

@@ -64,6 +64,8 @@ class BotFriendMsgListener : BaseListeners() {
                     val group = bot.getGroup(it)
                     ++num
                     try {
+                        group?.sendMessage(message)
+                        subject.sendMessage("已转发到$num 个群")
                         group?.checkBotPermission(MemberPermission.ADMINISTRATOR)
                         if (message.firstIsInstanceOrNull<PlainText>()?.content?.split(":")?.get(0)!! == "通知") {
                             group?.sendMessage(AtAll)
@@ -74,7 +76,6 @@ class BotFriendMsgListener : BaseListeners() {
 
                     }
                 }
-                event.subject.sendMessage("已转发到$num 个群")
                 return@route
             }
             throw Exception("您还没有添加需要转发的群")

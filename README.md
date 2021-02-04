@@ -9,7 +9,7 @@
   4.群组内抽签创建
 
 ## 使用方法：
-  1. 首先创建名为fqa的数据库，将项目中的fqa.sql文件导入
+  1. 首先创建名为faq的数据库，将项目中SQL文件夹中的question.sql和welcome.sql导入数据库中
   2. 创建config.yml文件，填入下面的配置：
       ```yaml
         dbUrl: "" # 你的数据库端口链接

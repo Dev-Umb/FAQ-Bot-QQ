@@ -3,10 +3,9 @@ package io.farewell12345.github.faqbot.Listener
 import io.farewell12345.github.faqbot.AppConfig
 import io.farewell12345.github.faqbot.BotManager.CommandGroupList
 import io.farewell12345.github.faqbot.BotManager.SessionManager
-import io.farewell12345.github.faqbot.DTO.model.appendWelcomeTalk
+import io.farewell12345.github.faqbot.DTO.Controller.WelcomeController
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Answer
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
-import io.farewell12345.github.faqbot.DTO.model.searchWelcomeTalk
 import net.mamoe.mirai.event.EventHandler
 import net.mamoe.mirai.event.events.GroupMessageEvent
 import net.mamoe.mirai.message.data.PlainText
@@ -89,14 +88,14 @@ class BotGroupCommandListener:BaseListeners() {
             case("welcome", "开启迎新词",false) {
                 if (event.group.id !in CommandGroupList.welcomeGroupList) {
                     CommandGroupList.welcomeGroupList.add(this.group.id)
-                    val query = searchWelcomeTalk(group)
+                    val query =WelcomeController.searchWelcomeTalk(group)
                     if (query == null) {
                         val talk = Answer(
                             atList = LinkedList(),
                             imgList = LinkedList(),
                             text = "欢迎来到 ${this.group.name}"
                         )
-                        if (appendWelcomeTalk(group, talk)) {
+                        if (WelcomeController.appendWelcomeTalk(group, talk)) {
                             subject.sendMessage(PlainText("启动迎新成功！您可使用change指令修改迎新词"))
                             return@route
                         }
@@ -107,7 +106,7 @@ class BotGroupCommandListener:BaseListeners() {
                 return@route
             }
             case("change", "修改迎新词",false) {
-                if (searchWelcomeTalk(group) != null &&
+                if (WelcomeController.searchWelcomeTalk(group) != null &&
                     event.group.id in CommandGroupList.welcomeGroupList
                 ) {
                     SessionManager.addSession(

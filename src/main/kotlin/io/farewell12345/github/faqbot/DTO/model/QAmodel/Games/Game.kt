@@ -1,4 +1,4 @@
-package io.farewell12345.github.faqbot.DTO.model.Games
+package io.farewell12345.github.faqbot.DTO.model.QAmodel.Games
 
 import me.liuwj.ktorm.schema.Table
 import me.liuwj.ktorm.schema.int

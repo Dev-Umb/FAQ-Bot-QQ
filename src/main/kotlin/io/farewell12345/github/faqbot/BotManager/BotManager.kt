@@ -20,6 +20,7 @@ import net.mamoe.mirai.event.EventChannel
 import net.mamoe.mirai.event.GlobalEventChannel
 import net.mamoe.mirai.event.globalEventChannel
 import net.mamoe.mirai.message.data.MessageChain
+import net.mamoe.mirai.utils.BotConfiguration
 import net.mamoe.mirai.utils.LoggerAdapters.asMiraiLogger
 import net.mamoe.mirai.utils.MiraiLogger
 import org.apache.logging.log4j.LogManager
@@ -29,6 +30,7 @@ import org.apache.logging.slf4j.Log4jLoggerFactory
 import java.io.File
 import java.util.*
 import java.util.logging.Logger
+import kotlin.collections.HashMap
 import kotlin.coroutines.CoroutineContext
 internal val appJob = Job()
 
@@ -38,6 +40,15 @@ object CommandGroupList {
     lateinit var GameMorningGroupList:LinkedList<Long>
     lateinit var DisRepetitionGroupList:LinkedList<Long>
     lateinit var AnimationGroupList:LinkedList<Long>
+    lateinit var ForwardMessageUser:Map<Long,Boolean>
+    fun init(){
+        welcomeGroupList = LinkedList()
+        managerGroupList = LinkedList()
+        GameMorningGroupList = LinkedList()
+        DisRepetitionGroupList = LinkedList()
+        AnimationGroupList  = LinkedList()
+        ForwardMessageUser = HashMap()
+    }
 }
 
 
@@ -50,6 +61,7 @@ object BotsManager : CoroutineScope,EventListener {
                 qq = AppConfig.getInstance().BotQQ.toLong(),
                 password = AppConfig.getInstance().BotPwd
         ) {
+            this.protocol = BotConfiguration.MiraiProtocol.ANDROID_PAD
             val deviceInfoFolder = File("devices")
             if (!deviceInfoFolder.exists()) {
                 deviceInfoFolder.mkdir()

@@ -1,5 +1,7 @@
 package io.farewell12345.github.faqbot.BotManager
 
+import io.farewell12345.github.faqbot.DTO.Controller.QuestionController
+import io.farewell12345.github.faqbot.DTO.Controller.WelcomeController
 import io.farewell12345.github.faqbot.DTO.model.*
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
 import net.mamoe.mirai.event.events.GroupMessageEvent
@@ -19,7 +21,11 @@ object SessionManager{
 
     fun removeQuestion(id:Long){
         if (Sessions[id]?.type == "addUpDate"){
-            deleteQuestion(searchQuestion(Sessions[id]!!.question, Sessions[id]!!.group)!!)
+            QuestionController.deleteQuestion(
+                QuestionController.searchQuestion(
+                    Sessions[id]!!.question,
+                    Sessions[id]!!.group)!!
+            )
         }
     }
 
@@ -46,9 +52,14 @@ object SessionManager{
             }
             flag=true
             when(session.type){
-                "addUpDate" -> return upDateQuestionAnswer(messageEvent,session)
-                "changeUpDate"-> return upDateQuestionAnswer(messageEvent,session)
-                "changeWelcome" ->return changeWelcome(messageEvent.group,messageEvent.message)
+                "addUpDate" ->
+                    return QuestionController.upDateQuestionAnswer(messageEvent,session)
+                "changeUpDate"->
+                    return QuestionController.upDateQuestionAnswer(messageEvent,session)
+                "changeWelcome" ->
+                    return WelcomeController.changeWelcome(messageEvent.group,
+                        messageEvent.message
+                    )
             }
 
         }

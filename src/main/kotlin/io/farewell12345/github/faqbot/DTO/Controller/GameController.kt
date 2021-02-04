@@ -1,9 +1,12 @@
-package io.farewell12345.github.faqbot.DTO.model.Games
+package io.farewell12345.github.faqbot.DTO.Controller
 
 import io.farewell12345.github.faqbot.DTO.DB.DB
+import io.farewell12345.github.faqbot.DTO.model.QAmodel.Games.Game
+import io.farewell12345.github.faqbot.DTO.model.QAmodel.Games.GameAndUserRemote
+import io.farewell12345.github.faqbot.DTO.model.QAmodel.Games.User
 import me.liuwj.ktorm.dsl.*
 
-object GameDBUntil {
+object GameController {
     private val GameDB = DB.gameDB
     private fun getGame(gameName: String,group:Long): QueryRowSet {
         return GameDB.from(Game).select().where {
@@ -26,10 +29,10 @@ object GameDBUntil {
         if (!user.next())
             return
         GameDB.delete(GameAndUserRemote){
-            it.userId eq user[User.id] as Int
+            GameAndUserRemote.userId eq user[User.id] as Int
         }
         GameDB.delete(User){
-            it.id eq user[User.id] as Int
+            User.id eq user[User.id] as Int
         }
     }
     fun rollbackGame(gameName: String,qq: Long,group: Long):Boolean{
@@ -39,8 +42,8 @@ object GameDBUntil {
             return false
         }
         GameDB.delete(GameAndUserRemote){
-            (it.userId eq user[User.id] as Int) and
-                    (it.gameId eq game[Game.id] as Int)
+            (GameAndUserRemote.userId eq user[User.id] as Int) and
+                    (GameAndUserRemote.gameId eq game[Game.id] as Int)
         }
         return true
     }
@@ -50,10 +53,10 @@ object GameDBUntil {
             return false
         }
         GameDB.delete(GameAndUserRemote){
-            (it.gameId eq game[Game.id] as Int)
+            (GameAndUserRemote.gameId eq game[Game.id] as Int)
         }
         GameDB.delete(Game){
-            (it.id eq game[Game.id] as Int) and (it.group eq group)
+            (Game.id eq game[Game.id] as Int) and (Game.group eq group)
         }
         return true
     }
@@ -90,21 +93,4 @@ object GameDBUntil {
         return true
     }
 
-}
-
-fun main() {
-    GameDBUntil.getGroupGamesRowSet(114514).query.forEach {
-        println(it[Game.name])
-    }
-    GameDBUntil.getGameMember("大鸟转转转",114514).query.forEach {
-        println(it[User.qq])
-    }
-    GameDBUntil.deleteGame("转转转",114514)
-    GameDBUntil.deleteMember(2333)
-    GameDBUntil.getGroupGamesRowSet(114514).query.forEach {
-        println(it[Game.name])
-    }
-    GameDBUntil.getGameMember("大鸟转转转",114514).query.forEach {
-        println(it[User.qq])
-    }
 }

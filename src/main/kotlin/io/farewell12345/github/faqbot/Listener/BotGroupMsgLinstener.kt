@@ -5,12 +5,13 @@ import io.farewell12345.github.faqbot.FuckOkhttp.FuckOkhttp
 import io.farewell12345.github.faqbot.AppConfig
 import io.farewell12345.github.faqbot.BotManager.SessionManager
 import io.farewell12345.github.faqbot.BotManager.*
+import io.farewell12345.github.faqbot.DTO.Controller.GameController
+import io.farewell12345.github.faqbot.DTO.Controller.QuestionController
 import io.farewell12345.github.faqbot.DTO.DB.DB
 import io.farewell12345.github.faqbot.DTO.DB.DB.database
 import io.farewell12345.github.faqbot.DTO.model.*
-import io.farewell12345.github.faqbot.DTO.model.Games.Game
-import io.farewell12345.github.faqbot.DTO.model.Games.GameDBUntil
-import io.farewell12345.github.faqbot.DTO.model.Games.User
+import io.farewell12345.github.faqbot.DTO.model.QAmodel.Games.Game
+import io.farewell12345.github.faqbot.DTO.model.QAmodel.Games.User
 import io.farewell12345.github.faqbot.DTO.model.QAmodel.Question
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
 import me.liuwj.ktorm.dsl.*
@@ -39,7 +40,7 @@ class BotGroupMsgListener : BaseListeners() {
                 val activity = this.message.filterIsInstance<PlainText>().firstOrNull()?.
                     content?.replace("加入活动 ","")
                 if (activity?.length!! < 2)return@route
-                if(GameDBUntil.addMemberToGame(activity,group.id,sender.id)){
+                if(GameController.addMemberToGame(activity,group.id,sender.id)){
                     subject.sendMessage("已加入活动$activity")
                 }else{
                     subject.sendMessage("你已在活动$activity 中")
@@ -49,7 +50,7 @@ class BotGroupMsgListener : BaseListeners() {
                 val activity = this.message.filterIsInstance<PlainText>().firstOrNull()?.
                 content?.replace("退出活动 ","")
                 if (activity?.length!! < 2)return@route
-                if(GameDBUntil.rollbackGame(activity,sender.id,group.id)){
+                if(GameController.rollbackGame(activity,sender.id,group.id)){
                     subject.sendMessage("退出成功")
                 }else{
                     subject.sendMessage("退出失败，你没有加入这个活动或该活动不存在")
@@ -57,7 +58,7 @@ class BotGroupMsgListener : BaseListeners() {
             }
             case("活动列表"){
                 var activityList = buildString {
-                    GameDBUntil.getGroupGamesRowSet(group.id).query.forEach {
+                    GameController.getGroupGamesRowSet(group.id).query.forEach {
                             append(it[Game.name])
                             append("\n")
                     }
@@ -71,7 +72,7 @@ class BotGroupMsgListener : BaseListeners() {
                 val activity: String = message.filterIsInstance<PlainText>()
                     .firstOrNull()?.content?.replace("来 ","") ?: return@route
                 val members = buildMessageChain {
-                    GameDBUntil.getGameMember(activity,group.id).query.forEach {
+                    GameController.getGameMember(activity,group.id).query.forEach {
                         +At(it[User.qq] as Long)
                     }
                 }
@@ -81,7 +82,7 @@ class BotGroupMsgListener : BaseListeners() {
             case("删除活动"){
                 val activity = this.message.filterIsInstance<PlainText>().firstOrNull()?.
                 content?.replace("删除活动 ","")?: return@route
-                if(!GameDBUntil.deleteGame(activity,group.id)){
+                if(!GameController.deleteGame(activity,group.id)){
                     subject.sendMessage("不存在此活动")
                 }else{
                     subject.sendMessage("删除成功")
@@ -186,11 +187,11 @@ class BotGroupMsgListener : BaseListeners() {
                 return@route
             }
             // 根据问题名称获取回答
-            val tryGetAnswer = searchQuestion(
+            val tryGetAnswer = QuestionController.searchQuestion(
                 event.message.firstIsInstanceOrNull<PlainText>().toString(), group.id
             )
                 ?.let {
-                    getAnswer(it)
+                    QuestionController.getAnswer(it)
                 }
             if (tryGetAnswer != null) {
                 subject.sendMessage(tryGetAnswer)
@@ -200,9 +201,9 @@ class BotGroupMsgListener : BaseListeners() {
                 try {
                     val id = event.message.filterIsInstance<PlainText>()[0].content.replace("#", "").toInt()
                     if (id != null) {
-                        val queryRowSet = quickSearchQuestion(id, group)
+                        val queryRowSet = QuestionController.quickSearchQuestion(id, group)
                         if (queryRowSet != null) {
-                            val tryAnswer = getAnswer(queryRowSet)
+                            val tryAnswer = QuestionController.getAnswer(queryRowSet)
                             if (tryAnswer != null) {
                                 subject.sendMessage(tryAnswer)
                                 return@route
@@ -244,12 +245,12 @@ class BotGroupMsgListener : BaseListeners() {
                     return@case
                 } else {
                     val query = question?.let {
-                        searchQuestion(it, event.group.id)
+                        QuestionController.searchQuestion(it, event.group.id)
                     }
                     if (query != null) {
                         subject.sendMessage("问题${query[Question.question]}已经存在")
                     } else {
-                        DB.database.insert(Question) {
+                        database.insert(Question) {
                             set(it.lastEditUser, event.sender.id)
                             set(it.group, event.sender.group.id)
                             set(it.question, question)
@@ -274,12 +275,12 @@ class BotGroupMsgListener : BaseListeners() {
                     .filterIsInstance<PlainText>().firstOrNull()?.toString()?.replace("修改问题", "")
                     ?.replace(" ", "")
                 var query = question?.let {
-                    searchQuestion(it, event.group.id)
+                    QuestionController.searchQuestion(it, event.group.id)
                 }
                 if (query == null) {
                     try {
                         val id = question?.replace("#", "")?.toInt()
-                        query = quickSearchQuestion(id!!, group)
+                        query = QuestionController.quickSearchQuestion(id!!, group)
                         question = query?.get(Question.question).toString()
                     } catch (e: Exception) {
                         subject.sendMessage("问题$question 不存在")
@@ -304,16 +305,16 @@ class BotGroupMsgListener : BaseListeners() {
                 return@route
             }
             case("删除问题", "删除一个问题",false) {
-                var question = event.message
+                val question = event.message
                     .filterIsInstance<PlainText>().firstOrNull()?.content?.
                     replace(" ", "")?.replace("删除问题", "")
-                var query = searchQuestion(question!!, group.id)
+                var query = QuestionController.searchQuestion(question!!, group.id)
                 if (query == null) {
                     val id = question?.replace("#", "")?.toInt()
-                    query = quickSearchQuestion(id!!, group)
+                    query = QuestionController.quickSearchQuestion(id!!, group)
                 }
                 if (query != null) {
-                    deleteQuestion(query!!)
+                    QuestionController.deleteQuestion(query!!)
                     subject.sendMessage("已删除问题$question")
                 } else {
                     subject.sendMessage("没有找到这个问题！")
@@ -324,29 +325,29 @@ class BotGroupMsgListener : BaseListeners() {
                 val signGroup = event.message
                     .filterIsInstance<PlainText>().firstOrNull()?.content
                 try {
-                    var groupID = signGroup!!.toLong()
+                    val groupID = signGroup!!.toLong()
                     val questions = DB.database.from(Question)
                         .select()
                         .where {
                             (Question.group eq groupID)
                         }
-                    var QuestionNum = 0;
+                    var questionNum = 0
                     for (i in questions) {
-                        if (searchQuestion(
+                        if (QuestionController.searchQuestion(
                                 question = i[Question.question].toString(),
                                 groupID = event.group.id
                             ) == null
                         ) {
-                            DB.database.insert(Question) {
+                            database.insert(Question) {
                                 it.lastEditUser to i[Question.lastEditUser]
                                 it.group to event.sender.group.id
                                 it.question to i[Question.question]
                                 it.answer to i[Question.answer]
                             }
-                            ++QuestionNum
+                            ++questionNum
                         }
                     }
-                    subject.sendMessage("同步成功，共同步$QuestionNum 条问题记录")
+                    subject.sendMessage("同步成功，共同步$questionNum 条问题记录")
                 } catch (e: Exception) {
                     subject.sendMessage("请输入有效群号")
                     return@route

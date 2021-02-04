@@ -17,7 +17,7 @@ import java.lang.NullPointerException
 import java.util.*
 
 object QuestionController {
-    fun analyticalAnswer(query: QueryRowSet): MessageChain {
+    private fun analyticalAnswer(query: QueryRowSet): MessageChain {
         val answerJson = query[Question.answer]
         val gson = Gson()
         val answer =gson.fromJson(answerJson, Answer::class.java)
@@ -34,6 +34,21 @@ object QuestionController {
             }
         }
         return messageChain
+    }
+    private fun upDateAnswer(answer: Answer, session: Session):Boolean{
+        val gson = Gson()
+        val json = gson.toJson(answer)
+        if (session.question == answer.text){
+            return false
+        }
+        DB.database.update(Question) {
+            it.answer to json
+            it.lastEditUser to session.user
+            where {
+                (Question.question eq session.question) and (Question.group eq session.group)
+            }
+        }
+        return true
     }
     fun getAnswer(query: QueryRowSet): MessageChain? {
         try {
@@ -53,7 +68,6 @@ object QuestionController {
         }
         return false
     }
-
     fun searchQuestion(question:String,groupID: Long): QueryRowSet? {
         try {
             val query = DB.database
@@ -70,7 +84,6 @@ object QuestionController {
         }
         return null
     }
-
     fun quickSearchQuestion(id:Int,group: Group): QueryRowSet? {
         val query= DB.database
             .from(Question)
@@ -83,7 +96,6 @@ object QuestionController {
         }
         return null
     }
-
     @MiraiInternalApi
     fun upDateQuestionAnswer(message: GroupMessageEvent, session: Session): Boolean {
         val imgList = LinkedList<String>()
@@ -112,21 +124,5 @@ object QuestionController {
             logger().info(e)
         }
         return false
-    }
-
-    fun upDateAnswer(answer: Answer, session: Session):Boolean{
-        val gson = Gson()
-        val json = gson.toJson(answer)
-        if (session.question == answer.text){
-            return false
-        }
-        DB.database.update(Question) {
-            it.answer to json
-            it.lastEditUser to session.user
-            where {
-                (Question.question eq session.question) and (Question.group eq session.group)
-            }
-        }
-        return true
     }
 }

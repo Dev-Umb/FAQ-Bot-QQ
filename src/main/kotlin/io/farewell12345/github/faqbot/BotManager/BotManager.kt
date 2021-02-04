@@ -31,6 +31,7 @@ import java.io.File
 import java.util.*
 import java.util.logging.Logger
 import kotlin.collections.HashMap
+import kotlin.collections.LinkedHashMap
 import kotlin.coroutines.CoroutineContext
 internal val appJob = Job()
 
@@ -40,14 +41,14 @@ object CommandGroupList {
     lateinit var GameMorningGroupList:LinkedList<Long>
     lateinit var DisRepetitionGroupList:LinkedList<Long>
     lateinit var AnimationGroupList:LinkedList<Long>
-    lateinit var ForwardMessageUser:Map<Long,Boolean>
+    lateinit var ForwardMessageGroup:HashMap<Long,Boolean>
     fun init(){
         welcomeGroupList = LinkedList()
         managerGroupList = LinkedList()
         GameMorningGroupList = LinkedList()
         DisRepetitionGroupList = LinkedList()
         AnimationGroupList  = LinkedList()
-        ForwardMessageUser = HashMap()
+        ForwardMessageGroup = HashMap()
     }
 }
 

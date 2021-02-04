@@ -36,6 +36,11 @@ class BotGroupMsgListener : BaseListeners() {
                 }
             }
             // 优先进行会话处理
+            case("禁止转发"){
+                CommandGroupList.ForwardMessageGroup[group.id] = false
+                subject.sendMessage("好")
+                return@route
+            }
             case("加入活动","将该用户加入目标活动，如果没有活动，则创建新的活动"){
                 val activity = this.message.filterIsInstance<PlainText>().firstOrNull()?.
                     content?.replace("加入活动 ","")

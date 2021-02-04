@@ -16,6 +16,21 @@ import java.lang.Exception
 import java.util.*
 
 object WelcomeController {
+    private fun upDateWelcomeTalk(group: Group, talk: Answer):Boolean{
+        try {
+            val gson = Gson()
+            DB.database.update(Welcome) {
+                set(Welcome.talk, gson.toJson(talk))
+                where {
+                    it.group eq group.id
+                }
+            }
+            return true
+        }catch (e: Exception){
+            logger().info(e)
+        }
+        return false
+    }
     fun searchWelcomeTalk(group: Group): String? {
         try{
             val query = DB.database
@@ -40,21 +55,6 @@ object WelcomeController {
                 set(Welcome.talk,gson.toJson(talk))
             }
             return true
-        }
-        return false
-    }
-    fun upDateWelcomeTalk(group: Group, talk: Answer):Boolean{
-        try {
-            val gson = Gson()
-            DB.database.update(Welcome) {
-                set(Welcome.talk, gson.toJson(talk))
-                where {
-                    it.group eq group.id
-                }
-            }
-            return true
-        }catch (e: Exception){
-            logger().info(e)
         }
         return false
     }

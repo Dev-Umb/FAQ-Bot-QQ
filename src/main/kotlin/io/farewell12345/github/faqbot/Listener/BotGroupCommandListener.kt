@@ -23,43 +23,43 @@ class BotGroupCommandListener:BaseListeners() {
                 return@route
             }
             case("addGame", "开启游戏推荐",false) {
-                if (event.group.id !in CommandGroupList.GameMorningGroupList) {
-                    CommandGroupList.GameMorningGroupList.add(event.group.id)
+                if (event.group.id !in CommandGroupList.gameMorningGroupList) {
+                    CommandGroupList.gameMorningGroupList.add(event.group.id)
                 }
                 subject.sendMessage("本群游戏推荐已开启")
                 return@route
             }
             case("closeGame", "关闭游戏推荐",false) {
-                if (event.group.id in CommandGroupList.GameMorningGroupList) {
-                    CommandGroupList.GameMorningGroupList.remove(event.group.id)
+                if (event.group.id in CommandGroupList.gameMorningGroupList) {
+                    CommandGroupList.gameMorningGroupList.remove(event.group.id)
                 }
                 subject.sendMessage("本群游戏推荐已关闭")
                 return@route
             }
             case("Dis", "开启反复读",false) {
-                if (event.group.id !in CommandGroupList.DisRepetitionGroupList) {
-                    CommandGroupList.DisRepetitionGroupList.add(event.group.id)
+                if (event.group.id !in CommandGroupList.disRepetitionGroupList) {
+                    CommandGroupList.disRepetitionGroupList.add(event.group.id)
                 }
                 subject.sendMessage("反复读已开启")
                 return@route
             }
             case("closeDis", "关闭反复读",false) {
-                if (event.group.id in CommandGroupList.DisRepetitionGroupList) {
-                    CommandGroupList.DisRepetitionGroupList.remove(event.group.id)
+                if (event.group.id in CommandGroupList.disRepetitionGroupList) {
+                    CommandGroupList.disRepetitionGroupList.remove(event.group.id)
                 }
                 subject.sendMessage("反复读已关闭")
                 return@route
             }
             case("Animation", "开启发图",false) {
-                if (event.group.id !in CommandGroupList.AnimationGroupList) {
-                    CommandGroupList.AnimationGroupList.add(event.group.id)
+                if (event.group.id !in CommandGroupList.animationGroupList) {
+                    CommandGroupList.animationGroupList.add(event.group.id)
                 }
                 subject.sendMessage("图片发送已开启")
                 return@route
             }
             case("closeAnim", "关闭反复读",false) {
-                if (event.group.id in CommandGroupList.AnimationGroupList) {
-                    CommandGroupList.AnimationGroupList.remove(event.group.id)
+                if (event.group.id in CommandGroupList.animationGroupList) {
+                    CommandGroupList.animationGroupList.remove(event.group.id)
                 }
                 subject.sendMessage("图片发送已关闭")
                 return@route

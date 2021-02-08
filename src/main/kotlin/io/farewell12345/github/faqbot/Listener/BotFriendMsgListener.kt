@@ -57,7 +57,7 @@ class BotFriendMsgListener : BaseListeners() {
             var num = 0
             if (forwardList.isNotEmpty()) {
                 forwardList.forEach {
-                    if (CommandGroupList.ForwardMessageGroup[it] == false){
+                    if (CommandGroupList.forwardMessageGroup[it] == false){
                         subject.sendMessage("群$it 已禁止转发消息")
                         return@forEach
                     }

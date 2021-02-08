@@ -28,7 +28,7 @@ class BotGroupMsgListener : BaseListeners() {
     suspend fun GroupMessageEvent.onEvent() {
         route(prefix = "", delimiter = " ") {
             if (DisRepetition.thisMessageIsRepetition(event)
-                && (group.id in CommandGroupList.DisRepetitionGroupList)) {
+                && (group.id in CommandGroupList.disRepetitionGroupList)) {
                 if (event.message.firstIsInstanceOrNull<PlainText>()?.content != AppConfig.getInstance().DisRepetitionScence[0]) {
                     subject.sendMessage(AppConfig.getInstance().DisRepetitionScence[0])
                 } else {
@@ -37,7 +37,7 @@ class BotGroupMsgListener : BaseListeners() {
             }
             // 优先进行会话处理
             case("禁止转发"){
-                CommandGroupList.ForwardMessageGroup[group.id] = false
+                CommandGroupList.forwardMessageGroup[group.id] = false
                 subject.sendMessage("好")
                 return@route
             }
@@ -156,7 +156,7 @@ class BotGroupMsgListener : BaseListeners() {
                 subject.sendMessage(At(event.sender).plus(x.toString()))
             }
             case("游戏推荐", "游戏推荐") {
-                if (event.group.id !in CommandGroupList.GameMorningGroupList)
+                if (event.group.id !in CommandGroupList.gameMorningGroupList)
                     return@route
                 val GameIndex = GameManage.getGame()
                 subject.sendMessage(buildString {
@@ -173,13 +173,13 @@ class BotGroupMsgListener : BaseListeners() {
                 return@route
             }
             case("涩图来", "ST") {
-                if (group.id in CommandGroupList.AnimationGroupList) {
+                if (group.id in CommandGroupList.animationGroupList) {
                     PicManager.stImgSend(subject,event)
                 }
                 return@route
             }
             case("图来", "二次元图") {
-                if (group.id in CommandGroupList.AnimationGroupList) {
+                if (group.id in CommandGroupList.animationGroupList) {
                     PicManager.imgSend(subject,event)
                     return@route
                 }

@@ -14,7 +14,7 @@ class GameMorningTask : TimerTask(){
     val task = GameMorningTask()
     override fun run() {
         runBlocking {
-            for (i in CommandGroupList.GameMorningGroupList) {
+            for (i in CommandGroupList.gameMorningGroupList) {
                 BotsManager.oneBot?.getGroup(i)?.sendMessage("hello!")
             }
         }

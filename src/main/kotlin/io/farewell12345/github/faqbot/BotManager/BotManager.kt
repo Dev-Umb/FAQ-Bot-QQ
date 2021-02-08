@@ -38,17 +38,17 @@ internal val appJob = Job()
 object CommandGroupList {
     lateinit var welcomeGroupList:LinkedList<Long>
     lateinit var managerGroupList:LinkedList<Long>
-    lateinit var GameMorningGroupList:LinkedList<Long>
-    lateinit var DisRepetitionGroupList:LinkedList<Long>
-    lateinit var AnimationGroupList:LinkedList<Long>
-    lateinit var ForwardMessageGroup:HashMap<Long,Boolean>
+    lateinit var gameMorningGroupList:LinkedList<Long>
+    lateinit var disRepetitionGroupList:LinkedList<Long>
+    lateinit var animationGroupList:LinkedList<Long>
+    lateinit var forwardMessageGroup:HashMap<Long,Boolean>
     fun init(){
         welcomeGroupList = LinkedList()
         managerGroupList = LinkedList()
-        GameMorningGroupList = LinkedList()
-        DisRepetitionGroupList = LinkedList()
-        AnimationGroupList  = LinkedList()
-        ForwardMessageGroup = HashMap()
+        gameMorningGroupList = LinkedList()
+        disRepetitionGroupList = LinkedList()
+        animationGroupList  = LinkedList()
+        forwardMessageGroup = HashMap()
     }
 }
 

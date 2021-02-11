@@ -33,18 +33,18 @@ object SessionManager{
         Sessions.remove(id)
     }
 
-    fun SessionsIsEmpty():Boolean{
+    fun sessionsIsEmpty():Boolean{
         return Sessions.isEmpty()
     }
 
     fun addSession(user:Long, session: Session){
-        Sessions.put(user,session)
+        Sessions[user] = session
     }
 
     @MiraiInternalApi
     fun performSession(messageEvent: GroupMessageEvent): Boolean {
         var flag = false
-        val session = Sessions.get(messageEvent.sender.id)
+        val session = Sessions[messageEvent.sender.id]
         if (session!=null){
             if(messageEvent.message.filterIsInstance<PlainText>().firstOrNull()?.
                 content?.replace(" ","") == session.question){

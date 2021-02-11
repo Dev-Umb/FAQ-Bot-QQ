@@ -105,7 +105,7 @@ class BotGroupMsgListener : BaseListeners() {
                     subject.sendMessage("取消会话成功！")
                 }
             }
-            if (!SessionManager.SessionsIsEmpty()) {
+            if (!SessionManager.sessionsIsEmpty()) {
                 if (SessionManager.performSession(event)) {
                     subject.sendMessage("录入成功！")
                     SessionManager.removeSession(event.sender.id)

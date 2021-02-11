@@ -41,6 +41,11 @@ class BotGroupMsgListener : BaseListeners() {
                 subject.sendMessage("好")
                 return@route
             }
+            case("可以转发"){
+                CommandGroupList.forwardMessageGroup[group.id] = true
+                subject.sendMessage("好")
+                return@route
+            }
             case("加入活动","将该用户加入目标活动，如果没有活动，则创建新的活动"){
                 val activity = this.message.filterIsInstance<PlainText>().firstOrNull()?.
                     content?.replace("加入活动 ","")

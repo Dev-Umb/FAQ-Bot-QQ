@@ -14,10 +14,7 @@ import io.farewell12345.github.faqbot.BotManager.PicManager
 import io.farewell12345.github.faqbot.DTO.DB.DB
 import io.farewell12345.github.faqbot.Listener.BaseListeners
 import io.farewell12345.github.faqbot.DTO.model.logger
-import io.farewell12345.github.faqbot.Task.TimerSessionManager
 import kotlinx.coroutines.joinAll
-import net.mamoe.mirai.event.registerTo
-import java.util.*
 
 suspend fun main() {
     // 添加监听job

@@ -100,19 +100,17 @@ class BotGroupMsgListener : BaseListeners() {
             }
             case("取消", "停止会话录入") {
                 if (SessionManager.hasSession(event.sender.id)) {
-                    SessionManager.removeQuestion(event.sender.id)
-                    SessionManager.removeSession(event.sender.id)
+                    removeQ(event.sender.id)
                     subject.sendMessage("取消会话成功！")
                 }
             }
-            if (!SessionManager.sessionsIsEmpty()) {
+            if (!SessionManager.hasSession(event.sender.id)) {
                 if (SessionManager.performSession(event)) {
                     subject.sendMessage("录入成功！")
-                    SessionManager.removeSession(event.sender.id)
                     return@route
-                } else if (SessionManager.hasSession(event.sender.id)) {
-                    subject.sendMessage("格式有误！答案与问题不能相同，请重新检查录入答案格式或发送‘取消’停止当前对话")
                 }
+                subject.sendMessage("格式有误！答案与问题不能相同，请重新检查录入答案格式或发送‘取消’停止当前对话")
+
             }
             case("列表", desc = "获取此群的问题列表") {
                 val query = database

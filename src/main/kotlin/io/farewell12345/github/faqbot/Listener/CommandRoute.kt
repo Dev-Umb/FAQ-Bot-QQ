@@ -4,12 +4,9 @@ import io.farewell12345.github.faqbot.BotManager.BotsManager
 import io.farewell12345.github.faqbot.DTO.model.logger
 import kotlinx.coroutines.*
 import net.mamoe.mirai.contact.PermissionDeniedException
-import net.mamoe.mirai.event.ListenerHost
 import net.mamoe.mirai.event.events.MessageEvent
 import net.mamoe.mirai.message.data.Message
-import net.mamoe.mirai.message.data.MessageChain
 import net.mamoe.mirai.message.data.PlainText
-import net.mamoe.mirai.message.data.messageChainOf
 import kotlin.coroutines.CoroutineContext
 
 val unCompleteValue = hashMapOf<Long, CompletableDeferred<String>>()
@@ -36,7 +33,7 @@ class CommandRoute<T : MessageEvent>(val args: List<String>?, val event: T) : Co
             return
         }
         if (!alreadyCalled && args?.find { it.replace(" ", "").equals(case) } != null) {
-            if (!BotsManager.task.CanUseBot(event.sender.id) && canRepetition) {
+            if (!BotsManager.task.canUseBot(event.sender.id) && canRepetition) {
                 event.subject.sendMessage(PlainText("技能冷却中（你发这么快急着投胎嘛，要不我送你一程）"))
                 return
             }

@@ -7,31 +7,17 @@
 )
 package io.farewell12345.github.faqbot.BotManager
 import io.farewell12345.github.faqbot.AppConfig
-import io.farewell12345.github.faqbot.Task.GameMorningTask
-import io.farewell12345.github.faqbot.Task.TimerSessionManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.BotFactory
-import net.mamoe.mirai.alsoLogin
-import net.mamoe.mirai.event.EventChannel
-import net.mamoe.mirai.event.GlobalEventChannel
-import net.mamoe.mirai.event.globalEventChannel
-import net.mamoe.mirai.message.data.MessageChain
 import net.mamoe.mirai.utils.BotConfiguration
-import net.mamoe.mirai.utils.LoggerAdapters.asMiraiLogger
 import net.mamoe.mirai.utils.MiraiLogger
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.spi.ExtendedLogger
-import org.apache.logging.slf4j.Log4jLogger
-import org.apache.logging.slf4j.Log4jLoggerFactory
 import java.io.File
 import java.util.*
-import java.util.logging.Logger
 import kotlin.collections.HashMap
-import kotlin.collections.LinkedHashMap
 import kotlin.coroutines.CoroutineContext
 internal val appJob = Job()
 

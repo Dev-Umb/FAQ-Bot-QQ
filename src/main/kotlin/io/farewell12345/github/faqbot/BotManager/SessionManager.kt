@@ -51,6 +51,7 @@ object SessionManager{
                 return false
             }
             flag=true
+            removeSession(messageEvent.sender.id)
             when(session.type){
                 "addUpDate" ->
                     return QuestionController.upDateQuestionAnswer(messageEvent,session)
@@ -67,3 +68,7 @@ object SessionManager{
     }
 }
 
+fun removeQ(sender:Long){
+    SessionManager.removeQuestion(sender)
+    SessionManager.removeSession(sender)
+}

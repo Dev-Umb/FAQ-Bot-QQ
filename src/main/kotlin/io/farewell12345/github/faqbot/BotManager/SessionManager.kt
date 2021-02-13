@@ -4,16 +4,19 @@ import io.farewell12345.github.faqbot.DTO.Controller.QuestionController
 import io.farewell12345.github.faqbot.DTO.Controller.WelcomeController
 import io.farewell12345.github.faqbot.DTO.model.*
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
+import io.farewell12345.github.faqbot.Plugin.SobelImgEdge.ImageEge
 import net.mamoe.mirai.event.events.GroupMessageEvent
+import net.mamoe.mirai.event.events.MessageEvent
 import net.mamoe.mirai.message.*
+import net.mamoe.mirai.message.data.Image
 import net.mamoe.mirai.message.data.PlainText
 import net.mamoe.mirai.message.data.content
+import net.mamoe.mirai.message.data.firstIsInstanceOrNull
 import net.mamoe.mirai.utils.MiraiInternalApi
 
 
 object SessionManager{
-    private var Sessions= mutableMapOf<Long, Session>()
-
+    var Sessions= mutableMapOf<Long, Session>()
 
     fun hasSession(id:Long): Boolean {
         return id in Sessions.keys
@@ -61,6 +64,8 @@ object SessionManager{
                     return WelcomeController.changeWelcome(messageEvent.group,
                         messageEvent.message
                     )
+                "Sobel" ->
+                    return ImageEge.sobelImageEge(messageEvent)
             }
 
         }

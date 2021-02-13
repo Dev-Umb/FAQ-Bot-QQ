@@ -19,7 +19,10 @@ import net.mamoe.mirai.event.EventHandler
 import net.mamoe.mirai.event.events.GroupMessageEvent
 import net.mamoe.mirai.message.data.*
 import net.mamoe.mirai.utils.MiraiInternalApi
+import java.awt.image.BufferedImage
+import java.io.ByteArrayInputStream
 import java.util.*
+import javax.imageio.ImageIO
 
 class BotGroupMsgListener : BaseListeners() {
     // 重写Event监听事件
@@ -35,11 +38,34 @@ class BotGroupMsgListener : BaseListeners() {
                     subject.sendMessage(AppConfig.getInstance().DisRepetitionScence[1])
                 }
             }
+            if (SessionManager.hasSession(sender.id)) {
+                if (SessionManager.performSession(event)) {
+                    SessionManager.removeSession(sender.id)
+                    subject.sendMessage("录入成功！任务正在处理，请稍等")
+                    return@route
+                }
+                subject.sendMessage("格式有误！请重新检查录入答案格式或发送‘取消’停止当前对话")
+            }
             // 优先进行会话处理
             case("禁止转发"){
                 CommandGroupList.forwardMessageGroup[group.id] = false
                 subject.sendMessage("好")
                 return@route
+            }
+            case("线稿","图片转线稿"){
+                if (SessionManager.hasSession(sender.id)) {
+                    subject.sendMessage("你有正在进行的会话")
+                    return@route
+                }
+                SessionManager.addSession(
+                    user = sender.id,
+                    session = Session(
+                        user = sender.id,
+                        type = "Sobel",
+                        group = group.id
+                    )
+                )
+                subject.sendMessage("请发送你的图片")
             }
             case("可以转发"){
                 CommandGroupList.forwardMessageGroup[group.id] = true
@@ -104,14 +130,7 @@ class BotGroupMsgListener : BaseListeners() {
                     subject.sendMessage("取消会话成功！")
                 }
             }
-            if (!SessionManager.hasSession(event.sender.id)) {
-                if (SessionManager.performSession(event)) {
-                    subject.sendMessage("录入成功！")
-                    return@route
-                }
-                subject.sendMessage("格式有误！答案与问题不能相同，请重新检查录入答案格式或发送‘取消’停止当前对话")
 
-            }
             case("列表", desc = "获取此群的问题列表") {
                 val query = database
                     .from(Question)
@@ -208,19 +227,15 @@ class BotGroupMsgListener : BaseListeners() {
             furry("#", "快速索引") {
                 try {
                     val id = event.message.filterIsInstance<PlainText>()[0].content.replace("#", "").toInt()
-                    if (id != null) {
-                        val queryRowSet = QuestionController.quickSearchQuestion(id, group)
-                        if (queryRowSet != null) {
-                            val tryAnswer = QuestionController.getAnswer(queryRowSet)
-                            if (tryAnswer != null) {
-                                subject.sendMessage(tryAnswer)
-                                return@route
-                            }
-                        } else {
-                            subject.sendMessage("此群不存在该序号的问题！")
+                    val queryRowSet = QuestionController.quickSearchQuestion(id, group)
+                    if (queryRowSet != null) {
+                        val tryAnswer = QuestionController.getAnswer(queryRowSet)
+                        if (tryAnswer != null) {
+                            subject.sendMessage(tryAnswer)
+                            return@route
                         }
                     } else {
-                        throw NumberFormatException("参数错误！请输入问题序号")
+                        subject.sendMessage("此群不存在该序号的问题！")
                     }
                 } catch (e: NumberFormatException) {
                     logger.info(e)
@@ -248,11 +263,11 @@ class BotGroupMsgListener : BaseListeners() {
                 if (question!!.isEmpty())
                     return@route
                 val furry = Regex("""#\d""")
-                if (furry.matches(question!!)) {
+                if (furry.matches(question)) {
                     subject.sendMessage("问题不能与索引重名")
                     return@case
                 } else {
-                    val query = question?.let {
+                    val query = question.let {
                         QuestionController.searchQuestion(it, event.group.id)
                     }
                     if (query != null) {

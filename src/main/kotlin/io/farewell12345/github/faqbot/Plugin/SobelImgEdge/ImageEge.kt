@@ -1,5 +1,6 @@
 package io.farewell12345.github.faqbot.Plugin.SobelImgEdge
 
+import io.farewell12345.github.faqbot.FuckOkhttp.FuckOkhttp
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import net.mamoe.mirai.event.events.MessageEvent
@@ -14,6 +15,23 @@ import javax.imageio.ImageIO
 
 
 object ImageEge {
+//    fun pyPILImage(event: MessageEvent):Boolean{
+//        val img: Image = event.message.firstIsInstanceOrNull<Image>()!!
+//        GlobalScope.launch {
+//            try {
+//                val url = img.queryUrl()
+//                val image = URL(
+//                    url
+//                ).openConnection().getInputStream()
+//                val bufferImage = ImageIO.read(image)
+////                    val imgEge = Sobel().edgeExtract2(file)
+//                val bs = ByteArrayOutputStream()
+////                    val imOut = ImageIO.createImageOutputStream(bs)
+//                ImageIO.write(bufferImage, "png", bs)
+//                val inputStream = FuckOkhttp("http://127.0.0.1:8000/img").postFile(bs.toByteArray())?.body?.byteStream()
+//                inputStream?.sendAsImageTo(event.subject)
+//    }
+
     @MiraiInternalApi
     fun sobelImageEge(event: MessageEvent): Boolean {
         return try {
@@ -24,15 +42,15 @@ object ImageEge {
                     val image = URL(
                         url
                     ).openConnection().getInputStream()
-                    val file = ImageIO.read(image)
-                    val imgEge = Sobel().edgeExtract2(file)
+                    val bufferImage = ImageIO.read(image)
+//                    val imgEge = Sobel().edgeExtract2(file)
                     val bs = ByteArrayOutputStream()
-                    val imOut = ImageIO.createImageOutputStream(bs)
-                    ImageIO.write(imgEge, "jpg", imOut)
-                    val inputStream = ByteArrayInputStream(bs.toByteArray())
-                    inputStream.sendAsImageTo(event.subject)
+//                    val imOut = ImageIO.createImageOutputStream(bs)
+                    ImageIO.write(bufferImage, "png", bs)
+                    val inputStream = FuckOkhttp("http://127.0.0.1:8000/img").postFile(bs.toByteArray())?.body?.byteStream()
+                    inputStream?.sendAsImageTo(event.subject)
                 }catch (e: Exception){
-
+                    println(e)
                 }
             }
             true

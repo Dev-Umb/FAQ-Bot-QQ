@@ -2,7 +2,9 @@ package io.farewell12345.github.faqbot.Plugin.SobelImgEdge
 
 import io.farewell12345.github.faqbot.FuckOkhttp.FuckOkhttp
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.newFixedThreadPoolContext
 import net.mamoe.mirai.event.events.MessageEvent
 import net.mamoe.mirai.message.data.Image
 import net.mamoe.mirai.message.data.Image.Key.queryUrl
@@ -15,46 +17,36 @@ import javax.imageio.ImageIO
 
 
 object ImageEge {
-//    fun pyPILImage(event: MessageEvent):Boolean{
-//        val img: Image = event.message.firstIsInstanceOrNull<Image>()!!
-//        GlobalScope.launch {
-//            try {
-//                val url = img.queryUrl()
-//                val image = URL(
-//                    url
-//                ).openConnection().getInputStream()
-//                val bufferImage = ImageIO.read(image)
-////                    val imgEge = Sobel().edgeExtract2(file)
-//                val bs = ByteArrayOutputStream()
-////                    val imOut = ImageIO.createImageOutputStream(bs)
-//                ImageIO.write(bufferImage, "png", bs)
-//                val inputStream = FuckOkhttp("http://127.0.0.1:8000/img").postFile(bs.toByteArray())?.body?.byteStream()
-//                inputStream?.sendAsImageTo(event.subject)
-//    }
+    @ObsoleteCoroutinesApi
+    val threadPool = newFixedThreadPoolContext(10, "ThreadPool")
 
+    @ObsoleteCoroutinesApi
     @MiraiInternalApi
     fun sobelImageEge(event: MessageEvent): Boolean {
         return try {
-            val img: Image = event.message.firstIsInstanceOrNull<Image>()!!
-            GlobalScope.launch {
-                try {
-                    val url = img.queryUrl()
-                    val image = URL(
-                        url
-                    ).openConnection().getInputStream()
-                    val bufferImage = ImageIO.read(image)
+            val imgList: List<Image> = event.message.filterIsInstance<Image>()
+            imgList.forEach {
+                GlobalScope.launch(threadPool) {
+                    try {
+                        val url = it.queryUrl()
+                        val image = URL(
+                            url
+                        ).openConnection().getInputStream()
+                        val bufferImage = ImageIO.read(image)
 //                    val imgEge = Sobel().edgeExtract2(file)
-                    val bs = ByteArrayOutputStream()
+                        val bs = ByteArrayOutputStream()
 //                    val imOut = ImageIO.createImageOutputStream(bs)
-                    ImageIO.write(bufferImage, "png", bs)
-                    val inputStream = FuckOkhttp("http://127.0.0.1:8000/img").postFile(bs.toByteArray())?.body?.byteStream()
-                    inputStream?.sendAsImageTo(event.subject)
-                }catch (e: Exception){
-                    println(e)
+                        ImageIO.write(bufferImage, "png", bs)
+                        val inputStream =
+                            FuckOkhttp("http://127.0.0.1:8000/img").postFile(bs.toByteArray())?.body?.byteStream()
+                        inputStream?.sendAsImageTo(event.subject)
+                    } catch (e: Exception) {
+                        println(e)
+                    }
                 }
             }
             true
-        }catch (e: Exception){
+        } catch (e: Exception) {
             false
         }
     }

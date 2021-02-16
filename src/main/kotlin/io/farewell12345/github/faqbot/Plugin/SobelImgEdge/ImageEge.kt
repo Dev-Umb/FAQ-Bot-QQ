@@ -29,9 +29,11 @@ object ImageEge {
                 GlobalScope.launch(threadPool) {
                     try {
                         val url = it.queryUrl()
-                        val image = URL(
+                        val con = URL(
                             url
-                        ).openConnection().getInputStream()
+                        ).openConnection()
+                        con.connectTimeout = 100
+                        val image = con.getInputStream()
                         val bufferImage = ImageIO.read(image)
 //                    val imgEge = Sobel().edgeExtract2(file)
                         val bs = ByteArrayOutputStream()

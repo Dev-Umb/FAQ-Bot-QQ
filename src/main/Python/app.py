@@ -58,8 +58,12 @@ def img_ege_get(byte: bytes):
     weight, height = im2.size
     # 降噪
     pim = im2.load()
-    for w in range(weight):
-        threading.Thread(target=row_noise, args=(pim, height, weight, w,)).start()
+    task = [threading.Thread(target=row_noise, args=(pim, height, weight, w,))
+            for w in range(weight)]
+    for i in task:
+        i.start()
+    for i in task:
+        i.join()
     imgByteArray = io.BytesIO()
     im2.save(imgByteArray, format='png')
     imgByteArray = imgByteArray.getvalue()

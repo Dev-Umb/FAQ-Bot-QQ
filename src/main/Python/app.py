@@ -1,10 +1,10 @@
 import io
 
+import cv2
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageFilter
 from sanic import Sanic
 from sanic.response import file_stream, raw, file, stream
-from DTO.Pic import DBSession, Pic
 
 app = Sanic("STapi")
 url = "http://127.0.0.1:8000/"
@@ -13,6 +13,7 @@ url = "http://127.0.0.1:8000/"
 def img_ege_get(byte: bytes):
     byte_stream = io.BytesIO(byte)
     im = Image.open(byte_stream).convert('L')
+    im = im.filter(ImageFilter.GaussianBlur(radius=1.5)) # 高斯滤镜
     a = np.asarray(im).astype('float')
 
     depth = 10.
@@ -33,14 +34,26 @@ def img_ege_get(byte: bytes):
 
     b = 255 * (dx * uni_x + dy * uni_y + dz * uni_z)
     b = b.clip(0, 255)
-
     im2 = Image.fromarray(b.astype('uint8'))
-    imgByteArr = io.BytesIO()
-    im2.save(imgByteArr, format='png')
-    imgByteArr = imgByteArr.getvalue()
-    return imgByteArr
+    im2 = im2.filter(ImageFilter.SHARPEN) # 锐化
+    imgByteArray = io.BytesIO()
+    im2.save(imgByteArray, format='png')
+    imgByteArray = imgByteArray.getvalue()
+    return imgByteArray
 
-# def img_ege_cv(image):
+#canny算法
+# def img_ege_canny(byte: bytes) -> bytes:
+#     byte_stream = io.BytesIO(byte)
+#     image = Image.open(byte_stream).convert('L')
+#     img = cv2.cvtColor(np.asarray(image), cv2.IMREAD_GRAYSCALE)
+#     img = cv2.GaussianBlur(img, (3, 3), 1.25)
+#     canny = ~cv2.Canny(img, 20, 50)
+#     im2 = Image.fromarray(canny.astype('uint8'))
+#     im2 = im2.filter(ImageFilter.SHARPEN)
+#     imgByteArray = io.BytesIO()
+#     im2.save(imgByteArray, format='png')
+#     imgByteArray = imgByteArray.getvalue()
+#     return imgByteArray
 
 
 @app.route("/img", methods=['GET', 'POST'])

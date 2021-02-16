@@ -3,7 +3,10 @@ package io.farewell12345.github.faqbot.Listener
 import io.farewell12345.github.faqbot.BotManager.BotsManager
 import io.farewell12345.github.faqbot.BotManager.CommandGroupList
 import io.farewell12345.github.faqbot.BotManager.PicManager
+import io.farewell12345.github.faqbot.BotManager.SessionManager
 import io.farewell12345.github.faqbot.DTO.Controller.ForwardController
+import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
+import kotlinx.coroutines.ObsoleteCoroutinesApi
 import net.mamoe.mirai.contact.*
 import net.mamoe.mirai.event.EventHandler
 import net.mamoe.mirai.event.events.FriendMessageEvent
@@ -11,12 +14,39 @@ import net.mamoe.mirai.message.data.At
 import net.mamoe.mirai.message.data.AtAll
 import net.mamoe.mirai.message.data.PlainText
 import net.mamoe.mirai.message.data.firstIsInstanceOrNull
+import net.mamoe.mirai.utils.MiraiInternalApi
 
 class BotFriendMsgListener : BaseListeners() {
+    @ObsoleteCoroutinesApi
+    @MiraiInternalApi
     @ExperimentalStdlibApi
     @EventHandler
     suspend fun FriendMessageEvent.onEvent() {
         route {
+            if (SessionManager.hasSession(sender.id)) {
+                if (SessionManager.performSession(event)) {
+                    SessionManager.removeSession(sender.id)
+                    subject.sendMessage("录入成功！任务正在处理，请稍等")
+                    return@route
+                }
+                subject.sendMessage("格式有误！请重新检查录入答案格式或发送‘取消’停止当前对话")
+            }
+            case("线稿","图片转线稿"){
+                if (SessionManager.hasSession(sender.id)) {
+                    subject.sendMessage("你有正在进行的会话")
+                    return@route
+                }
+                SessionManager.addSession(
+                    user = sender.id,
+                    session = Session(
+                        user = sender.id,
+                        type = "Sobel",
+                        group = 0
+                    )
+                )
+                subject.sendMessage("请发送你的图片")
+                return@route
+            }
             case("添加目标群", canRepetition = false) {
                 val forwardGroup = message
                     .firstIsInstanceOrNull<PlainText>()

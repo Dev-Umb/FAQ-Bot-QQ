@@ -5,6 +5,8 @@ import io.farewell12345.github.faqbot.DTO.Controller.WelcomeController
 import io.farewell12345.github.faqbot.DTO.model.*
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
 import io.farewell12345.github.faqbot.Plugin.SobelImgEdge.ImageEge
+import kotlinx.coroutines.ObsoleteCoroutinesApi
+import net.mamoe.mirai.event.events.FriendMessageEvent
 import net.mamoe.mirai.event.events.GroupMessageEvent
 import net.mamoe.mirai.event.events.MessageEvent
 import net.mamoe.mirai.message.*
@@ -43,7 +45,25 @@ object SessionManager{
     fun addSession(user:Long, session: Session){
         Sessions[user] = session
     }
+    @ObsoleteCoroutinesApi
+    @MiraiInternalApi
+    fun performSession(messageEvent: FriendMessageEvent): Boolean{
+        var flag = false
+        val session = Sessions[messageEvent.sender.id]
+        if (session!=null){
+            if(messageEvent.message.filterIsInstance<PlainText>().firstOrNull()?.
+                content?.replace(" ","") == session.question){
+                return false
+            }
+            flag=true
+            when(session.type){
+                "Sobel" ->
+                    return ImageEge.sobelImageEge(messageEvent)
+            }
 
+        }
+        return flag
+    }
     @MiraiInternalApi
     fun performSession(messageEvent: GroupMessageEvent): Boolean {
         var flag = false

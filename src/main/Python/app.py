@@ -1,5 +1,6 @@
 import io
 import threading
+from datetime import date, datetime
 from multiprocessing.pool import ThreadPool
 
 import cv2
@@ -12,6 +13,7 @@ app = Sanic("STapi")
 url = "http://127.0.0.1:8000/"
 
 
+# 领域降噪
 def calculate_noise_count(img_obj, w, h, width, height):
     count = 0
     for _w_ in [w - 1, w, w + 1]:
@@ -29,6 +31,7 @@ def calculate_noise_count(img_obj, w, h, width, height):
 
 # 高斯滤波+锐化+领域降噪的线稿提取方案
 def img_ege_get(byte: bytes):
+    time = datetime.now()
     byte_stream = io.BytesIO(byte)
     im1 = Image.open(byte_stream).convert('L')
     im = im1.filter(ImageFilter.GaussianBlur(radius=0.75))
@@ -40,11 +43,11 @@ def img_ege_get(byte: bytes):
     grad_x, grad_y = grad
     grad_x = grad_x * depth / 100.
     grad_y = grad_y * depth / 100.
+    # 梯度向量计算
     A = np.sqrt(grad_x ** 2 + grad_y ** 2 + 1.)
     uni_x = grad_x / A
     uni_y = grad_y / A
     uni_z = 1. / A
-
     vec_el = np.pi / 2.2
     vec_az = np.pi / 4.
     dx = np.cos(vec_el) * np.cos(vec_az)
@@ -52,31 +55,27 @@ def img_ege_get(byte: bytes):
     dz = np.sin(vec_el)
 
     b = 255 * (dx * uni_x + dy * uni_y + dz * uni_z)
-    b = b.clip(0, 255)
+    b = b.clip(0, 255)  # 极值处理
     im2 = Image.fromarray(b.astype('uint8'))
     im2 = im2.filter(ImageFilter.SHARPEN)
     weight, height = im2.size
     # 降噪
     pim = im2.load()
-    task = [threading.Thread(target=row_noise, args=(pim, height, weight, w,))
-            for w in range(weight)]
-    for i in task:
-        i.start()
-    for i in task:
-        i.join()
+    map(row_noise, [(pim, height, weight, w,) for w in range(weight)])
     imgByteArray = io.BytesIO()
     im2.save(imgByteArray, format='png')
     imgByteArray = imgByteArray.getvalue()
+    print(datetime.now() - time)
     return imgByteArray
 
 
-# 颜色减淡+线性减淡+轮廓滤镜的线稿提取方案
 def row_noise(pim, height, weight, w):
     for h in range(height):
         if calculate_noise_count(pim, w, h, weight, height) < 4:
             pim[w, h] = 255
 
 
+# 颜色减淡+线性减淡+轮廓滤镜的线稿提取方案
 def img_filter(byte: bytes):
     byte_stream = io.BytesIO(byte)
     im1 = Image.open(byte_stream).convert('L')
@@ -117,4 +116,4 @@ async def test(request):
 
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=8000)
+    app.run(host="0.0.0.0", port=8000, workers=4)

@@ -25,6 +25,9 @@ object ImageEge {
     fun sobelImageEge(event: MessageEvent): Boolean {
         return try {
             val imgList: List<Image> = event.message.filterIsInstance<Image>()
+            if (imgList.isEmpty()){
+                false
+            }
             imgList.forEach {
                 GlobalScope.launch(threadPool) {
                     try {
@@ -35,9 +38,7 @@ object ImageEge {
                         con.connectTimeout = 100
                         val image = con.getInputStream()
                         val bufferImage = ImageIO.read(image)
-//                    val imgEge = Sobel().edgeExtract2(file)
                         val bs = ByteArrayOutputStream()
-//                    val imOut = ImageIO.createImageOutputStream(bs)
                         ImageIO.write(bufferImage, "png", bs)
                         val inputStream =
                             FuckOkhttp("http://127.0.0.1:8000/img").postFile(bs.toByteArray())?.body?.byteStream()

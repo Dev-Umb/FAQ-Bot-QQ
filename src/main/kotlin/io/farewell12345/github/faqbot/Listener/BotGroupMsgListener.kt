@@ -40,7 +40,7 @@ class BotGroupMsgListener : BaseListeners() {
             }
             if (SessionManager.hasSession(sender.id)) {
                 if (SessionManager.performSession(event)) {
-                    SessionManager.removeSession(sender.id)
+
                     subject.sendMessage("录入成功！任务正在处理，请稍等")
                     return@route
                 }

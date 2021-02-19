@@ -50,6 +50,7 @@ object SessionManager{
     fun performSession(messageEvent: FriendMessageEvent): Boolean{
         var flag = false
         val session = Sessions[messageEvent.sender.id]
+        removeSession(messageEvent.sender.id)
         if (session!=null){
             if(messageEvent.message.filterIsInstance<PlainText>().firstOrNull()?.
                 content?.replace(" ","") == session.question){
@@ -68,6 +69,7 @@ object SessionManager{
     fun performSession(messageEvent: GroupMessageEvent): Boolean {
         var flag = false
         val session = Sessions[messageEvent.sender.id]
+        removeSession(messageEvent.sender.id)
         if (session!=null){
             if(messageEvent.message.filterIsInstance<PlainText>().firstOrNull()?.
                 content?.replace(" ","") == session.question){

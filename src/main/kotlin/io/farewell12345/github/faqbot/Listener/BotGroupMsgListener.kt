@@ -44,7 +44,7 @@ class BotGroupMsgListener : BaseListeners() {
                     subject.sendMessage("录入成功！任务正在处理，请稍等")
                     return@route
                 }
-                subject.sendMessage("格式有误！请重新检查录入答案格式或发送‘取消’停止当前对话")
+                subject.sendMessage("格式有误！请检查录入答案格式")
             }
             // 优先进行会话处理
             case("禁止转发"){

@@ -23,10 +23,11 @@ object ImageEge {
     @ObsoleteCoroutinesApi
     @MiraiInternalApi
     fun sobelImageEge(event: MessageEvent): Boolean {
+
         return try {
             val imgList: List<Image> = event.message.filterIsInstance<Image>()
             if (imgList.isEmpty()){
-                false
+                throw IllegalAccessException("参数错误")
             }
             imgList.forEach {
                 GlobalScope.launch(threadPool) {

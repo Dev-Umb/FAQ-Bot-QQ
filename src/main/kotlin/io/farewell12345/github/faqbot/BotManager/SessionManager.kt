@@ -18,7 +18,7 @@ import net.mamoe.mirai.utils.MiraiInternalApi
 
 
 object SessionManager{
-    var Sessions= mutableMapOf<Long, Session>()
+    private var Sessions= mutableMapOf<Long, Session>()
 
     fun hasSession(id:Long): Boolean {
         return id in Sessions.keys

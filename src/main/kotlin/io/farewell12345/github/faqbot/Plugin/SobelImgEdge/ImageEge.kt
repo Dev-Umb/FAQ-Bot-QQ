@@ -19,7 +19,12 @@ import javax.imageio.ImageIO
 object ImageEge {
     @ObsoleteCoroutinesApi
     val threadPool = newFixedThreadPoolContext(10, "ThreadPool")
-
+    fun getImage(image:InputStream): InputStream? {
+        val bufferImage = ImageIO.read(image)
+        val bs = ByteArrayOutputStream()
+        ImageIO.write(bufferImage, "png", bs)
+        return FuckOkhttp("http://127.0.0.1:8000/img").postFile(bs.toByteArray())?.body?.byteStream()
+    }
     @ObsoleteCoroutinesApi
     @MiraiInternalApi
     fun sobelImageEge(event: MessageEvent): Boolean {
@@ -38,11 +43,7 @@ object ImageEge {
                         ).openConnection()
                         con.connectTimeout = 100
                         val image = con.getInputStream()
-                        val bufferImage = ImageIO.read(image)
-                        val bs = ByteArrayOutputStream()
-                        ImageIO.write(bufferImage, "png", bs)
-                        val inputStream =
-                            FuckOkhttp("http://127.0.0.1:8000/img").postFile(bs.toByteArray())?.body?.byteStream()
+                        val inputStream = getImage(image)
                         inputStream?.sendAsImageTo(event.subject)
                     } catch (e: Exception) {
                         println(e)

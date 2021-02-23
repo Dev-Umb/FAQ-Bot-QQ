@@ -5,26 +5,18 @@ import net.mamoe.mirai.message.data.*
 object DisRepetition{
     private var groupMap = mutableMapOf<Long, MessageChain>()
     fun thisMessageIsRepetition(msg: GroupMessageEvent):Boolean{
-        if (groupMap[msg.group.id]!=null){
-            val a = buildString {
-                groupMap[msg.group.id]?.forEach {
-                    append(it.contentToString())
-                }
-            }
-            val b = buildString {
-                msg.message.forEach {
-                    append(it.contentToString())
-                }
-            }
+        if(groupMap[msg.group.id]!=null){
+            val a = groupMap[msg.group.id]?.findIsInstance<PlainText>()?:false
+            val b = msg.message.findIsInstance<PlainText>()?:false
             if (a == b){
                 groupMap.remove(msg.group.id)
                 return true
-            }else{
-                groupMap[msg.group.id] = msg.message
             }
+            groupMap[msg.group.id] = msg.message
+            return false
         }else{
             groupMap[msg.group.id] = msg.message
+            return false
         }
-        return false
     }
 }

@@ -14,13 +14,19 @@ import io.farewell12345.github.faqbot.DTO.model.QAmodel.Games.Game
 import io.farewell12345.github.faqbot.DTO.model.QAmodel.Games.User
 import io.farewell12345.github.faqbot.DTO.model.QAmodel.Question
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
+import io.farewell12345.github.faqbot.Plugin.SobelImgEdge.ImageEge
 import me.liuwj.ktorm.dsl.*
 import net.mamoe.mirai.event.EventHandler
 import net.mamoe.mirai.event.events.GroupMessageEvent
+import net.mamoe.mirai.event.selectMessages
 import net.mamoe.mirai.message.data.*
+import net.mamoe.mirai.message.data.Image.Key.queryUrl
+import net.mamoe.mirai.utils.ExternalResource.Companion.sendAsImageTo
 import net.mamoe.mirai.utils.MiraiInternalApi
 import java.awt.image.BufferedImage
 import java.io.ByteArrayInputStream
+import java.io.InputStream
+import java.net.URL
 import java.util.*
 import javax.imageio.ImageIO
 

@@ -37,7 +37,8 @@ class BotGroupMsgListener : BaseListeners() {
     suspend fun GroupMessageEvent.onEvent() {
         route(prefix = "", delimiter = " ") {
             if (DisRepetition.thisMessageIsRepetition(event)
-                && (group.id in CommandGroupList.disRepetitionGroupList)) {
+                && (group.id in CommandGroupList.disRepetitionGroupList)
+            ) {
                 if (event.message.firstIsInstanceOrNull<PlainText>()?.content != AppConfig.getInstance().DisRepetitionScence[0]) {
                     subject.sendMessage(AppConfig.getInstance().DisRepetitionScence[0])
                 } else {

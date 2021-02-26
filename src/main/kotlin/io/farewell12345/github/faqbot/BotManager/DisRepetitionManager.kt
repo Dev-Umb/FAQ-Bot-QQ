@@ -6,8 +6,8 @@ object DisRepetition{
     private var groupMap = mutableMapOf<Long, MessageChain>()
     fun thisMessageIsRepetition(msg: GroupMessageEvent):Boolean{
         if(groupMap[msg.group.id]!=null){
-            val a = groupMap[msg.group.id]?.findIsInstance<PlainText>()?:false
-            val b = msg.message.findIsInstance<PlainText>()?:false
+            val a = groupMap[msg.group.id]?.findIsInstance<PlainText>()?:return false
+            val b = msg.message.findIsInstance<PlainText>()?:return false
             if (a == b){
                 groupMap.remove(msg.group.id)
                 return true

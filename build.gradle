@@ -28,7 +28,7 @@ plugins {
 sourceCompatibility = 11
 compileKotlin {
     kotlinOptions {
-        freeCompilerArgs = ["-Xjsr305=strict"]
+        freeCompilerArgs = ["-Xmx2048m=strict"]
         jvmTarget = "11"
     }
 }
@@ -53,7 +53,6 @@ allprojects {
 def CORE_VERSION = "2.0-RC"
 def CONSOLE_VERSION = "2.0-RC-dev-2"
 def LUAMIRAI_VERSION = "0.5.0"
-
 
 
 dependencies {

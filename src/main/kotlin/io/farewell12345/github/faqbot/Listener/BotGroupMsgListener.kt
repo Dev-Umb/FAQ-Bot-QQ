@@ -39,7 +39,7 @@ class BotGroupMsgListener : BaseListeners() {
             if (DisRepetition.thisMessageIsRepetition(event)
                 && (group.id in CommandGroupList.disRepetitionGroupList)
             ) {
-                if (event.message.firstIsInstanceOrNull<PlainText>()?.content != AppConfig.getInstance().DisRepetitionScence[0]) {
+                if (event.message.firstIsInstanceOrNull<PlainText>()!!.content != AppConfig.getInstance().DisRepetitionScence[0]) {
                     subject.sendMessage(AppConfig.getInstance().DisRepetitionScence[0])
                 } else {
                     subject.sendMessage(AppConfig.getInstance().DisRepetitionScence[1])

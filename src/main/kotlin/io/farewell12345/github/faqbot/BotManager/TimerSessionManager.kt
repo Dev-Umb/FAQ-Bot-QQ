@@ -13,7 +13,7 @@ class TimerSessionManager(): TimerTask(){ // 时间调度器
         if (id !in userSessionManager.keys) {
             return flushUser(id)
         }
-        return (Date().time - userSessionManager[id]!!)/2000 > 4
+        return (Date().time - userSessionManager[id]!!)/2000 > 2
     }
     fun flushUser(id: Long): Boolean {
         userSessionManager[id] = Date().time

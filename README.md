@@ -7,7 +7,7 @@
   
   2.反群内复读
   
-  3.每日游戏推荐（数据来源：小黑盒）
+  3.每日游戏推荐（数据来源：小黑盒,接口：https://api.xiaoheihe.cn/game/web/all_recommend/?os_type=web&version=999.0.0&hkey=da69a1104606268883cb2301c3f02770&_time=）
   
   4.群组内抽签创建
   
@@ -16,16 +16,22 @@
   6.图片边缘提取（图片转线稿）
   
   7.涩图
+  
+  8.群内活动群组创建
 
 ## 使用方法：
-  1. 首先创建名为faq的数据库，将项目中SQL文件夹中的question.sql和welcome.sql导入数据库中
-  2. 创建config.yml文件，填入下面的配置：
+  1. 首先创建名为faq的数据库（其实叫啥都行啦，最后config文件中的DBUrl正确即可），将项目中SQL文件夹中的question.sql和welcome.sql导入数据库中
+  2. 创建nuc_game数据库（叫啥都行gameDBUrl正确即可），将SQL文件夹下的game_sql导入创建好的游戏数据库
+  3. 
+  4. 创建config.yml文件，填入下面的配置：
       ```yaml
-        dbUrl: "" # 你的数据库端口链接
+        dbUrl: "" # 你的数据库端口链接，示例：“jdbc:mysql://localhost:3306/faq?serverTimezone=UTC&characterEncoding=UTF-8
         dbUser: "" # 数据库用户名
         dbPwd: "" # 数据库密码
         botQQ: "" # 机器人的QQ
         botPwd: "" # 机器人的密码
+        gameDBUrl: "" # 群内游戏群组数据库端口链接，示例： “jdbc:mysql://localhost:3306/nuc_game?serverTimezone=UTC&characterEncoding=UTF-8”
+        GameAPI:"" # 小黑盒的游戏数据接口
       ``` 
   3. 打开数据库，编译Main.Kt开始使用
   

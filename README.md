@@ -31,7 +31,7 @@
         botQQ: "" # 机器人的QQ
         botPwd: "" # 机器人的密码
         gameDBUrl: "" # 群内游戏群组数据库端口链接，示例： “jdbc:mysql://localhost:3306/nuc_game?serverTimezone=UTC&characterEncoding=UTF-8”
-        GameAPI:"" # 小黑盒的游戏数据接口
+        GameAPI: "" # 小黑盒的游戏数据接口
       ``` 
   3. 打开数据库，编译Main.Kt开始使用
   

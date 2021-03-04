@@ -18,10 +18,10 @@
   7.涩图
 
 ## 使用方法：
-  1. 首先创建名为faq的数据库，将项目中SQL文件夹中的question.sql和welcome.sql导入数据库中
+  1. 首先创建名为faq的数据库（其实叫啥都行啦，最后config文件中的DBUrl正确即可），将项目中SQL文件夹中的question.sql和welcome.sql导入数据库中
   2. 创建config.yml文件，填入下面的配置：
       ```yaml
-        dbUrl: "" # 你的数据库端口链接
+        dbUrl: "" # 你的数据库端口链接，示例：“jdbc:mysql://localhost:3306/faq?serverTimezone=UTC&characterEncoding=UTF-8
         dbUser: "" # 数据库用户名
         dbPwd: "" # 数据库密码
         botQQ: "" # 机器人的QQ

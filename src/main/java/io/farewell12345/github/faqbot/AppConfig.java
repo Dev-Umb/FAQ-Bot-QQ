@@ -26,7 +26,7 @@ public class AppConfig {
         Map<String, Object> data = yml.load(new FileReader( new File("config.yml")));
         dbUrl= (String) data.get("dbUrl");
         if (dbUrl==null){
-            dbUrl = "jdbc:mysql://localhost:3306/fqa?serverTimezone=UTC&characterEncoding=UTF-8";
+            throw new NullPointerException("请在config.yml文件中正确配置jdbc数据库url");
         }
         gameDBUrl =(String) data.get("gameDBUrl");
         gameAPI = (String) data.get("GameAPI");

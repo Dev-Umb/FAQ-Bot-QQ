@@ -18,7 +18,7 @@ class BotGroupCommandListener:BaseListeners() {
     suspend fun GroupMessageEvent.onEvent() {
         route(prefix = ".command", delimiter = " ") {
             if (event.sender.permission.ordinal == 0
-                && event.sender.id != AppConfig.getInstance().SuperUser
+                && event.sender.id != AppConfig.getInstance().superUser
             ) {
                 return@route
             }

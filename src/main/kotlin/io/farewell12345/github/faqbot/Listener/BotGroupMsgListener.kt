@@ -14,21 +14,13 @@ import io.farewell12345.github.faqbot.DTO.model.QAmodel.Games.Game
 import io.farewell12345.github.faqbot.DTO.model.QAmodel.Games.User
 import io.farewell12345.github.faqbot.DTO.model.QAmodel.Question
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
-import io.farewell12345.github.faqbot.Plugin.SobelImgEdge.ImageEge
+import io.farewell12345.github.faqbot.Plugin.Lucky.Lucky
 import me.liuwj.ktorm.dsl.*
 import net.mamoe.mirai.event.EventHandler
 import net.mamoe.mirai.event.events.GroupMessageEvent
-import net.mamoe.mirai.event.selectMessages
 import net.mamoe.mirai.message.data.*
-import net.mamoe.mirai.message.data.Image.Key.queryUrl
-import net.mamoe.mirai.utils.ExternalResource.Companion.sendAsImageTo
 import net.mamoe.mirai.utils.MiraiInternalApi
-import java.awt.image.BufferedImage
-import java.io.ByteArrayInputStream
-import java.io.InputStream
-import java.net.URL
 import java.util.*
-import javax.imageio.ImageIO
 
 class BotGroupMsgListener : BaseListeners() {
     // 重写Event监听事件
@@ -39,10 +31,10 @@ class BotGroupMsgListener : BaseListeners() {
             if (DisRepetition.thisMessageIsRepetition(event)
                 && (group.id in CommandGroupList.disRepetitionGroupList)
             ) {
-                if (event.message.firstIsInstanceOrNull<PlainText>()!!.content != AppConfig.getInstance().DisRepetitionScence[0]) {
-                    subject.sendMessage(AppConfig.getInstance().DisRepetitionScence[0])
+                if (event.message.firstIsInstanceOrNull<PlainText>()!!.content != AppConfig.getInstance().disRepetitionScence[0]) {
+                    subject.sendMessage(AppConfig.getInstance().disRepetitionScence[0])
                 } else {
-                    subject.sendMessage(AppConfig.getInstance().DisRepetitionScence[1])
+                    subject.sendMessage(AppConfig.getInstance().disRepetitionScence[1])
                 }
             }
             if (SessionManager.hasSession(sender.id)) {
@@ -54,12 +46,12 @@ class BotGroupMsgListener : BaseListeners() {
                 subject.sendMessage("格式有误！请检查录入答案格式")
             }
             // 优先进行会话处理
-            case("禁止转发"){
+            case("禁止转发") {
                 CommandGroupList.forwardMessageGroup[group.id] = false
                 subject.sendMessage("好")
                 return@route
             }
-            case("线稿","图片转线稿"){
+            case("线稿", "图片转线稿") {
                 if (SessionManager.hasSession(sender.id)) {
                     subject.sendMessage("你有正在进行的会话")
                     return@route
@@ -74,60 +66,58 @@ class BotGroupMsgListener : BaseListeners() {
                 )
                 subject.sendMessage("请发送你的图片")
             }
-            case("可以转发"){
+            case("可以转发") {
                 CommandGroupList.forwardMessageGroup[group.id] = true
                 subject.sendMessage("好")
                 return@route
             }
-            case("加入活动","将该用户加入目标活动，如果没有活动，则创建新的活动"){
-                val activity = this.message.filterIsInstance<PlainText>().firstOrNull()?.
-                    content?.replace("加入活动 ","")
-                if (activity?.length!! < 2)return@route
-                if(GameController.addMemberToGame(activity,group.id,sender.id)){
+            case("加入活动", "将该用户加入目标活动，如果没有活动，则创建新的活动") {
+                val activity = this.message.filterIsInstance<PlainText>().firstOrNull()?.content?.replace("加入活动 ", "")
+                if (activity?.length!! < 2) return@route
+                if (GameController.addMemberToGame(activity, group.id, sender.id)) {
                     subject.sendMessage("已加入活动$activity")
-                }else{
+                } else {
                     subject.sendMessage("你已在活动$activity 中")
                 }
             }
-            case("退出活动"){
-                val activity = this.message.filterIsInstance<PlainText>().firstOrNull()?.
-                content?.replace("退出活动 ","")
-                if (activity?.length!! < 2)return@route
-                if(GameController.rollbackGame(activity,sender.id,group.id)){
+            case("退出活动") {
+                val activity = this.message.filterIsInstance<PlainText>().firstOrNull()?.content?.replace("退出活动 ", "")
+                if (activity?.length!! < 2) return@route
+                if (GameController.rollbackGame(activity, sender.id, group.id)) {
                     subject.sendMessage("退出成功")
-                }else{
+                } else {
                     subject.sendMessage("退出失败，你没有加入这个活动或该活动不存在")
                 }
             }
-            case("活动列表"){
+            case("活动列表") {
                 var activityList = buildString {
                     GameController.getGroupGamesRowSet(group.id).query.forEach {
-                            append(it[Game.name])
-                            append("\n")
+                        append(it[Game.name])
+                        append("\n")
                     }
                 }
-                if (activityList.length < 2){
+                if (activityList.length < 2) {
                     activityList = "此群暂无活动"
                 }
                 subject.sendMessage(activityList)
             }
-            case("来","召唤活动参与者们"){
+            case("来", "召唤活动参与者们") {
                 val activity: String = message.filterIsInstance<PlainText>()
-                    .firstOrNull()?.content?.replace("来 ","") ?: return@route
+                    .firstOrNull()?.content?.replace("来 ", "") ?: return@route
                 val members = buildMessageChain {
-                    GameController.getGameMember(activity,group.id).query.forEach {
+                    GameController.getGameMember(activity, group.id).query.forEach {
                         +At(it[User.qq] as Long)
                     }
                 }
-                if (members.size <1)return@route
+                if (members.size < 1) return@route
                 subject.sendMessage(members)
             }
-            case("删除活动"){
-                val activity = this.message.filterIsInstance<PlainText>().firstOrNull()?.
-                content?.replace("删除活动 ","")?: return@route
-                if(!GameController.deleteGame(activity,group.id)){
+            case("删除活动") {
+                val activity = this.message.filterIsInstance<PlainText>().firstOrNull()?.content?.replace("删除活动 ", "")
+                    ?: return@route
+                if (!GameController.deleteGame(activity, group.id)) {
                     subject.sendMessage("不存在此活动")
-                }else{
+                } else {
                     subject.sendMessage("删除成功")
                 }
             }
@@ -203,13 +193,13 @@ class BotGroupMsgListener : BaseListeners() {
             }
             case("涩图来", "ST") {
                 if (group.id in CommandGroupList.animationGroupList) {
-                    PicManager.stImgSend(subject,event)
+                    PicManager.stImgSend(subject, event)
                 }
                 return@route
             }
             case("图来", "二次元图") {
                 if (group.id in CommandGroupList.animationGroupList) {
-                    PicManager.imgSend(subject,event)
+                    PicManager.imgSend(subject, event)
                     return@route
                 }
             }
@@ -219,6 +209,21 @@ class BotGroupMsgListener : BaseListeners() {
             case("帮助", "获取帮助指令") {
                 subject.sendMessage(getHelp())
                 return@route
+            }
+            case("求签") {
+                var things:String? = message.findIsInstance<PlainText>()?.content?.replace("求签","")
+                if (things?.isEmpty() == true) things = null
+                val luckyOrUnLucky = Lucky.getLuckyOrUnLucky(sender.id,things)
+                val degree = Lucky.getDraw(sender.id,things)
+                event.subject.sendMessage(buildMessageChain {
+                    append(At(sender))
+                    append(
+                        "今天是${CommandGroupList.calendar.get(Calendar.MONTH) + 1}月" +
+                                "${CommandGroupList.calendar.get(Calendar.DAY_OF_MONTH)}日," +
+                                "你所求 ${things ?: "今日整体运势"} 签的结果为" +
+                                "${degree}${luckyOrUnLucky}"
+                    )
+                })
             }
             // 根据问题名称获取回答
             val tryGetAnswer = QuestionController.searchQuestion(
@@ -254,15 +259,14 @@ class BotGroupMsgListener : BaseListeners() {
             }
             if (event.group.id in CommandGroupList.managerGroupList) {
                 if (event.sender.permission.ordinal == 0
-                    && event.sender.id != AppConfig.getInstance().SuperUser
+                    && event.sender.id != AppConfig.getInstance().superUser
                 ) {
                     return@route
                 }
             }
-            case("添加问题", "添加问题",false) {
+            case("添加问题", "添加问题", false) {
                 val question = event.message
-                    .filterIsInstance<PlainText>().firstOrNull()?.
-                    content?.replace("添加问题", "")?.replace(" ", "")
+                    .filterIsInstance<PlainText>().firstOrNull()?.content?.replace("添加问题", "")?.replace(" ", "")
                 if (question in helpMap.keys) {
                     subject.sendMessage("问题与模块名冲突！,模块名：${helpMap[question]}")
                     return@route
@@ -300,7 +304,7 @@ class BotGroupMsgListener : BaseListeners() {
                 }
                 return@route
             }
-            case("修改问题", "修改一个问题",false) {
+            case("修改问题", "修改一个问题", false) {
                 var question = event.message
                     .filterIsInstance<PlainText>().firstOrNull()?.toString()?.replace("修改问题", "")
                     ?.replace(" ", "")
@@ -334,10 +338,9 @@ class BotGroupMsgListener : BaseListeners() {
                 subject.sendMessage("问题$question 不存在")
                 return@route
             }
-            case("删除问题", "删除一个问题",false) {
+            case("删除问题", "删除一个问题", false) {
                 val question = event.message
-                    .filterIsInstance<PlainText>().firstOrNull()?.content?.
-                    replace(" ", "")?.replace("删除问题", "")
+                    .filterIsInstance<PlainText>().firstOrNull()?.content?.replace(" ", "")?.replace("删除问题", "")
                 var query = QuestionController.searchQuestion(question!!, group.id)
                 if (query == null) {
                     val id = question?.replace("#", "")?.toInt()
@@ -351,7 +354,7 @@ class BotGroupMsgListener : BaseListeners() {
                 }
                 return@route
             }
-            case("同步问答", "同步不同群的问答消息会将本群问题覆盖",false) {
+            case("同步问答", "同步不同群的问答消息会将本群问题覆盖", false) {
                 val signGroup = event.message
                     .filterIsInstance<PlainText>().firstOrNull()?.content
                 try {

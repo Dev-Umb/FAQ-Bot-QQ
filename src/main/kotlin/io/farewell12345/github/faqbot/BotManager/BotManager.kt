@@ -28,6 +28,7 @@ object CommandGroupList {
     lateinit var disRepetitionGroupList:LinkedList<Long>
     lateinit var animationGroupList:LinkedList<Long>
     lateinit var forwardMessageGroup:HashMap<Long,Boolean>
+    val calendar: Calendar = Calendar.getInstance()
     fun init(){
         welcomeGroupList = LinkedList()
         managerGroupList = LinkedList()
@@ -45,8 +46,8 @@ object BotsManager : CoroutineScope,EventListener {
     val task = TimerSessionManager()  // 命令调度器
     suspend fun loginBot():Bot {
         oneBot =  BotFactory.newBot(
-                qq = AppConfig.getInstance().BotQQ.toLong(),
-                password = AppConfig.getInstance().BotPwd
+                qq = AppConfig.getInstance().botQQ.toLong(),
+                password = AppConfig.getInstance().botPwd
         ) {
             this.protocol = BotConfiguration.MiraiProtocol.ANDROID_PAD
             val deviceInfoFolder = File("devices")
@@ -54,7 +55,7 @@ object BotsManager : CoroutineScope,EventListener {
                 deviceInfoFolder.mkdir()
             }
             fileBasedDeviceInfo(File(deviceInfoFolder,
-                    "${AppConfig.getInstance().BotQQ.toLong()}.json").absolutePath)
+                    "${AppConfig.getInstance().botQQ.toLong()}.json").absolutePath)
             botLoggerSupplier = { _ ->
                 MiraiLogger.create("Bot")
             }

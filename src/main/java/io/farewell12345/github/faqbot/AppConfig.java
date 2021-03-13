@@ -5,7 +5,6 @@ import org.yaml.snakeyaml.Yaml;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.Map;
 
 import static io.farewell12345.github.faqbot.DTO.model.DBUntilKt.logger;
@@ -15,12 +14,14 @@ public class AppConfig {
     public String dbUrl;
     public String dbUser;
     public String dbPwd;
-    public Long BotQQ;
-    public String BotPwd;
-    public Long SuperUser;
+    public Long botQQ;
+    public String botPwd;
+    public Long superUser;
     public String gameAPI;
     public String gameDBUrl;
-    public String[] DisRepetitionScence = new String[]{"复 读 禁 止", "禁 止 复 读"};
+    public String[] disRepetitionScence = new String[]{"复 读 禁 止", "禁 止 复 读"};
+    public String[] draws = {"大","中","小"};
+    public String[] luckyOrUnLucky = {"吉","凶"};
     private AppConfig() throws FileNotFoundException {
         Yaml yml = new Yaml();
         Map<String, Object> data = yml.load(new FileReader( new File("config.yml")));
@@ -32,9 +33,9 @@ public class AppConfig {
         gameAPI = (String) data.get("GameAPI");
         dbUser= (String) data.get("dbUser");
         dbPwd= (String) data.get("dbPwd");
-        SuperUser = Long.valueOf((String) data.get("superUser"));
-        BotQQ= Long.valueOf((String) data.get("botQQ"));
-        BotPwd= (String) data.get("botPwd");
+        superUser = Long.valueOf((String) data.get("superUser"));
+        botQQ = Long.valueOf((String) data.get("botQQ"));
+        botPwd = (String) data.get("botPwd");
         logger().info("配置加载完成！"+dbUrl);
     }
 
@@ -45,12 +46,3 @@ public class AppConfig {
         return INSTANCE;
     }
 }
-//class main {
-//    public static void main(String[] args) {
-//        try {
-//            AppConfig.getInstance();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//}

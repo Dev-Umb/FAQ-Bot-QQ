@@ -211,9 +211,8 @@ class BotGroupMsgListener : BaseListeners() {
                 return@route
             }
             case("求签") {
-                var things:String? = message.findIsInstance<PlainText>()?.content?.replace("求签","")
+                var things:String? = message.findIsInstance<PlainText>()?.content?.replaceFirst("求签","")?.replace(" ","")
                 if (things?.isEmpty() == true) things = null
-                val luckyOrUnLucky = Lucky.getLuckyOrUnLucky(sender.id,things)
                 val degree = Lucky.getDraw(sender.id,things)
                 event.subject.sendMessage(buildMessageChain {
                     append(At(sender))
@@ -221,7 +220,7 @@ class BotGroupMsgListener : BaseListeners() {
                         "今天是${CommandGroupList.calendar.get(Calendar.MONTH) + 1}月" +
                                 "${CommandGroupList.calendar.get(Calendar.DAY_OF_MONTH)}日," +
                                 "你所求 ${things ?: "今日整体运势"} 签的结果为" +
-                                "${degree}${luckyOrUnLucky}"
+                                "${degree}"
                     )
                 })
             }

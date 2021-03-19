@@ -28,7 +28,6 @@ object CommandGroupList {
     lateinit var disRepetitionGroupList:LinkedList<Long>
     lateinit var animationGroupList:LinkedList<Long>
     lateinit var forwardMessageGroup:HashMap<Long,Boolean>
-    val calendar: Calendar = Calendar.getInstance()
     fun init(){
         welcomeGroupList = LinkedList()
         managerGroupList = LinkedList()

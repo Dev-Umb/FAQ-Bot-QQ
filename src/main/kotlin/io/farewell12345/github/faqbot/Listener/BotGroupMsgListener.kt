@@ -217,8 +217,8 @@ class BotGroupMsgListener : BaseListeners() {
                 event.subject.sendMessage(buildMessageChain {
                     append(At(sender))
                     append(
-                        "今天是${CommandGroupList.calendar.get(Calendar.MONTH) + 1}月" +
-                                "${CommandGroupList.calendar.get(Calendar.DAY_OF_MONTH)}日," +
+                        "今天是${Calendar.getInstance().get(Calendar.MONTH) + 1}月" +
+                                "${Calendar.getInstance().get(Calendar.DAY_OF_MONTH)}日," +
                                 "你所求 ${things ?: "今日整体运势"} 签的结果为" +
                                 "${degree}"
                     )

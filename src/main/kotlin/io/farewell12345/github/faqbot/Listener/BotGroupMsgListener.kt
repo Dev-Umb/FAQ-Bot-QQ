@@ -352,7 +352,7 @@ class BotGroupMsgListener : BaseListeners() {
             }
             case("同步问答", "同步不同群的问答消息会将本群问题覆盖", false) {
                 val signGroup = event.message
-                    .filterIsInstance<PlainText>().firstOrNull()?.content
+                    .filterIsInstance<PlainText>().firstOrNull()?.content?.replace("同步问答 ","")
                 try {
                     val groupID = signGroup!!.toLong()
                     val questions = DB.database.from(Question)

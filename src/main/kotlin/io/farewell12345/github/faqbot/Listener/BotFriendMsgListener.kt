@@ -82,6 +82,10 @@ class BotFriendMsgListener : BaseListeners() {
                 PicManager.imgSend(subject, event)
                 return@route
             }
+            case("帮助", "获取帮助指令") {
+                subject.sendMessage(getHelp())
+                return@route
+            }
             val forwardList = ForwardController.getForwardList(user.id)
             var num = 0
             if (forwardList.isNotEmpty()) {

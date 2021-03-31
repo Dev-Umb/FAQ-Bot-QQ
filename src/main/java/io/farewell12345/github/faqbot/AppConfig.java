@@ -20,7 +20,8 @@ public class AppConfig {
     public String gameAPI;
     public String gameDBUrl;
     public String[] disRepetitionScence = new String[]{"复 读 禁 止", "禁 止 复 读"};
-    public String[] draws = {"大吉","大凶","小吉","吉大于凶","凶大于吉","小凶","中凶","中吉"};
+    public String[] badOrGood = {"凶","吉"};
+    public String[] draws = {"大","中","小"};
     private AppConfig() throws FileNotFoundException {
         Yaml yml = new Yaml();
         Map<String, Object> data = yml.load(new FileReader( new File("config.yml")));

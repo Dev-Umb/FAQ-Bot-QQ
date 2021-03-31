@@ -206,10 +206,7 @@ class BotGroupMsgListener : BaseListeners() {
             case("普法", "法律") {
                 subject.sendMessage(FuckOkhttp("http://holk.tech:8886").getData())
             }
-            case("帮助", "获取帮助指令") {
-                subject.sendMessage(getHelp())
-                return@route
-            }
+
             case("求签") {
                 var things:String? = message.findIsInstance<PlainText>()?.content?.replaceFirst("求签","")?.replace(" ","")
                 if (things?.isEmpty() == true) things = null
@@ -381,9 +378,13 @@ class BotGroupMsgListener : BaseListeners() {
                     }
                     subject.sendMessage("同步成功，共同步$questionNum 条问题记录")
                 } catch (e: Exception) {
-                    subject.sendMessage("请输入有效群号")
+                    subject.sendMessage("请输入有效群号${e.message}")
                     return@route
                 }
+            }
+            case("帮助", "获取帮助指令") {
+                subject.sendMessage(getHelp())
+                return@route
             }
         }
     }

@@ -79,7 +79,7 @@ class CommandRoute<T : MessageEvent>(val args: List<String>?, val event: T) : Co
     }
 
     fun getHelp(): String = buildString {
-        append("指令帮助\n")
+        append("指令帮助：\n")
         helpMap.forEach { s, s2 ->
             append("${s}:${s2}\n")
         }

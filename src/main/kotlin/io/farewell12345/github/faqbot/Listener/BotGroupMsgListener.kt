@@ -208,16 +208,27 @@ class BotGroupMsgListener : BaseListeners() {
             }
 
             case("求签") {
-                var things:String? = message.findIsInstance<PlainText>()?.content?.replaceFirst("求签","")?.replace(" ","")
-                if (things?.isEmpty() == true) things = null
-                val degree = Lucky.getDraw(sender.id,things)
+                val things = buildMessageChain {
+                    if(commandText == "")
+                        commandText = "今日运势"
+                    append(commandText)
+                    event.message.forEach {
+                        if (it is PlainText) return@forEach
+                        append(it)
+                    }
+                }
+                val degree = Lucky.getDraw(sender, things)
                 event.subject.sendMessage(buildMessageChain {
                     append(At(sender))
                     append(
-                        "今天是${Calendar.getInstance().get(Calendar.MONTH) + 1}月" +
-                                "${Calendar.getInstance().get(Calendar.DAY_OF_MONTH)}日," +
-                                "你所求 ${things ?: "今日整体运势"} 签的结果为" +
-                                "${degree}"
+                        "\n今天是${Calendar.getInstance().get(Calendar.MONTH) + 1}月" +
+                                "${Calendar.getInstance().get(Calendar.DAY_OF_MONTH)}日" +
+                                "\n你所求\n"
+                    )
+                    append(things)
+                    append(
+                        "\n结果为\n" +
+                                " <${degree}>"
                     )
                 })
             }
@@ -352,7 +363,7 @@ class BotGroupMsgListener : BaseListeners() {
             }
             case("同步问答", "同步不同群的问答消息会将本群问题覆盖", false) {
                 val signGroup = event.message
-                    .filterIsInstance<PlainText>().firstOrNull()?.content?.replace("同步问答 ","")
+                    .filterIsInstance<PlainText>().firstOrNull()?.content?.replace("同步问答 ", "")
                 try {
                     val groupID = signGroup!!.toLong()
                     val questions = DB.database.from(Question)

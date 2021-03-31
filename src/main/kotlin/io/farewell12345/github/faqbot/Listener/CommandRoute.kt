@@ -7,6 +7,7 @@ import net.mamoe.mirai.contact.PermissionDeniedException
 import net.mamoe.mirai.event.events.MessageEvent
 import net.mamoe.mirai.message.data.Message
 import net.mamoe.mirai.message.data.PlainText
+import net.mamoe.mirai.message.data.findIsInstance
 import kotlin.coroutines.CoroutineContext
 
 val unCompleteValue = hashMapOf<Long, CompletableDeferred<String>>()
@@ -14,6 +15,7 @@ val unCompleteValue = hashMapOf<Long, CompletableDeferred<String>>()
 class CommandRoute<T : MessageEvent>(val args: List<String>?, val event: T) : CoroutineScope {
     val helpMap = hashMapOf<String, String>()
     var alreadyCalled = false
+    lateinit var commandText:String
     val job = Job()
     private val logger = logger()
     var errHandler: (suspend (Throwable) -> Message?)? = null
@@ -26,12 +28,17 @@ class CommandRoute<T : MessageEvent>(val args: List<String>?, val event: T) : Co
         canRepetition: Boolean = true,
         receiver: T.(List<String>?) -> Unit
     ) {
+        this.commandText = event.message
+            .findIsInstance<PlainText>()?.content
+            ?.replace(case,"")
+            ?.replace("","").toString()
         synchronized(helpMap) {
             helpMap[case] = desc
         }
         if (args?.size == 0) {
             return
         }
+
         if (!alreadyCalled && args?.find { it.replace(" ", "").equals(case) } != null) {
             if (!BotsManager.task.canUseBot(event.sender.id) && canRepetition) {
                 event.subject.sendMessage(PlainText("技能冷却中（你发这么快急着投胎嘛，要不我送你一程）"))
@@ -44,9 +51,7 @@ class CommandRoute<T : MessageEvent>(val args: List<String>?, val event: T) : Co
                     event.receiver(args.subList(1, args.size))
                 }catch (e:Exception){
                     val subject = event.subject
-                    kotlin.runCatching {
-                        subject.sendMessage(e.message!!)
-                    }
+                    subject.sendMessage(e.message!!)
                 }
             }.also {
                 handleException(it.exceptionOrNull())

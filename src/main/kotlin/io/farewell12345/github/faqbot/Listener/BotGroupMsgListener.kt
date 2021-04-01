@@ -14,6 +14,7 @@ import io.farewell12345.github.faqbot.DTO.model.QAmodel.Games.Game
 import io.farewell12345.github.faqbot.DTO.model.QAmodel.Games.User
 import io.farewell12345.github.faqbot.DTO.model.QAmodel.Question
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
+import io.farewell12345.github.faqbot.Plugin.FuckNuc.sign
 import io.farewell12345.github.faqbot.Plugin.Lucky.Lucky
 import me.liuwj.ktorm.dsl.*
 import net.mamoe.mirai.event.EventHandler
@@ -31,10 +32,12 @@ class BotGroupMsgListener : BaseListeners() {
             if (DisRepetition.thisMessageIsRepetition(event)
                 && (group.id in CommandGroupList.disRepetitionGroupList)
             ) {
-                if (event.message.firstIsInstanceOrNull<PlainText>()!!.content != AppConfig.getInstance().disRepetitionScence[0]) {
-                    subject.sendMessage(AppConfig.getInstance().disRepetitionScence[0])
+                if (event.message.firstIsInstanceOrNull<PlainText>()!!.content
+                    != config.disRepetitionScence[0]
+                ) {
+                    subject.sendMessage(config.disRepetitionScence[0])
                 } else {
-                    subject.sendMessage(AppConfig.getInstance().disRepetitionScence[1])
+                    subject.sendMessage(config.disRepetitionScence[1])
                 }
             }
             if (SessionManager.hasSession(sender.id)) {
@@ -45,7 +48,6 @@ class BotGroupMsgListener : BaseListeners() {
                 }
                 subject.sendMessage("格式有误！请检查录入答案格式")
             }
-            // 优先进行会话处理
             case("禁止转发") {
                 CommandGroupList.forwardMessageGroup[group.id] = false
                 subject.sendMessage("好")
@@ -127,7 +129,6 @@ class BotGroupMsgListener : BaseListeners() {
                     subject.sendMessage("取消会话成功！")
                 }
             }
-
             case("列表", desc = "获取此群的问题列表") {
                 val query = database
                     .from(Question)
@@ -206,14 +207,14 @@ class BotGroupMsgListener : BaseListeners() {
             case("普法", "法律") {
                 subject.sendMessage(FuckOkhttp("http://holk.tech:8886").getData())
             }
-
             case("求签") {
                 val things = buildMessageChain {
-                    if(commandText == "")
+                    if (commandText == "")
                         commandText = "今日运势"
                     append(commandText)
                     event.message.forEach {
-                        if (it is PlainText) return@forEach
+                        if (it is PlainText)
+                            return@forEach
                         append(it)
                     }
                 }
@@ -232,11 +233,9 @@ class BotGroupMsgListener : BaseListeners() {
                     )
                 })
             }
-            // 根据问题名称获取回答
             val tryGetAnswer = QuestionController.searchQuestion(
                 event.message.firstIsInstanceOrNull<PlainText>().toString(), group.id
-            )
-                ?.let {
+            )?.let {
                     QuestionController.getAnswer(it)
                 }
             if (tryGetAnswer != null) {
@@ -272,8 +271,7 @@ class BotGroupMsgListener : BaseListeners() {
                 }
             }
             case("添加问题", "添加问题", false) {
-                val question = event.message
-                    .filterIsInstance<PlainText>().firstOrNull()?.content?.replace("添加问题", "")?.replace(" ", "")
+                val question = commandText
                 if (question in helpMap.keys) {
                     subject.sendMessage("问题与模块名冲突！,模块名：${helpMap[question]}")
                     return@route
@@ -312,16 +310,14 @@ class BotGroupMsgListener : BaseListeners() {
                 return@route
             }
             case("修改问题", "修改一个问题", false) {
-                var question = event.message
-                    .filterIsInstance<PlainText>().firstOrNull()?.toString()?.replace("修改问题", "")
-                    ?.replace(" ", "")
-                var query = question?.let {
+                var question = commandText
+                var query = question.let {
                     QuestionController.searchQuestion(it, event.group.id)
                 }
                 if (query == null) {
                     try {
-                        val id = question?.replace("#", "")?.toInt()
-                        query = QuestionController.quickSearchQuestion(id!!, group)
+                        val id = question.replace("#", "").toInt()
+                        query = QuestionController.quickSearchQuestion(id, group)
                         question = query?.get(Question.question).toString()
                     } catch (e: Exception) {
                         subject.sendMessage("问题$question 不存在")
@@ -334,7 +330,7 @@ class BotGroupMsgListener : BaseListeners() {
                         user = event.sender.id,
                         session = Session(
                             user = event.sender.id,
-                            question = question!!,
+                            question = question,
                             type = "changeUpDate",
                             group = event.group.id
                         )
@@ -346,11 +342,10 @@ class BotGroupMsgListener : BaseListeners() {
                 return@route
             }
             case("删除问题", "删除一个问题", false) {
-                val question = event.message
-                    .filterIsInstance<PlainText>().firstOrNull()?.content?.replace(" ", "")?.replace("删除问题", "")
+                val question = commandText
                 var query = QuestionController.searchQuestion(question!!, group.id)
                 if (query == null) {
-                    val id = question?.replace("#", "")?.toInt()
+                    val id = question.replace("#", "")?.toInt()
                     query = QuestionController.quickSearchQuestion(id!!, group)
                 }
                 if (query != null) {
@@ -362,11 +357,10 @@ class BotGroupMsgListener : BaseListeners() {
                 return@route
             }
             case("同步问答", "同步不同群的问答消息会将本群问题覆盖", false) {
-                val signGroup = event.message
-                    .filterIsInstance<PlainText>().firstOrNull()?.content?.replace("同步问答 ", "")
+                val signGroup = commandText
                 try {
                     val groupID = signGroup!!.toLong()
-                    val questions = DB.database.from(Question)
+                    val questions = database.from(Question)
                         .select()
                         .where {
                             (Question.group eq groupID)

@@ -6,6 +6,7 @@ import io.farewell12345.github.faqbot.BotManager.PicManager
 import io.farewell12345.github.faqbot.BotManager.SessionManager
 import io.farewell12345.github.faqbot.DTO.Controller.ForwardController
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
+import io.farewell12345.github.faqbot.Plugin.FuckNuc.sign
 import kotlinx.coroutines.ObsoleteCoroutinesApi
 import net.mamoe.mirai.contact.*
 import net.mamoe.mirai.event.EventHandler
@@ -77,6 +78,15 @@ class BotFriendMsgListener : BaseListeners() {
             case("涩图来", "ST") {
                 PicManager.stImgSend(subject, event)
                 return@route
+            }
+            case("签到") {
+                try {
+                    commandText.toLong()
+                } catch (e: NumberFormatException) {
+                    subject.sendMessage("爪巴")
+                    return@route
+                }
+                subject.sendMessage(sign(commandText))
             }
             case("图来", "二次元图") {
                 PicManager.imgSend(subject, event)

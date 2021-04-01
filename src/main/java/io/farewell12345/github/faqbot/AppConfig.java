@@ -20,28 +20,31 @@ public class AppConfig {
     public String gameAPI;
     public String gameDBUrl;
     public String[] disRepetitionScence = new String[]{"复 读 禁 止", "禁 止 复 读"};
-    public String[] badOrGood = {"凶","吉"};
-    public String[] draws = {"大","中","小"};
+    public String[] badOrGood = {"凶", "吉"};
+    public String[] draws = {"大", "中", "小"};
+    public String getStudentUrl(String ID){
+        return "http://10.101.163.66:2799/sign?id="+ID;
+    }
     private AppConfig() throws FileNotFoundException {
         Yaml yml = new Yaml();
-        Map<String, Object> data = yml.load(new FileReader( new File("config.yml")));
-        dbUrl= (String) data.get("dbUrl");
-        if (dbUrl==null){
+        Map<String, Object> data = yml.load(new FileReader(new File("config.yml")));
+        dbUrl = (String) data.get("dbUrl");
+        if (dbUrl == null) {
             throw new NullPointerException("请在config.yml文件中正确配置jdbc数据库url");
         }
-        gameDBUrl =(String) data.get("gameDBUrl");
+        gameDBUrl = (String) data.get("gameDBUrl");
         gameAPI = (String) data.get("GameAPI");
-        dbUser= (String) data.get("dbUser");
-        dbPwd= (String) data.get("dbPwd");
+        dbUser = (String) data.get("dbUser");
+        dbPwd = (String) data.get("dbPwd");
         superUser = Long.valueOf((String) data.get("superUser"));
         botQQ = Long.valueOf((String) data.get("botQQ"));
         botPwd = (String) data.get("botPwd");
-        logger().info("配置加载完成！"+dbUrl);
+        logger().info("配置加载完成！" + dbUrl);
     }
 
     public static AppConfig getInstance() throws FileNotFoundException {
-        if (INSTANCE == null){
-            INSTANCE=new AppConfig();
+        if (INSTANCE == null) {
+            INSTANCE = new AppConfig();
         }
         return INSTANCE;
     }

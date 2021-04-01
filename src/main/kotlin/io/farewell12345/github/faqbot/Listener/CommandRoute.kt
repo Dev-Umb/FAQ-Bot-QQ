@@ -1,5 +1,6 @@
 package io.farewell12345.github.faqbot.Listener
 
+import io.farewell12345.github.faqbot.AppConfig
 import io.farewell12345.github.faqbot.BotManager.BotsManager
 import io.farewell12345.github.faqbot.DTO.model.logger
 import kotlinx.coroutines.*
@@ -13,12 +14,13 @@ import kotlin.coroutines.CoroutineContext
 val unCompleteValue = hashMapOf<Long, CompletableDeferred<String>>()
 
 class CommandRoute<T : MessageEvent>(val args: List<String>?, val event: T) : CoroutineScope {
+    val config = AppConfig.getInstance()
     val helpMap = hashMapOf<String, String>()
     var alreadyCalled = false
     lateinit var commandText:String
-    val job = Job()
+    private val job = Job()
     private val logger = logger()
-    var errHandler: (suspend (Throwable) -> Message?)? = null
+    private var errHandler: (suspend (Throwable) -> Message?)? = null
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Default + job
 
@@ -31,7 +33,7 @@ class CommandRoute<T : MessageEvent>(val args: List<String>?, val event: T) : Co
         this.commandText = event.message
             .findIsInstance<PlainText>()?.content
             ?.replace(case,"")
-            ?.replace("","").toString()
+            ?.replace(" ","").toString()
         synchronized(helpMap) {
             helpMap[case] = desc
         }

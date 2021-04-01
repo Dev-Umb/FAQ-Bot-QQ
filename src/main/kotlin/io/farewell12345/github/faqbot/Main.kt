@@ -25,7 +25,6 @@ suspend fun main() {
     }
 //    PicManager
     CommandGroupList.init()
-//    Timer().schedule(BotsManager.task,Date(),300)
     val logger = logger() // 打印日志
     joinAll(BotsManager.jobs) // 将BotsManager的监听事件加入协程
 }

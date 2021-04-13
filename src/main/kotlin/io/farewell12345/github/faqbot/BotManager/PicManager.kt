@@ -20,7 +20,7 @@ import java.util.*
 import java.util.concurrent.*
 
 object PicManager {
-    val LOLICON = "https://api.lolicon.app/setu/?apikey=705545485e92e380931b56"
+    val LOLICON = "https://api.lolicon.app/setu/?apikey=yourapikey"
     val TENAPI = "https://tenapi.cn/acg/"
     val MAX_PIC_SIZE = 20
     val PicPool = ThreadPoolExecutor(

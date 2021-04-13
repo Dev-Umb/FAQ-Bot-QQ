@@ -23,7 +23,7 @@ suspend fun main() {
     BaseListeners.listeners.forEach {
         bot.eventChannel.registerListenerHost(it)
     }
-//    PicManager
+    PicManager
     CommandGroupList.init()
     val logger = logger() // 打印日志
     joinAll(BotsManager.jobs) // 将BotsManager的监听事件加入协程

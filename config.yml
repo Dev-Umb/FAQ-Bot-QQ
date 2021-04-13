@@ -5,4 +5,5 @@ botQQ: "" # 机器人的QQ
 botPwd: "" # 机器人的密码
 superUser: "" # 超级管理员QQ（可写可不写）
 gameDBUrl: ""
+lolicon: "" # lolicon api
 GameAPI: "https://api.xiaoheihe.cn/game/web/all_recommend/?os_type=web&version=999.0.0&hkey=da69a1104606268883cb2301c3f02770&_time="

@@ -19,6 +19,7 @@ public class AppConfig {
     public Long superUser;
     public String gameAPI;
     public String gameDBUrl;
+    public String loliconKey;
     public String[] disRepetitionScence = new String[]{"复 读 禁 止", "禁 止 复 读"};
     public String[] badOrGood = {"凶", "吉"};
     public String[] draws = {"大", "中", "小"};
@@ -39,6 +40,7 @@ public class AppConfig {
         superUser = Long.valueOf((String) data.get("superUser"));
         botQQ = Long.valueOf((String) data.get("botQQ"));
         botPwd = (String) data.get("botPwd");
+        loliconKey = (String) data.get("lolicon");
         logger().info("配置加载完成！" + dbUrl);
     }
 

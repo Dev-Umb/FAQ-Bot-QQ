@@ -1,6 +1,7 @@
 package io.farewell12345.github.faqbot.BotManager
 
 import com.google.gson.GsonBuilder
+import io.farewell12345.github.faqbot.AppConfig
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Pic
 import io.farewell12345.github.faqbot.DTO.model.dataclass.SexImg
 import io.farewell12345.github.faqbot.DTO.model.logger
@@ -20,7 +21,7 @@ import java.util.*
 import java.util.concurrent.*
 
 object PicManager {
-    val LOLICON = "https://api.lolicon.app/setu/?apikey=yourapikey"
+    val LOLICON = "https://api.lolicon.app/setu/?apikey= ${AppConfig.getInstance().loliconKey}"
     val TENAPI = "https://tenapi.cn/acg/"
     val MAX_PIC_SIZE = 20
     val PicPool = ThreadPoolExecutor(

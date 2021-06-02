@@ -1,20 +1,16 @@
 package io.farewell12345.github.faqbot.Listener
 
 
-import io.farewell12345.github.faqbot.FuckOkhttp.FuckOkhttp
 import io.farewell12345.github.faqbot.AppConfig
-import io.farewell12345.github.faqbot.BotManager.SessionManager
 import io.farewell12345.github.faqbot.BotManager.*
 import io.farewell12345.github.faqbot.DTO.Controller.GameController
 import io.farewell12345.github.faqbot.DTO.Controller.QuestionController
-import io.farewell12345.github.faqbot.DTO.DB.DB
 import io.farewell12345.github.faqbot.DTO.DB.DB.database
 import io.farewell12345.github.faqbot.DTO.model.*
 import io.farewell12345.github.faqbot.DTO.model.QAmodel.Games.Game
 import io.farewell12345.github.faqbot.DTO.model.QAmodel.Games.User
 import io.farewell12345.github.faqbot.DTO.model.QAmodel.Question
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
-import io.farewell12345.github.faqbot.Plugin.FuckNuc.sign
 import io.farewell12345.github.faqbot.Plugin.Lucky.Lucky
 import me.liuwj.ktorm.dsl.*
 import net.mamoe.mirai.event.EventHandler
@@ -203,9 +199,6 @@ class BotGroupMsgListener : BaseListeners() {
                     PicManager.imgSend(subject, event)
                     return@route
                 }
-            }
-            case("普法", "法律") {
-                subject.sendMessage(FuckOkhttp("http://holk.tech:8886").getData())
             }
             case("求签") {
                 val things = buildMessageChain {

@@ -5,37 +5,19 @@
 ## 现有功能：
   1.群内问答
   
-  2.反群内复读
-  
-  3.每日游戏推荐（数据来源：小黑盒,接口：https://api.xiaoheihe.cn/game/web/all_recommend/?os_type=web&version=999.0.0&hkey=da69a1104606268883cb2301c3f02770&_time=）
-  
-  4.群组内抽签创建
-  
-  5.消息多群转发
-  
-  6.图片边缘提取（图片转线稿，需要把Python边缘计算服务端跑起来）
-  
-  7.涩图（需要手动去创建LoliconAPIKey，具体如何创建请百度LoliconAPI）
-  
-  8.群内活动群组创建
-  
-  9.求签运势,测试今日某一件事的运气
+  2.迎新
 
 ## 使用方法：
-  1. 首先创建名为faq的数据库（其实叫啥都行啦，最后config文件中的DBUrl正确即可），将项目中SQL文件夹中的question.sql和welcome.sql导入数据库中
-  2. 创建nuc_game数据库（叫啥都行gameDBUrl正确即可），将SQL文件夹下的game_sql导入创建好的游戏数据库
-3. 创建config.yml文件，填入下面的配置：
+  1. 首先创建名为faq的数据库（其实叫啥都行啦，最后config文件中的DBUrl正确即可），将项目中SQL文件夹中的question.sql和welcome.sql导入数据库中  
+2. 创建config.yml文件，填入下面的配置：
       ```yaml
         dbUrl: "" # 你的数据库端口链接，示例：“jdbc:mysql://localhost:3306/faq?serverTimezone=UTC&characterEncoding=UTF-8
         dbUser: "" # 数据库用户名
         dbPwd: "" # 数据库密码
         botQQ: "" # 机器人的QQ
         botPwd: "" # 机器人的密码
-        gameDBUrl: "" # 群内游戏群组数据库端口链接，示例： “jdbc:mysql://localhost:3306/nuc_game?serverTimezone=UTC&characterEncoding=UTF-8”
-        GameAPI: "" # 小黑盒的游戏数据接口
-        lolicon: "lolicon api key" # lolicon的apikey，用于请求涩图
       ``` 
-  4. 打开数据库，编译Main.Kt开始使用
+  3. 打开数据库，编译Main.Kt开始使用
   
 ## 指令菜单
 **注意：以下功能部分需要使用.command 指令开启**
@@ -45,10 +27,6 @@
 4. \# 问题id （快速索引功能）
 5. 列表（群内所有问题列表）
 6. 同步问答 目标同步群号 （同步不同群的问答）
-7. 游戏推荐（需要开启指令）
-8. 创建抽签（创建一个抽签活动，格式：创建抽签 数字1,数字2）
-9. 通知转发（需加bot为好友，然后群内成员向bot发送私聊消息即可自动转发到群中，可用于相同消息多群转发或通知发布）
-10. 线稿（调用图片边缘提取服务，如果要正常使用该服务，你需要去Python目录下将线稿服务端跑起来，关于线稿效果参考我的[这篇博客](https://umb.ink/2021/04/12/%E8%BE%B9%E7%BC%98%E6%8F%90%E5%8F%96-%E5%9B%BE%E7%89%87%E8%BD%AC%E7%BA%BF%E7%A8%BF/)）
 
 **(详细可见BotGroupCommandListener.Kt文件**
 

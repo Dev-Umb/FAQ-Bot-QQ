@@ -17,12 +17,6 @@ public class AppConfig {
     public Long botQQ;
     public String botPwd;
     public Long superUser;
-    public String gameAPI;
-    public String gameDBUrl;
-    public String loliconKey;
-    public String[] disRepetitionScence = new String[]{"复 读 禁 止", "禁 止 复 读"};
-    public String[] badOrGood = {"凶", "吉"};
-    public String[] draws = {"大", "中", "小"};
 
     public String getStudentUrl(String ID) {
         return "http://10.101.163.66:2799/sign?id=" + ID;
@@ -42,11 +36,7 @@ public class AppConfig {
         botPwd = (String) data.get("botPwd");
         try {
             superUser = Long.valueOf((String) data.get("superUser"));
-            loliconKey = (String) data.get("lolicon");
-            gameDBUrl = (String) data.get("gameDBUrl");
-            gameAPI = (String) data.get("GameAPI");
         } catch (Exception ignored) {
-            logger().info("缺失gameDBUrl，gameAPI、loliconKey可能导致Bot某些功能无法正常使用");
         }
 
         logger().info("配置加载完成！" + dbUrl);

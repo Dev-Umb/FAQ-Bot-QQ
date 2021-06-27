@@ -24,16 +24,10 @@ internal val appJob = Job()
 object CommandGroupList {
     lateinit var welcomeGroupList:LinkedList<Long>
     lateinit var managerGroupList:LinkedList<Long>
-    lateinit var gameMorningGroupList:LinkedList<Long>
-    lateinit var disRepetitionGroupList:LinkedList<Long>
-    lateinit var animationGroupList:LinkedList<Long>
     lateinit var forwardMessageGroup:HashMap<Long,Boolean>
     fun init(){
         welcomeGroupList = LinkedList()
         managerGroupList = LinkedList()
-        gameMorningGroupList = LinkedList()
-        disRepetitionGroupList = LinkedList()
-        animationGroupList  = LinkedList()
         forwardMessageGroup = HashMap()
     }
 }
@@ -48,7 +42,7 @@ object BotsManager : CoroutineScope,EventListener {
                 qq = AppConfig.getInstance().botQQ.toLong(),
                 password = AppConfig.getInstance().botPwd
         ) {
-            this.protocol = BotConfiguration.MiraiProtocol.ANDROID_PAD
+            this.protocol = BotConfiguration.MiraiProtocol.ANDROID_PHONE
             val deviceInfoFolder = File("devices")
             if (!deviceInfoFolder.exists()) {
                 deviceInfoFolder.mkdir()

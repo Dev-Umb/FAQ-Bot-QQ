@@ -3,15 +3,11 @@ package io.farewell12345.github.faqbot.Listener
 
 import io.farewell12345.github.faqbot.AppConfig
 import io.farewell12345.github.faqbot.BotManager.*
-import io.farewell12345.github.faqbot.DTO.Controller.GameController
 import io.farewell12345.github.faqbot.DTO.Controller.QuestionController
 import io.farewell12345.github.faqbot.DTO.DB.DB.database
 import io.farewell12345.github.faqbot.DTO.model.*
-import io.farewell12345.github.faqbot.DTO.model.QAmodel.Games.Game
-import io.farewell12345.github.faqbot.DTO.model.QAmodel.Games.User
 import io.farewell12345.github.faqbot.DTO.model.QAmodel.Question
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
-import io.farewell12345.github.faqbot.Plugin.Lucky.Lucky
 import me.liuwj.ktorm.dsl.*
 import net.mamoe.mirai.event.EventHandler
 import net.mamoe.mirai.event.events.GroupMessageEvent
@@ -25,17 +21,6 @@ class BotGroupMsgListener : BaseListeners() {
     @EventHandler
     suspend fun GroupMessageEvent.onEvent() {
         route(prefix = "", delimiter = " ") {
-            if (DisRepetition.thisMessageIsRepetition(event)
-                && (group.id in CommandGroupList.disRepetitionGroupList)
-            ) {
-                if (event.message.firstIsInstanceOrNull<PlainText>()!!.content
-                    != config.disRepetitionScence[0]
-                ) {
-                    subject.sendMessage(config.disRepetitionScence[0])
-                } else {
-                    subject.sendMessage(config.disRepetitionScence[1])
-                }
-            }
             if (SessionManager.hasSession(sender.id)) {
                 if (SessionManager.performSession(event)) {
 
@@ -44,81 +29,7 @@ class BotGroupMsgListener : BaseListeners() {
                 }
                 subject.sendMessage("格式有误！请检查录入答案格式")
             }
-            case("禁止转发") {
-                CommandGroupList.forwardMessageGroup[group.id] = false
-                subject.sendMessage("好")
-                return@route
-            }
-            case("线稿", "图片转线稿") {
-                if (SessionManager.hasSession(sender.id)) {
-                    subject.sendMessage("你有正在进行的会话")
-                    return@route
-                }
-                SessionManager.addSession(
-                    user = sender.id,
-                    session = Session(
-                        user = sender.id,
-                        type = "Sobel",
-                        group = group.id
-                    )
-                )
-                subject.sendMessage("请发送你的图片")
-            }
-            case("可以转发") {
-                CommandGroupList.forwardMessageGroup[group.id] = true
-                subject.sendMessage("好")
-                return@route
-            }
-            case("加入活动", "将该用户加入目标活动，如果没有活动，则创建新的活动") {
-                val activity = this.message.filterIsInstance<PlainText>().firstOrNull()?.content?.replace("加入活动 ", "")
-                if (activity?.length!! < 2) return@route
-                if (GameController.addMemberToGame(activity, group.id, sender.id)) {
-                    subject.sendMessage("已加入活动$activity")
-                } else {
-                    subject.sendMessage("你已在活动$activity 中")
-                }
-            }
-            case("退出活动") {
-                val activity = this.message.filterIsInstance<PlainText>().firstOrNull()?.content?.replace("退出活动 ", "")
-                if (activity?.length!! < 2) return@route
-                if (GameController.rollbackGame(activity, sender.id, group.id)) {
-                    subject.sendMessage("退出成功")
-                } else {
-                    subject.sendMessage("退出失败，你没有加入这个活动或该活动不存在")
-                }
-            }
-            case("活动列表") {
-                var activityList = buildString {
-                    GameController.getGroupGamesRowSet(group.id).query.forEach {
-                        append(it[Game.name])
-                        append("\n")
-                    }
-                }
-                if (activityList.length < 2) {
-                    activityList = "此群暂无活动"
-                }
-                subject.sendMessage(activityList)
-            }
-            case("来", "召唤活动参与者们") {
-                val activity: String = message.filterIsInstance<PlainText>()
-                    .firstOrNull()?.content?.replace("来 ", "") ?: return@route
-                val members = buildMessageChain {
-                    GameController.getGameMember(activity, group.id).query.forEach {
-                        +At(it[User.qq] as Long)
-                    }
-                }
-                if (members.size < 1) return@route
-                subject.sendMessage(members)
-            }
-            case("删除活动") {
-                val activity = this.message.filterIsInstance<PlainText>().firstOrNull()?.content?.replace("删除活动 ", "")
-                    ?: return@route
-                if (!GameController.deleteGame(activity, group.id)) {
-                    subject.sendMessage("不存在此活动")
-                } else {
-                    subject.sendMessage("删除成功")
-                }
-            }
+
             case("取消", "停止会话录入") {
                 if (SessionManager.hasSession(event.sender.id)) {
                     removeQ(event.sender.id)
@@ -139,98 +50,11 @@ class BotGroupMsgListener : BaseListeners() {
                 })
                 return@route
             }
-            case("删除抽签", "删除抽签") {
-                DrawManager.deleteDraw(group.id)
-                subject.sendMessage("删除成功！")
-                return@route
-            }
-            case("创建抽签", "创建抽签") {
-                val signGroup = event.message.filterIsInstance<PlainText>()[0].content
-                    .replace("创建抽签", "").replace(" ", "")
-                val numList = signGroup.split(",")
-                if (numList.size == 2) {
-                    val star = numList[0].toInt()
-                    val end = numList[1].toInt()
-                    if (DrawManager.createDraw(group.id, star, end)) {
-                        subject.sendMessage("创建成功！")
-                        return@route
-                    } else {
-                        subject.sendMessage("创建失败，或已有抽签活动在进行中")
-                        return@route
-                    }
-                } else {
-                    subject.sendMessage("只能包括开始和结束两个参数！")
-                }
-                return@route
-            }
-            case("抽签", "群内抽签设置") {
-                val x = DrawManager.getInt(group.id)
-                if (x == -1) {
-                    subject.sendMessage("暂无抽签活动或本次抽签已经结束！")
-                    return@route
-                }
-                subject.sendMessage(At(event.sender).plus(x.toString()))
-            }
-            case("游戏推荐", "游戏推荐") {
-                if (event.group.id !in CommandGroupList.gameMorningGroupList)
-                    return@route
-                val GameIndex = GameManage.getGame()
-                subject.sendMessage(buildString {
-                    append(
-                        "<%s>\n现价：%s\n评分：%s\n平台：%s\n点评：%s".format(
-                            GameIndex.game.name,
-                            GameIndex.game.price.current,
-                            GameIndex.game.score,
-                            GameIndex.game.gameType,
-                            GameIndex.description
-                        )
-                    )
-                })
-                return@route
-            }
-            case("涩图来", "ST") {
-                if (group.id in CommandGroupList.animationGroupList) {
-                    PicManager.stImgSend(subject, event)
-                }
-                return@route
-            }
-            case("图来", "二次元图") {
-                if (group.id in CommandGroupList.animationGroupList) {
-                    PicManager.imgSend(subject, event)
-                    return@route
-                }
-            }
-            case("求签") {
-                val things = buildMessageChain {
-                    if (commandText == "")
-                        commandText = "今日运势"
-                    append(commandText)
-                    event.message.forEach {
-                        if (it is PlainText)
-                            return@forEach
-                        append(it)
-                    }
-                }
-                val degree = Lucky.getDraw(sender, things)
-                event.subject.sendMessage(buildMessageChain {
-                    append(At(sender))
-                    append(
-                        "\n今天是${Calendar.getInstance().get(Calendar.MONTH) + 1}月" +
-                                "${Calendar.getInstance().get(Calendar.DAY_OF_MONTH)}日" +
-                                "\n你所求\n"
-                    )
-                    append(things)
-                    append(
-                        "\n结果为\n" +
-                                " <${degree}>"
-                    )
-                })
-            }
             val tryGetAnswer = QuestionController.searchQuestion(
                 event.message.firstIsInstanceOrNull<PlainText>().toString(), group.id
             )?.let {
-                    QuestionController.getAnswer(it)
-                }
+                QuestionController.getAnswer(it)
+            }
             if (tryGetAnswer != null) {
                 subject.sendMessage(tryGetAnswer)
                 return@route

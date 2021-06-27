@@ -10,7 +10,6 @@ package io.farewell12345.github.faqbot
 
 import io.farewell12345.github.faqbot.BotManager.BotsManager
 import io.farewell12345.github.faqbot.BotManager.CommandGroupList
-import io.farewell12345.github.faqbot.BotManager.PicManager
 import io.farewell12345.github.faqbot.DTO.DB.DB
 import io.farewell12345.github.faqbot.Listener.BaseListeners
 import io.farewell12345.github.faqbot.DTO.model.logger

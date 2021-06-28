@@ -23,7 +23,6 @@ class BotGroupMsgListener : BaseListeners() {
         route(prefix = "", delimiter = " ") {
             if (SessionManager.hasSession(sender.id)) {
                 if (SessionManager.performSession(event)) {
-
                     subject.sendMessage("录入成功！任务正在处理，请稍等")
                     return@route
                 }
@@ -93,7 +92,7 @@ class BotGroupMsgListener : BaseListeners() {
                     subject.sendMessage("问题与模块名冲突！,模块名：${helpMap[question]}")
                     return@route
                 }
-                if (question!!.isEmpty())
+                if (question.isEmpty())
                     return@route
                 val furry = Regex("""#\d""")
                 if (furry.matches(question)) {

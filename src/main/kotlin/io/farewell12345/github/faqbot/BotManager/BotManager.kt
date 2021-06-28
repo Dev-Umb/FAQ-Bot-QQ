@@ -22,13 +22,11 @@ import kotlin.coroutines.CoroutineContext
 internal val appJob = Job()
 
 object CommandGroupList {
-    lateinit var welcomeGroupList:LinkedList<Long>
-    lateinit var managerGroupList:LinkedList<Long>
-    lateinit var forwardMessageGroup:HashMap<Long,Boolean>
+    lateinit var welcomeGroupList:ArrayList<Long>
+    lateinit var managerGroupList:ArrayList<Long>
     fun init(){
-        welcomeGroupList = LinkedList()
-        managerGroupList = LinkedList()
-        forwardMessageGroup = HashMap()
+        welcomeGroupList = ArrayList()
+        managerGroupList = ArrayList()
     }
 }
 

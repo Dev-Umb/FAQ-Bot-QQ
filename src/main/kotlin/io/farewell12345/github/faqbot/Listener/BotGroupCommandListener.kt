@@ -30,14 +30,14 @@ class BotGroupCommandListener:BaseListeners() {
                 return@route
             }
             case("manage", "仅限管理员进行操作",false) {
-                if (event.group.id !in CommandGroupList.welcomeGroupList) {
+                if (event.group.id !in CommandGroupList.managerGroupList) {
                     CommandGroupList.managerGroupList.add(event.group.id)
                 }
                 subject.sendMessage("开启词条管理！")
                 return@route
             }
             case("dismanage", "关闭仅限管理员进行操作",false) {
-                if (event.group.id in CommandGroupList.welcomeGroupList) {
+                if (event.group.id in CommandGroupList.managerGroupList) {
                     CommandGroupList.managerGroupList.remove(event.group.id)
                 }
                 subject.sendMessage("关闭词条管理！")

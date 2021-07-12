@@ -10,7 +10,6 @@ import me.liuwj.ktorm.dsl.*
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.contact.Group
 import net.mamoe.mirai.event.events.GroupMessageEvent
-import net.mamoe.mirai.event.events.MessageEvent
 import net.mamoe.mirai.message.data.*
 import net.mamoe.mirai.utils.MiraiInternalApi
 import java.lang.Exception
@@ -39,14 +38,14 @@ object QuestionController {
     private fun upDateAnswer(answer: Answer, session: Session):Boolean{
         val gson = Gson()
         val json = gson.toJson(answer)
-        if (session.question == answer.text){
+        if (session.data == answer.text){
             return false
         }
         DB.database.update(Question) {
             it.answer to json
             it.lastEditUser to session.user
             where {
-                (Question.question eq session.question) and (Question.group eq session.group.id)
+                (Question.question eq session.data) and (Question.group eq session.group.id)
             }
         }
         return true

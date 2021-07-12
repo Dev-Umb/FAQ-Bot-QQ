@@ -23,7 +23,7 @@ object SessionManager {
         if (Sessions[id]?.type == "addUpDate") {
             QuestionController.deleteQuestion(
                 QuestionController.searchQuestion(
-                    Sessions[id]!!.question,
+                    Sessions[id]!!.data,
                     Sessions[id]!!.group
                 )!!
             )
@@ -51,14 +51,15 @@ object SessionManager {
             if (messageEvent.message.filterIsInstance<PlainText>().firstOrNull()?.content?.replace(
                     " ",
                     ""
-                ) == session.question
+                ) == session.data
             ) {
                 return false
             }
             flag = true
             when (session.type) {
                 "timerTask" -> {
-                    val time = TaskerTimeController.newTaskTimer(messageEvent.message, session.group)
+                    val atAll = (session.data == "@ALL")
+                    val time = TaskerTimeController.newTaskTimer(messageEvent.message, session.group,atAll)
                     GlobalScope.launch {
                         messageEvent.friend.sendMessage("已设置时间为${time?.time} 间隔${24}h")
                     }
@@ -78,7 +79,7 @@ object SessionManager {
             if (messageEvent.message.filterIsInstance<PlainText>().firstOrNull()?.content?.replace(
                     " ",
                     ""
-                ) == session.question
+                ) == session.data
             ) {
                 return false
             }

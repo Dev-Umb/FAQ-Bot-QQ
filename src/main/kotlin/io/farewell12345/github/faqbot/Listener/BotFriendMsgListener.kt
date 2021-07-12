@@ -34,7 +34,8 @@ class BotFriendMsgListener : BaseListeners() {
                     session = Session(
                         user = event.sender.id,
                         type = "timerTask",
-                        group = thisGroup
+                        group = thisGroup,
+                        data = "@ALL"
                     )
                 )
                 subject.sendMessage("请输入定时消息")

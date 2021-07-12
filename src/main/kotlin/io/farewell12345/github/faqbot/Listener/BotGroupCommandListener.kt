@@ -71,7 +71,7 @@ class BotGroupCommandListener:BaseListeners() {
                         user = event.sender.id,
                         session = Session(
                             user = event.sender.id,
-                            question = "",
+                            data = "",
                             type = "changeWelcome",
                             group = event.group
                         )

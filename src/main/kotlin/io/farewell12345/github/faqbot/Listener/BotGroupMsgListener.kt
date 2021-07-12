@@ -114,7 +114,7 @@ class BotGroupMsgListener : BaseListeners() {
                             user = event.sender.id,
                             session = Session(
                                 user = event.sender.id,
-                                question = question,
+                                data = question,
                                 type = "addUpDate",
                                 group = event.group
                             )
@@ -144,7 +144,7 @@ class BotGroupMsgListener : BaseListeners() {
                         user = event.sender.id,
                         session = Session(
                             user = event.sender.id,
-                            question = question,
+                            data = question,
                             type = "changeUpDate",
                             group = event.group
                         )

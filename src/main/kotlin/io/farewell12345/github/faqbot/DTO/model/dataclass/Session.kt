@@ -5,6 +5,6 @@ import net.mamoe.mirai.contact.Group
 data class Session(
     val group: Group,
     val user:Long,
-    val question:String = "",
+    val data:String = "",
     val type:String
 )

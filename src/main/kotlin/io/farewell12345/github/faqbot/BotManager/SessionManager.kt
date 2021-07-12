@@ -1,6 +1,7 @@
 package io.farewell12345.github.faqbot.BotManager
 
 import io.farewell12345.github.faqbot.DTO.Controller.QuestionController
+import io.farewell12345.github.faqbot.DTO.Controller.TaskerTimeController
 import io.farewell12345.github.faqbot.DTO.Controller.WelcomeController
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
 import net.mamoe.mirai.event.events.GroupMessageEvent
@@ -57,6 +58,8 @@ object SessionManager{
                     return WelcomeController.changeWelcome(messageEvent.group,
                         messageEvent.message
                     )
+                "timerTask" -> return TaskerTimeController.newTaskTimer(messageEvent.message,messageEvent.group)
+
             }
 
         }

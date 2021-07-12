@@ -18,10 +18,6 @@ public class AppConfig {
     public String botPwd;
     public Long superUser;
 
-    public String getStudentUrl(String ID) {
-        return "http://10.101.163.66:2799/sign?id=" + ID;
-    }
-
     private AppConfig() throws FileNotFoundException {
         Yaml yml = new Yaml();
         Map<String, Object> data = yml.load(new FileReader(new File("config.yml")));
@@ -29,7 +25,6 @@ public class AppConfig {
         if (dbUrl == null) {
             throw new NullPointerException("请在config.yml文件中正确配置jdbc数据库url");
         }
-
         dbUser = (String) data.get("dbUser");
         dbPwd = (String) data.get("dbPwd");
         botQQ = Long.valueOf((String) data.get("botQQ"));
@@ -38,8 +33,6 @@ public class AppConfig {
             superUser = Long.valueOf((String) data.get("superUser"));
         } catch (Exception ignored) {
         }
-
-        logger().info("配置加载完成！" + dbUrl);
     }
 
     public static AppConfig getInstance() throws FileNotFoundException {

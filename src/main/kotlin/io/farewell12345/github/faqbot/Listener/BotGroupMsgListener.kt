@@ -207,6 +207,17 @@ class BotGroupMsgListener : BaseListeners() {
                 subject.sendMessage(getHelp())
                 return@route
             }
+            case("添加定时任务","添加定时任务"){
+                SessionManager.addSession(
+                    user = event.sender.id,
+                    session = Session(
+                        user = event.sender.id,
+                        type = "timerTask",
+                        group = event.group.id
+                    )
+                )
+                subject.sendMessage("请输入定时消息")
+            }
         }
     }
 }

@@ -73,7 +73,7 @@ class BotGroupCommandListener:BaseListeners() {
                             user = event.sender.id,
                             question = "",
                             type = "changeWelcome",
-                            group = event.group.id
+                            group = event.group
                         )
                     )
                     subject.sendMessage("请输入修改后的迎新词")

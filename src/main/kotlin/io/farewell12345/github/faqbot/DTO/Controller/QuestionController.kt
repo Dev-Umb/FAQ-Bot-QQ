@@ -46,7 +46,7 @@ object QuestionController {
             it.answer to json
             it.lastEditUser to session.user
             where {
-                (Question.question eq session.question) and (Question.group eq session.group)
+                (Question.question eq session.question) and (Question.group eq session.group.id)
             }
         }
         return true
@@ -69,13 +69,13 @@ object QuestionController {
         }
         return false
     }
-    fun searchQuestion(question:String,groupID: Long): QueryRowSet? {
+    fun searchQuestion(question:String, groupID: Group): QueryRowSet? {
         try {
             val query = DB.database
                 .from(Question)
                 .select()
                 .where {
-                    (Question.question eq question) and (Question.group eq groupID)
+                    (Question.question eq question) and (Question.group eq groupID.id)
                 }
             query.forEach {
                 return it

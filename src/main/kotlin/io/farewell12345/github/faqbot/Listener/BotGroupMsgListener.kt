@@ -5,7 +5,6 @@ import io.farewell12345.github.faqbot.AppConfig
 import io.farewell12345.github.faqbot.BotManager.*
 import io.farewell12345.github.faqbot.DTO.Controller.QuestionController
 import io.farewell12345.github.faqbot.DTO.DB.DB.database
-import io.farewell12345.github.faqbot.DTO.model.*
 import io.farewell12345.github.faqbot.DTO.model.QAmodel.Question
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
 import me.liuwj.ktorm.dsl.*
@@ -13,7 +12,6 @@ import net.mamoe.mirai.event.EventHandler
 import net.mamoe.mirai.event.events.GroupMessageEvent
 import net.mamoe.mirai.message.data.*
 import net.mamoe.mirai.utils.MiraiInternalApi
-import java.util.*
 
 class BotGroupMsgListener : BaseListeners() {
     // 重写Event监听事件
@@ -50,7 +48,7 @@ class BotGroupMsgListener : BaseListeners() {
                 return@route
             }
             val tryGetAnswer = QuestionController.searchQuestion(
-                event.message.firstIsInstanceOrNull<PlainText>().toString(), group.id
+                event.message.firstIsInstanceOrNull<PlainText>().toString(), group
             )?.let {
                 QuestionController.getAnswer(it)
             }
@@ -100,7 +98,7 @@ class BotGroupMsgListener : BaseListeners() {
                     return@case
                 } else {
                     val query = question.let {
-                        QuestionController.searchQuestion(it, event.group.id)
+                        QuestionController.searchQuestion(it, event.group)
                     }
                     if (query != null) {
                         subject.sendMessage("问题${query[Question.question]}已经存在")
@@ -118,7 +116,7 @@ class BotGroupMsgListener : BaseListeners() {
                                 user = event.sender.id,
                                 question = question,
                                 type = "addUpDate",
-                                group = event.group.id
+                                group = event.group
                             )
                         )
                     }
@@ -128,7 +126,7 @@ class BotGroupMsgListener : BaseListeners() {
             case("修改问题", "修改一个问题", false) {
                 var question = commandText
                 var query = question.let {
-                    QuestionController.searchQuestion(it, event.group.id)
+                    QuestionController.searchQuestion(it, event.group)
                 }
                 if (query == null) {
                     try {
@@ -148,7 +146,7 @@ class BotGroupMsgListener : BaseListeners() {
                             user = event.sender.id,
                             question = question,
                             type = "changeUpDate",
-                            group = event.group.id
+                            group = event.group
                         )
                     )
                     subject.sendMessage("问题${query[Question.question]}已找到,请问如何修改?")
@@ -159,10 +157,10 @@ class BotGroupMsgListener : BaseListeners() {
             }
             case("删除问题", "删除一个问题", false) {
                 val question = commandText
-                var query = QuestionController.searchQuestion(question!!, group.id)
+                var query = QuestionController.searchQuestion(question, group)
                 if (query == null) {
-                    val id = question.replace("#", "")?.toInt()
-                    query = QuestionController.quickSearchQuestion(id!!, group)
+                    val id = question.replace("#", "").toInt()
+                    query = QuestionController.quickSearchQuestion(id, group)
                 }
                 if (query != null) {
                     QuestionController.deleteQuestion(query!!)
@@ -175,7 +173,7 @@ class BotGroupMsgListener : BaseListeners() {
             case("同步问答", "同步不同群的问答消息会将本群问题覆盖", false) {
                 val signGroup = commandText
                 try {
-                    val groupID = signGroup!!.toLong()
+                    val groupID = signGroup.toLong()
                     val questions = database.from(Question)
                         .select()
                         .where {
@@ -185,7 +183,7 @@ class BotGroupMsgListener : BaseListeners() {
                     for (i in questions) {
                         if (QuestionController.searchQuestion(
                                 question = i[Question.question].toString(),
-                                groupID = event.group.id
+                                groupID = event.group
                             ) == null
                         ) {
                             database.insert(Question) {
@@ -213,7 +211,7 @@ class BotGroupMsgListener : BaseListeners() {
                     session = Session(
                         user = event.sender.id,
                         type = "timerTask",
-                        group = event.group.id
+                        group = event.group
                     )
                 )
                 subject.sendMessage("请输入定时消息")

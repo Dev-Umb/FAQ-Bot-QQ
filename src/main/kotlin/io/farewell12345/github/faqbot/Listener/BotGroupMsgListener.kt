@@ -29,16 +29,15 @@ class BotGroupMsgListener : BaseListeners() {
                 && (group.id in CommandGroupList.disRepetitionGroupList)
             ) {
                 if (event.message.firstIsInstanceOrNull<PlainText>()!!.content
-                    != config.disRepetitionScence[0]
+                    != "复 读 禁 止"
                 ) {
-                    subject.sendMessage(config.disRepetitionScence[0])
+                    subject.sendMessage("复 读 禁 止")
                 } else {
-                    subject.sendMessage(config.disRepetitionScence[1])
+                    subject.sendMessage("禁 止 复 读")
                 }
             }
             if (SessionManager.hasSession(sender.id)) {
-                if (SessionManager.performSession(event)) {
-
+                if (SessionManager.performSession(event) == true) {
                     subject.sendMessage("录入成功！任务正在处理，请稍等")
                     return@route
                 }
@@ -58,7 +57,7 @@ class BotGroupMsgListener : BaseListeners() {
                     user = sender.id,
                     session = Session(
                         user = sender.id,
-                        type = "Sobel",
+                        type = "LineArt",
                         group = group.id
                     )
                 )
@@ -171,23 +170,23 @@ class BotGroupMsgListener : BaseListeners() {
                 }
                 subject.sendMessage(At(event.sender).plus(x.toString()))
             }
-            case("游戏推荐", "游戏推荐") {
-                if (event.group.id !in CommandGroupList.gameMorningGroupList)
-                    return@route
-                val GameIndex = GameManage.getGame()
-                subject.sendMessage(buildString {
-                    append(
-                        "<%s>\n现价：%s\n评分：%s\n平台：%s\n点评：%s".format(
-                            GameIndex.game.name,
-                            GameIndex.game.price.current,
-                            GameIndex.game.score,
-                            GameIndex.game.gameType,
-                            GameIndex.description
-                        )
-                    )
-                })
-                return@route
-            }
+//            case("游戏推荐", "游戏推荐") {
+//                if (event.group.id !in CommandGroupList.gameMorningGroupList)
+//                    return@route
+//                val GameIndex = GameManage.getGame()
+//                subject.sendMessage(buildString {
+//                    append(
+//                        "<%s>\n现价：%s\n评分：%s\n平台：%s\n点评：%s".format(
+//                            GameIndex.game.name,
+//                            GameIndex.game.price.current,
+//                            GameIndex.game.score,
+//                            GameIndex.game.gameType,
+//                            GameIndex.description
+//                        )
+//                    )
+//                })
+//                return@route
+//            }
             case("涩图来", "ST") {
                 if (group.id in CommandGroupList.animationGroupList) {
                     PicManager.stImgSend(subject, event)

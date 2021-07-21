@@ -17,7 +17,15 @@ class FuckOkhttp(private val url: String?) {
         val responseBody = client.newCall(requestBody).execute().body?.string()
         return GsonBuilder().create().fromJson(responseBody, NucUser::class.java)
     }
-
+    fun getBytes(): ByteArray? {
+        val request = this.url?.let {
+            Request.Builder()
+                .url(it).get()
+                .build()
+        }
+        val responseGet = request?.let { client.newCall(it).execute() }
+        return responseGet?.body?.bytes()
+    }
     fun getData(): String {
         val request = this.url?.let {
             Request.Builder()

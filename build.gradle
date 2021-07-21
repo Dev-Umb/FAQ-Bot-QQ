@@ -79,7 +79,7 @@ dependencies {
 
 //    // https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12
 //    compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.30'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.8.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
 
 
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.21'
@@ -88,7 +88,7 @@ dependencies {
     implementation group: 'org.quartz-scheduler', name: 'quartz', version: '2.3.2'
     implementation "me.liuwj.ktorm:ktorm-core:3.1.0"
 
-    implementation 'com.squareup.okhttp3:okhttp:4.8.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
     implementation "com.google.code.gson:gson:2.8.5"
 
     // https://mvnrepository.com/artifact/org.jsoup/jsoup

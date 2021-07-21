@@ -1,7 +1,0 @@
-dbUrl: "jdbc:mysql://118.178.255.237:3306/umb?serverTimezone=UTC&characterEncoding=UTF-8" # 你的数据库端口链接
-
-dbUser: "umb" # 数据库用户名
-dbPwd: "0blp59XJnU8VAD4Y" # 数据库密码
-botQQ: "3394886607" # 机器人的QQ
-botPwd: "meimima123" # 机器人的密码
-superUser: "1149558764" # 超级管理员QQ（可写可不写）

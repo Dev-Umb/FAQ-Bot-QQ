@@ -17,7 +17,8 @@ public class AppConfig {
     public Long botQQ;
     public String botPwd;
     public Long superUser;
-
+    public String fakeInfoUrl;
+    public String fakeInfoKey;
     private AppConfig() throws FileNotFoundException {
         Yaml yml = new Yaml();
         Map<String, Object> data = yml.load(new FileReader(new File("config.yml")));
@@ -30,6 +31,8 @@ public class AppConfig {
         botQQ = Long.valueOf((String) data.get("botQQ"));
         botPwd = (String) data.get("botPwd");
         try {
+            fakeInfoUrl = (String) data.get("fakeInfo");
+            fakeInfoKey = (String) data.get("fakeInfoKey");
             superUser = Long.valueOf((String) data.get("superUser"));
         } catch (Exception ignored) {
         }

@@ -24,7 +24,9 @@ internal val appJob = Job()
 object CommandGroupList {
     lateinit var welcomeGroupList:ArrayList<Long>
     lateinit var managerGroupList:ArrayList<Long>
+    lateinit var fakeInfoIdentityHashMap: HashMap<Long, Boolean>
     fun init(){
+        fakeInfoIdentityHashMap = HashMap()
         welcomeGroupList = ArrayList()
         managerGroupList = ArrayList()
     }

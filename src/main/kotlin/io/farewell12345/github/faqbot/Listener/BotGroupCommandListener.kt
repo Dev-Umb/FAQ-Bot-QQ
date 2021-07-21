@@ -36,6 +36,18 @@ class BotGroupCommandListener:BaseListeners() {
                 subject.sendMessage("开启词条管理！")
                 return@route
             }
+            case("fakeInfo", "仅限管理员进行操作",false){
+                if (CommandGroupList.fakeInfoIdentityHashMap[event.group.id] != true) {
+                    CommandGroupList.fakeInfoIdentityHashMap[event.group.id] = true
+                }
+                subject.sendMessage("开启虚假信息监测！")
+            }
+            case("closeFakeInfo", "仅限管理员进行操作",false){
+                if (CommandGroupList.fakeInfoIdentityHashMap[event.group.id] == true) {
+                    CommandGroupList.fakeInfoIdentityHashMap[event.group.id] = false
+                }
+                subject.sendMessage("开启虚假信息监测！")
+            }
             case("dismanage", "关闭仅限管理员进行操作",false) {
                 if (event.group.id in CommandGroupList.managerGroupList) {
                     CommandGroupList.managerGroupList.remove(event.group.id)

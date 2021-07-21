@@ -24,7 +24,8 @@ abstract class BaseListeners : SimpleListenerHost() {
             BotFriendMsgListener(),
             BotGroupMsgListener(),
             NewGroupMemberListener(),
-            NewFriendMember()
+            NewFriendMember(),
+            GroupMessageIdentify()
         )
     }
 }

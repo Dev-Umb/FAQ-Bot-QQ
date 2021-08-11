@@ -2,11 +2,17 @@ package io.farewell12345.github.faqbot.DTO.Controller
 
 import com.google.gson.Gson
 import io.farewell12345.github.faqbot.DTO.DB.DB
+import io.farewell12345.github.faqbot.DTO.model.QAmodel.Bind.MessageBind
+import io.farewell12345.github.faqbot.DTO.model.QAmodel.Bind.QuestionBind
 import io.farewell12345.github.faqbot.DTO.model.QAmodel.Question
+import io.farewell12345.github.faqbot.DTO.model.QAmodel.Question.message
+import io.farewell12345.github.faqbot.DTO.model.QAmodel.Question.question
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Answer
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
 import io.farewell12345.github.faqbot.DTO.model.logger
+import me.liuwj.ktorm.database.Database
 import me.liuwj.ktorm.dsl.*
+import me.liuwj.ktorm.entity.*
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.contact.Group
 import net.mamoe.mirai.event.events.GroupMessageEvent
@@ -17,10 +23,11 @@ import java.lang.NullPointerException
 import java.util.*
 
 object QuestionController {
-    private fun analyticalAnswer(query: QueryRowSet): MessageChain {
-        val answerJson = query[Question.answer]
+
+    private fun analyticalAnswer(answerJson: MessageBind,groupId:Long): MessageChain {
+//        val answerJson = query[Question.answer]
         val gson = Gson()
-        val answer =gson.fromJson(answerJson, Answer::class.java)
+        val answer:Answer =gson.fromJson(answerJson.data, Answer::class.java)
         val messageChain= buildMessageChain {
             +PlainText(answer.text)
             answer.imgList.forEach {
@@ -28,73 +35,102 @@ object QuestionController {
             }
             answer.atList.forEach {
                 Bot.instances[0]
-                    .getGroup(query[Question.group]!!)?.get(it)?.let { it1 ->
+                    .getGroup(groupId)?.get(it)?.let { it1 ->
                         append(At(it1))
                     }
             }
         }
         return messageChain
     }
-    private fun upDateAnswer(answer: Answer, session: Session):Boolean{
-        val gson = Gson()
-        val json = gson.toJson(answer)
+    private fun upDateAnswer(answer: Answer, session: Session): Boolean {
+
         if (session.data == answer.text){
             return false
         }
-        DB.database.update(Question) {
-            it.answer to json
-            it.lastEditUser to session.user
-            where {
-                (Question.question eq session.data) and (Question.group eq session.group.id)
+        val questionUpdate = DB.database.message.find {
+            it.data eq session.data
+        }?:return false
+        val question = DB.database.question.find {
+             (Question.group eq session.group.id)
+            (Question.id eq questionUpdate.questionId)
+        }?:return false
+        val gson = Gson()
+        val json = gson.toJson(answer)
+        question.lastEditUser = session.user
+        question.flushChanges()
+        var answerUpdate: MessageBind? = null
+        if (question.answer.data.isEmpty()) {
+            answerUpdate = MessageBind{
+                data=json
+                questionId=question.id
             }
+            question.answer = answerUpdate
+            DB.database.message.add(answerUpdate)
+            DB.database.question.update(question)
+        }else{
+            answerUpdate = question.answer
+            answerUpdate.data = json
+            DB.database.message.update(answerUpdate)
         }
         return true
     }
-    fun getAnswer(query: QueryRowSet): MessageChain? {
+    fun getAnswer(question: QuestionBind,groupId: Long): MessageChain? {
         try {
-            return analyticalAnswer(query)
+            val message = question.answer
+            return analyticalAnswer(message,groupId)
         }catch (e: NullPointerException){
             return null
         }
     }
-    fun deleteQuestion(question: QueryRowSet):Boolean{
+    fun getAnswer(message: MessageBind,groupId: Long): MessageChain? {
         try {
-            DB.database.delete(Question) {
-                it.id eq question[Question.id]!!.toInt()
+            return analyticalAnswer(message,groupId)
+        }catch (e: NullPointerException){
+            return null
+        }
+    }
+    fun deleteQuestion(question:QuestionBind):Boolean{
+        try {
+            DB.database.question.find {
+                it.id eq question.id
             }
+            val answer = question.answer
+            val q = question.question
+            question.delete()
+            answer.delete()
+            q.delete()
             return true
         }catch (e: Exception){
             logger().info(e)
         }
         return false
     }
-    fun searchQuestion(question:String, groupID: Group): QueryRowSet? {
-        try {
-            val query = DB.database
-                .from(Question)
-                .select()
-                .where {
-                    (Question.question eq question) and (Question.group eq groupID.id)
-                }
-            query.forEach {
-                return it
+    fun searchQuestion(question:String, groupID: Group): QuestionBind? {
+        return try {
+            var answer: QuestionBind? = null
+            DB.database.message.filter { it.data eq question }.toList().forEach {Q->
+                    answer = DB.database.question.filter {
+                        it.id eq Q.questionId
+                    }.toList()[0]?:null
+                    if (answer!=null){
+                        return@forEach
+                    }
             }
+            if (answer==null) throw Exception("null")
+            DB.database.question.filter{
+                it.group eq groupID.id
+            }.toList()[0]?:null
         }catch (e: Exception) {
-
+            null
         }
-        return null
     }
-    fun quickSearchQuestion(id:Int,group: Group): QueryRowSet? {
-        val query= DB.database
-            .from(Question)
-            .select()
-            .where {
-                (Question.id eq id) and (Question.group eq group.id)
-            }
-        query.forEach {
-            return it
-        }
-        return null
+    fun quickSearchQuestion(id:Int,group: Group): QuestionBind? {
+        return DB.database
+            .question
+            .filter{
+                (Question.id eq id)}.filter{
+                (Question.group eq group.id)
+            }.toList()[0]?:null
     }
     @MiraiInternalApi
     fun upDateQuestionAnswer(message: GroupMessageEvent, session: Session): Boolean {
@@ -125,4 +161,5 @@ object QuestionController {
         }
         return false
     }
+
 }

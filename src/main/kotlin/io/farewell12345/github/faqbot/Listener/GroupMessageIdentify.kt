@@ -17,7 +17,6 @@ class GroupMessageIdentify : BaseListeners()  {
             return
         }
         try {
-
             val verifyResult = FakeInfo.verifyMessage(this)
             if (verifyResult.isFake) {
                 subject.sendMessage(buildMessageChain {

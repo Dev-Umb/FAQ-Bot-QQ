@@ -1,13 +1,21 @@
 package io.farewell12345.github.faqbot.Listener
 
-
+import com.mchange.util.impl.QuotesAndSpacesTokenizer
+import io.farewell12345.github.faqbot.DTO.model.QAmodel.Message
 import io.farewell12345.github.faqbot.AppConfig
 import io.farewell12345.github.faqbot.BotManager.*
 import io.farewell12345.github.faqbot.DTO.Controller.QuestionController
+import io.farewell12345.github.faqbot.DTO.DB.DB
 import io.farewell12345.github.faqbot.DTO.DB.DB.database
+import io.farewell12345.github.faqbot.DTO.model.QAmodel.Bind.MessageBind
+import io.farewell12345.github.faqbot.DTO.model.QAmodel.Bind.QuestionBind
 import io.farewell12345.github.faqbot.DTO.model.QAmodel.Question
+import io.farewell12345.github.faqbot.DTO.model.QAmodel.Question.message
+import io.farewell12345.github.faqbot.DTO.model.QAmodel.Question.question
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
+import kotlinx.coroutines.DelicateCoroutinesApi
 import me.liuwj.ktorm.dsl.*
+import me.liuwj.ktorm.entity.*
 import net.mamoe.mirai.event.EventHandler
 import net.mamoe.mirai.event.events.GroupMessageEvent
 import net.mamoe.mirai.message.data.*
@@ -15,6 +23,7 @@ import net.mamoe.mirai.utils.MiraiInternalApi
 
 class BotGroupMsgListener : BaseListeners() {
     // 重写Event监听事件
+    @OptIn(DelicateCoroutinesApi::class)
     @MiraiInternalApi
     @EventHandler
     suspend fun GroupMessageEvent.onEvent() {
@@ -24,6 +33,9 @@ class BotGroupMsgListener : BaseListeners() {
                     subject.sendMessage("录入成功！任务正在处理，请稍等")
                     return@route
                 }
+//                DB.database.question.find{
+//
+//                }
                 subject.sendMessage("格式有误！请检查录入答案格式")
             }
 
@@ -34,15 +46,14 @@ class BotGroupMsgListener : BaseListeners() {
                 }
             }
             case("列表", desc = "获取此群的问题列表") {
-                val query = database
-                    .from(Question)
-                    .select()
-                    .where {
-                        (Question.group eq event.group.id)
-                    }
+                val query = database.question.filter{
+                    it.group eq group.id
+                }.toList()
                 subject.sendMessage(buildString {
-                    query.forEach {
-                        append("#${it[Question.id]} ${it.get(Question.question)} \n")
+                    query.forEach {q ->
+                        append("#${q.id} ${
+                            q.question.data
+                        } \n")
                     }
                 })
                 return@route
@@ -50,7 +61,7 @@ class BotGroupMsgListener : BaseListeners() {
             val tryGetAnswer = QuestionController.searchQuestion(
                 event.message.firstIsInstanceOrNull<PlainText>().toString(), group
             )?.let {
-                QuestionController.getAnswer(it)
+                QuestionController.getAnswer(it,group.id)
             }
             if (tryGetAnswer != null) {
                 subject.sendMessage(tryGetAnswer)
@@ -59,15 +70,11 @@ class BotGroupMsgListener : BaseListeners() {
             furry("#", "快速索引") {
                 try {
                     val id = event.message.filterIsInstance<PlainText>()[0].content.replace("#", "").toInt()
-                    val queryRowSet = QuestionController.quickSearchQuestion(id, group)
-                    if (queryRowSet != null) {
-                        val tryAnswer = QuestionController.getAnswer(queryRowSet)
-                        if (tryAnswer != null) {
+                    val answer: QuestionBind = QuestionController.quickSearchQuestion(id, group)?: throw Exception("此群不存在该序号的问题！")
+                    val tryAnswer = QuestionController.getAnswer(answer,group.id)
+                    if (tryAnswer != null) {
                             subject.sendMessage(tryAnswer)
                             return@route
-                        }
-                    } else {
-                        subject.sendMessage("此群不存在该序号的问题！")
                     }
                 } catch (e: NumberFormatException) {
                     logger.info(e)
@@ -97,17 +104,24 @@ class BotGroupMsgListener : BaseListeners() {
                     subject.sendMessage("问题不能与索引重名")
                     return@case
                 } else {
-                    val query = question.let {
+                    val questionResult = question.let {
                         QuestionController.searchQuestion(it, event.group)
                     }
-                    if (query != null) {
-                        subject.sendMessage("问题${query[Question.question]}已经存在")
+                    if (questionResult!= null) {
+                        subject.sendMessage("问题${questionResult.question.data}已经存在")
                     } else {
-                        database.insert(Question) {
-                            set(it.lastEditUser, event.sender.id)
-                            set(it.group, event.sender.group.id)
-                            set(it.question, question)
+                        val message = MessageBind{
+                            this.data = question
                         }
+                        database.message.add(message)
+                        val q = QuestionBind{
+                            this.question = message
+                            this.lastEditUser = event.sender.id
+                            this.group = event.sender.group.id
+                        }
+                        database.question.add(q)
+                        message.questionId = q.id
+                        database.message.update(message)
                         subject.sendMessage("问题${question}已被录入,请问如何回答?")
                         // 新建会话
                         SessionManager.addSession(
@@ -125,45 +139,41 @@ class BotGroupMsgListener : BaseListeners() {
             }
             case("修改问题", "修改一个问题", false) {
                 var question = commandText
-                var query = question.let {
+                var result = question.let {
                     QuestionController.searchQuestion(it, event.group)
                 }
-                if (query == null) {
+                if (result == null) {
                     try {
                         val id = question.replace("#", "").toInt()
-                        query = QuestionController.quickSearchQuestion(id, group)
-                        question = query?.get(Question.question).toString()
+                        result = QuestionController.quickSearchQuestion(id, group)
+                        question = result!!.question.data
                     } catch (e: Exception) {
                         subject.sendMessage("问题$question 不存在")
                         return@route
                     }
                 }
-                if (query != null) {
-                    // 新建修改问题会话
-                    SessionManager.addSession(
+                // 新建修改问题会话
+                SessionManager.addSession(
+                    user = event.sender.id,
+                    session = Session(
                         user = event.sender.id,
-                        session = Session(
-                            user = event.sender.id,
-                            data = question,
-                            type = "changeUpDate",
-                            group = event.group
-                        )
+                        data = question,
+                        type = "changeUpDate",
+                        group = event.group
                     )
-                    subject.sendMessage("问题${query[Question.question]}已找到,请问如何修改?")
-                    return@route
-                }
-                subject.sendMessage("问题$question 不存在")
+                )
+                subject.sendMessage("问题${question}已找到,请问如何修改?")
                 return@route
             }
             case("删除问题", "删除一个问题", false) {
                 val question = commandText
-                var query = QuestionController.searchQuestion(question, group)
-                if (query == null) {
+                var result = QuestionController.searchQuestion(question, group)
+                if (result == null) {
                     val id = question.replace("#", "").toInt()
-                    query = QuestionController.quickSearchQuestion(id, group)
+                    result = QuestionController.quickSearchQuestion(id, group)
                 }
-                if (query != null) {
-                    QuestionController.deleteQuestion(query!!)
+                if (result != null) {
+                    QuestionController.deleteQuestion(result!!)
                     subject.sendMessage("已删除问题$question")
                 } else {
                     subject.sendMessage("没有找到这个问题！")
@@ -174,24 +184,35 @@ class BotGroupMsgListener : BaseListeners() {
                 val signGroup = commandText
                 try {
                     val groupID = signGroup.toLong()
-                    val questions = database.from(Question)
-                        .select()
-                        .where {
+                    val questions = database.question.filter {
                             (Question.group eq groupID)
-                        }
+                        }.toList()
                     var questionNum = 0
                     for (i in questions) {
                         if (QuestionController.searchQuestion(
-                                question = i[Question.question].toString(),
+                                question = i.question.data,
                                 groupID = event.group
                             ) == null
                         ) {
-                            database.insert(Question) {
-                                it.lastEditUser to i[Question.lastEditUser]
-                                it.group to event.sender.group.id
-                                it.question to i[Question.question]
-                                it.answer to i[Question.answer]
+                            val Q = MessageBind{
+                                data = i.question.data
                             }
+                            val A =  MessageBind{
+                                data = i.answer.data
+                            }
+                            database.message.add(Q)
+                            database.message.add(A)
+                            val question = QuestionBind{
+                                lastEditUser = i.lastEditUser
+                                group = event.sender.group.id
+                                question = Q
+                                answer = A
+                            }
+                            database.question.add(question)
+                            Q.questionId=question.id
+                            A.questionId=question.id
+                            database.message.update(Q)
+                            database.message.update(A)
                             ++questionNum
                         }
                     }

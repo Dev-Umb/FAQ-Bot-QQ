@@ -43,36 +43,43 @@ object QuestionController {
         return messageChain
     }
     private fun upDateAnswer(answer: Answer, session: Session): Boolean {
-
         if (session.data == answer.text){
             return false
         }
-        val questionUpdate = DB.database.message.find {
+        val questionUpdate = DB.database.message.filter {
             it.data eq session.data
-        }?:return false
-        val question = DB.database.question.find {
-             (Question.group eq session.group.id)
-            (Question.id eq questionUpdate.questionId)
-        }?:return false
-        val gson = Gson()
-        val json = gson.toJson(answer)
-        question.lastEditUser = session.user
-        question.flushChanges()
-        var answerUpdate: MessageBind? = null
-        if (question.answer.data.isEmpty()) {
-            answerUpdate = MessageBind{
-                data=json
-                questionId=question.id
+        }.toList()?:return false
+        run {
+            questionUpdate.forEach { Q->
+                val question = DB.database.question.filter {
+                    (it.group eq session.group.id)
+                }.filter{
+                    (it.id eq Q.questionId)
+                }.toList().firstOrNull()
+                if (question!=null){
+                    val gson = Gson()
+                    val json = gson.toJson(answer)
+                    question.lastEditUser = session.user
+                    question.flushChanges()
+                    var answerUpdate: MessageBind? = null
+                    if (question.answer.data.isEmpty()) {
+                        answerUpdate = MessageBind{
+                            data=json
+                            questionId= question.id
+                        }
+                        question.answer = answerUpdate
+                        DB.database.message.add(answerUpdate)
+                        DB.database.question.update(question)
+                    }else{
+                        answerUpdate = question.answer
+                        answerUpdate.data = json
+                        DB.database.message.update(answerUpdate)
+                    }
+                    return true
+                }
             }
-            question.answer = answerUpdate
-            DB.database.message.add(answerUpdate)
-            DB.database.question.update(question)
-        }else{
-            answerUpdate = question.answer
-            answerUpdate.data = json
-            DB.database.message.update(answerUpdate)
         }
-        return true
+        return false
     }
     fun getAnswer(question: QuestionBind,groupId: Long): MessageChain? {
         try {
@@ -108,18 +115,22 @@ object QuestionController {
     fun searchQuestion(question:String, groupID: Group): QuestionBind? {
         return try {
             var answer: QuestionBind? = null
-            DB.database.message.filter { it.data eq question }.toList().forEach {Q->
-                    answer = DB.database.question.filter {
+            kotlin.run {
+                val allQuestion = DB.database.message.filter { it.data eq question }.toList()
+                allQuestion.forEach { Q ->
+                    val filerAnswer = DB.database.question.filter {
                         it.id eq Q.questionId
-                    }.toList()[0]?:null
-                    if (answer!=null){
-                        return@forEach
                     }
+                    answer = filerAnswer.filter {
+                        it.group eq groupID.id
+                    }.toList().firstOrNull()
+                    if (answer != null) {
+                        return@run
+                    }
+                }
             }
             if (answer==null) throw Exception("null")
-            DB.database.question.filter{
-                it.group eq groupID.id
-            }.toList()[0]?:null
+            answer
         }catch (e: Exception) {
             null
         }

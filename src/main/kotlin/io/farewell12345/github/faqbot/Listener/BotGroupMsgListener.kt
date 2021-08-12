@@ -1,11 +1,10 @@
 package io.farewell12345.github.faqbot.Listener
 
-import com.mchange.util.impl.QuotesAndSpacesTokenizer
-import io.farewell12345.github.faqbot.DTO.model.QAmodel.Message
 import io.farewell12345.github.faqbot.AppConfig
-import io.farewell12345.github.faqbot.BotManager.*
+import io.farewell12345.github.faqbot.BotManager.CommandGroupList
+import io.farewell12345.github.faqbot.BotManager.SessionManager
+import io.farewell12345.github.faqbot.BotManager.removeQ
 import io.farewell12345.github.faqbot.DTO.Controller.QuestionController
-import io.farewell12345.github.faqbot.DTO.DB.DB
 import io.farewell12345.github.faqbot.DTO.DB.DB.database
 import io.farewell12345.github.faqbot.DTO.model.QAmodel.Bind.MessageBind
 import io.farewell12345.github.faqbot.DTO.model.QAmodel.Bind.QuestionBind
@@ -14,11 +13,15 @@ import io.farewell12345.github.faqbot.DTO.model.QAmodel.Question.message
 import io.farewell12345.github.faqbot.DTO.model.QAmodel.Question.question
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
 import kotlinx.coroutines.DelicateCoroutinesApi
-import me.liuwj.ktorm.dsl.*
-import me.liuwj.ktorm.entity.*
+import me.liuwj.ktorm.dsl.eq
+import me.liuwj.ktorm.entity.add
+import me.liuwj.ktorm.entity.filter
+import me.liuwj.ktorm.entity.toList
+import me.liuwj.ktorm.entity.update
 import net.mamoe.mirai.event.EventHandler
 import net.mamoe.mirai.event.events.GroupMessageEvent
-import net.mamoe.mirai.message.data.*
+import net.mamoe.mirai.message.data.PlainText
+import net.mamoe.mirai.message.data.firstIsInstanceOrNull
 import net.mamoe.mirai.utils.MiraiInternalApi
 
 class BotGroupMsgListener : BaseListeners() {
@@ -33,12 +36,8 @@ class BotGroupMsgListener : BaseListeners() {
                     subject.sendMessage("录入成功！任务正在处理，请稍等")
                     return@route
                 }
-//                DB.database.question.find{
-//
-//                }
                 subject.sendMessage("格式有误！请检查录入答案格式")
             }
-
             case("取消", "停止会话录入") {
                 if (SessionManager.hasSession(event.sender.id)) {
                     removeQ(event.sender.id)
@@ -69,7 +68,8 @@ class BotGroupMsgListener : BaseListeners() {
             }
             furry("#", "快速索引") {
                 try {
-                    val id = event.message.filterIsInstance<PlainText>()[0].content.replace("#", "").toInt()
+                    val id = event.message.filterIsInstance<PlainText>()[0]
+                        .content.replace("#", "").toInt()
                     val answer: QuestionBind = QuestionController.quickSearchQuestion(id, group)?: throw Exception("此群不存在该序号的问题！")
                     val tryAnswer = QuestionController.getAnswer(answer,group.id)
                     if (tryAnswer != null) {
@@ -116,7 +116,7 @@ class BotGroupMsgListener : BaseListeners() {
                         database.message.add(message)
                         val q = QuestionBind{
                             this.question = message
-                            this.lastEditUser = event.sender.id
+                            this.lastEditUser = event.sender.id.toString()
                             this.group = event.sender.group.id
                         }
                         database.question.add(q)

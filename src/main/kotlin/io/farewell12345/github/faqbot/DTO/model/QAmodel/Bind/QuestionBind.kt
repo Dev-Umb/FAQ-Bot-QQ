@@ -10,5 +10,5 @@ interface QuestionBind: Entity<QuestionBind> {
     var question:MessageBind
     var group:Long
     var answer:MessageBind
-    var lastEditUser:Long
+    var lastEditUser:String
 }

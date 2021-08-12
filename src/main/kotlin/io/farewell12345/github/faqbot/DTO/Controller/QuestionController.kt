@@ -59,7 +59,7 @@ object QuestionController {
                 if (question!=null){
                     val gson = Gson()
                     val json = gson.toJson(answer)
-                    question.lastEditUser = session.user
+                    question.lastEditUser = session.user.toString()
                     question.flushChanges()
                     var answerUpdate: MessageBind? = null
                     if (question.answer.data.isEmpty()) {

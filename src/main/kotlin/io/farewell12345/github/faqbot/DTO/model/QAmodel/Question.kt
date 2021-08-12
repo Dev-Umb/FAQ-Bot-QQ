@@ -16,5 +16,5 @@ object Question: Table<QuestionBind>("question") {
     val question = int("question_id").references(Message){ it.question }
     val answer=int("answer_id").references(Message){ it.answer }
     val group= long("group").bindTo { it.group }
-    val lastEditUser=long("last_edit_user").bindTo { it.lastEditUser }
+    val lastEditUser=varchar("last_edit_user").bindTo { it.lastEditUser }
 }

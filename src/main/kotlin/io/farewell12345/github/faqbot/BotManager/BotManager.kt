@@ -37,6 +37,7 @@ object CommandGroupList {
 object BotsManager : CoroutineScope,EventListener {
     var oneBot: Bot? = null
     val task = TimerSessionManager()  // 命令调度器
+    private lateinit var heartListenerBot: Bot
     suspend fun loginBot():Bot {
         oneBot =  BotFactory.newBot(
                 qq = AppConfig.getInstance().botQQ.toLong(),

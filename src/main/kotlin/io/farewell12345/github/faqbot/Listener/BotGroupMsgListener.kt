@@ -12,7 +12,6 @@ import io.farewell12345.github.faqbot.DTO.model.QAmodel.Question
 import io.farewell12345.github.faqbot.DTO.model.QAmodel.Question.message
 import io.farewell12345.github.faqbot.DTO.model.QAmodel.Question.question
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
-import kotlinx.coroutines.DelicateCoroutinesApi
 import me.liuwj.ktorm.dsl.eq
 import me.liuwj.ktorm.entity.add
 import me.liuwj.ktorm.entity.filter
@@ -26,7 +25,6 @@ import net.mamoe.mirai.utils.MiraiInternalApi
 
 class BotGroupMsgListener : BaseListeners() {
     // 重写Event监听事件
-    @OptIn(DelicateCoroutinesApi::class)
     @MiraiInternalApi
     @EventHandler
     suspend fun GroupMessageEvent.onEvent() {

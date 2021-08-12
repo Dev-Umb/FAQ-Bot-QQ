@@ -1,6 +1,5 @@
 package io.farewell12345.github.faqbot.Plugin.TimerTask
 
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -12,7 +11,6 @@ import java.util.*
 
 
 object TaskManage {
-    @OptIn(DelicateCoroutinesApi::class)
     fun addTask(group: Group, messageChain: MessageChain, date: Date, intervalTime: Long,
                 atALL:Boolean = false) {
         Timer().schedule(object : TimerTask() {

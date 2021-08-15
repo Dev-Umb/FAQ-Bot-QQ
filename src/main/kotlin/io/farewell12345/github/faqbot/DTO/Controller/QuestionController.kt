@@ -41,6 +41,9 @@ object QuestionController {
             }
             if(answer.xmlCardMsg!=null)
                 append(SimpleServiceMessage(serviceId = answer.xmlCardMsg.id,content = answer.xmlCardMsg.content))
+            if (answer.app!=null){
+                append(LightApp(content = answer.app.content))
+            }
         }
         return messageChain
     }
@@ -151,7 +154,8 @@ object QuestionController {
         val imgList = LinkedList<String>()
         val atList = LinkedList<Long>()
         var text = ""
-        lateinit var card: Answer.XmlCardMsg
+        var card: Answer.XmlCardMsg?=null
+        var app:Answer.App?=null
         message.message.forEach {
             when(it){
                 is GroupImage ->{
@@ -167,11 +171,14 @@ object QuestionController {
                 is SimpleServiceMessage->{
                     card = Answer.XmlCardMsg(id = it.serviceId,content = it.contentToString())
                 }
+                is LightApp->{
+                    app =Answer.App( it.contentToString())
+                }
             }
         }
         try {
             return upDateAnswer(
-                answer = Answer(imgList, atList, text,card) ,
+                answer = Answer(imgList, atList, text,card,app) ,
                 session = session
             )
         }catch (e: Exception){

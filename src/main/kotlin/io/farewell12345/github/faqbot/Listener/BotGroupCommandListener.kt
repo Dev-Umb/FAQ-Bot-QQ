@@ -63,8 +63,7 @@ class BotGroupCommandListener:BaseListeners() {
                         val talk = Answer(
                             atList = LinkedList(),
                             imgList = LinkedList(),
-                            text = "欢迎来到 ${this.group.name}",
-                            xmlCardMsg = null
+                            text = "欢迎来到 ${this.group.name}"
                         )
                         if (WelcomeController.appendWelcomeTalk(group, talk)) {
                             subject.sendMessage(PlainText("启动迎新成功！您可使用change指令修改迎新词"))

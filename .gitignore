@@ -25,3 +25,5 @@ uiDesigner.xml
 /build/
 /.idea/
 /config.yml/
+/config.yml
+/.gradle/

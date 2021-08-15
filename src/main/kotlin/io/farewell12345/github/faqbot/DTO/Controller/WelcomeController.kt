@@ -76,7 +76,7 @@ object WelcomeController {
                 }
             }
         }
-        return upDateWelcomeTalk(group, Answer(imgList, atList, text))
+        return upDateWelcomeTalk(group, Answer(imgList, atList, text,null))
     }
 
 }

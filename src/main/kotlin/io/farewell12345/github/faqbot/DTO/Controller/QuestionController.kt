@@ -10,21 +10,21 @@ import io.farewell12345.github.faqbot.DTO.model.QAmodel.Question.question
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Answer
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
 import io.farewell12345.github.faqbot.DTO.model.logger
-import me.liuwj.ktorm.database.Database
-import me.liuwj.ktorm.dsl.*
+import me.liuwj.ktorm.dsl.eq
 import me.liuwj.ktorm.entity.*
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.contact.Group
 import net.mamoe.mirai.event.events.GroupMessageEvent
+import net.mamoe.mirai.event.events.MemberCardChangeEvent
 import net.mamoe.mirai.message.data.*
+import net.mamoe.mirai.utils.MiraiExperimentalApi
 import net.mamoe.mirai.utils.MiraiInternalApi
-import java.lang.Exception
-import java.lang.NullPointerException
 import java.util.*
 
 object QuestionController {
 
-    private fun analyticalAnswer(answerJson: MessageBind,groupId:Long): MessageChain {
+    @OptIn(MiraiExperimentalApi::class)
+    private fun analyticalAnswer(answerJson: MessageBind, groupId:Long): MessageChain {
 //        val answerJson = query[Question.answer]
         val gson = Gson()
         val answer:Answer =gson.fromJson(answerJson.data, Answer::class.java)
@@ -39,6 +39,8 @@ object QuestionController {
                         append(At(it1))
                     }
             }
+            if(answer.xmlCardMsg!=null)
+                append(SimpleServiceMessage(serviceId = answer.xmlCardMsg.id,content = answer.xmlCardMsg.content))
         }
         return messageChain
     }
@@ -143,11 +145,13 @@ object QuestionController {
                 (Question.group eq group.id)
             }.toList()[0]?:null
     }
+    @OptIn(MiraiExperimentalApi::class)
     @MiraiInternalApi
     fun upDateQuestionAnswer(message: GroupMessageEvent, session: Session): Boolean {
         val imgList = LinkedList<String>()
         val atList = LinkedList<Long>()
         var text = ""
+        lateinit var card: Answer.XmlCardMsg
         message.message.forEach {
             when(it){
                 is GroupImage ->{
@@ -160,11 +164,14 @@ object QuestionController {
                 is PlainText ->{
                     text += it.content
                 }
+                is SimpleServiceMessage->{
+                    card = Answer.XmlCardMsg(id = it.serviceId,content = it.contentToString())
+                }
             }
         }
         try {
             return upDateAnswer(
-                answer = Answer(imgList, atList, text) ,
+                answer = Answer(imgList, atList, text,card) ,
                 session = session
             )
         }catch (e: Exception){

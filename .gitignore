@@ -27,3 +27,4 @@ uiDesigner.xml
 /config.yml/
 /config.yml
 /.gradle/
+/.gradle/*

@@ -2,11 +2,9 @@ package io.farewell12345.github.faqbot.FuckOkhttp
 
 import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
-import io.farewell12345.github.faqbot.DTO.model.NucUser
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
-import java.io.File
 
 
 class FuckOkhttp() {

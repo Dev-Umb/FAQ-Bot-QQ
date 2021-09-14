@@ -44,6 +44,14 @@ object QuestionController {
             if (answer.app!=null){
                 append(LightApp(content = answer.app.content))
             }
+            if (answer.forwardMessage!=null){
+                append(ForwardMessage(preview=answer.forwardMessage.preview,
+                    title=answer.forwardMessage.title,
+                    brief=answer.forwardMessage.brief,
+                    source=answer.forwardMessage.source,
+                    summary=answer.forwardMessage.summary,
+                    nodeList=answer.forwardMessage.nodeList,))
+            }
         }
         return messageChain
     }
@@ -156,6 +164,7 @@ object QuestionController {
         var text = ""
         var card: Answer.XmlCardMsg?=null
         var app:Answer.App?=null
+        var forwardMessage:Answer.ForwardCard?=null
         message.message.forEach {
             when(it){
                 is GroupImage ->{
@@ -174,11 +183,18 @@ object QuestionController {
                 is LightApp->{
                     app =Answer.App( it.contentToString())
                 }
+                is ForwardMessage->{
+
+                    forwardMessage= Answer.ForwardCard(
+                        preview= it.preview,title = it.title,brief = it.brief,nodeList = it.nodeList,
+                        summary = it.summary,source = it.source
+                    )
+                }
             }
         }
         try {
             return upDateAnswer(
-                answer = Answer(imgList, atList, text,card,app) ,
+                answer = Answer(imgList, atList, text,card,app,forwardMessage) ,
                 session = session
             )
         }catch (e: Exception){

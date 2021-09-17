@@ -19,7 +19,7 @@ object LineArt {
             val lineArt = FuckOkhttp("http://127.0.0.1:8000/img").postFile(data!!)?.body?.byteStream()
             val msg = buildMessageChain {
                 if (lineArt != null) {
-                 append(messageEvent.subject.uploadImage(lineArt))
+                    append(messageEvent.subject.uploadImage(lineArt))
                 }
             }
             messageEvent.subject.sendMessage(msg)

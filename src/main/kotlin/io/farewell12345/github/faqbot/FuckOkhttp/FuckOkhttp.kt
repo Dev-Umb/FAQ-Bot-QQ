@@ -7,9 +7,27 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 
 
-class FuckOkhttp() {
+class FuckOkhttp(val url:String?=null) {
     private val client = OkHttpClient()
-
+    fun getBytes(): ByteArray? {
+        val request = this.url?.let {
+            Request.Builder()
+                .url(it).get()
+                .build()
+        }
+        val responseGet = request?.let { client.newCall(it).execute() }
+        return responseGet?.body?.bytes()
+    }
+    fun postFile(file: ByteArray): Response? {
+        val mediaType: MediaType = "image/png".toMediaTypeOrNull()!!
+        val fileBody = RequestBody.create(mediaType, file)
+        val request = this.url?.let {
+            Request.Builder()
+                .url(it).post(fileBody)
+                .build()
+        }
+        return request?.let { client.newCall(it).execute() }
+    }
     class VerifyBaseModel{
         @SerializedName("code")
         val code: Int = 0

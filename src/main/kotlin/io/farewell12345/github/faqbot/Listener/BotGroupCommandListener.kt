@@ -3,7 +3,7 @@ package io.farewell12345.github.faqbot.Listener
 import io.farewell12345.github.faqbot.AppConfig
 import io.farewell12345.github.faqbot.BotManager.CommandGroupList
 import io.farewell12345.github.faqbot.BotManager.SessionManager
-import io.farewell12345.github.faqbot.DTO.Controller.WelcomeController
+import io.farewell12345.github.faqbot.Controller.WelcomeController
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Answer
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
 import net.mamoe.mirai.event.EventHandler
@@ -93,6 +93,15 @@ class BotGroupCommandListener:BaseListeners() {
                     subject.sendMessage("此群暂未开启迎新！")
                 }
                 return@route
+            }
+            case("lucky","抽签功能"){
+                    if (!CommandGroupList.luckyGroup.containsKey(event.group.id)){
+                        CommandGroupList.luckyGroup[event.group.id] = true;
+                        subject.sendMessage("开启抽签功能")
+                        return@route
+                    }
+                    CommandGroupList.luckyGroup[event.group.id] = !CommandGroupList.luckyGroup[event.group.id]!!
+                    subject.sendMessage("开启抽签功能")
             }
             case("help", "获取指令",false) {
                 subject.sendMessage(getHelp())

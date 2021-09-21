@@ -1,4 +1,4 @@
-package io.farewell12345.github.faqbot.DTO.Controller
+package io.farewell12345.github.faqbot.Controller
 
 import com.google.gson.Gson
 import io.farewell12345.github.faqbot.DTO.DB.DB
@@ -15,7 +15,6 @@ import me.liuwj.ktorm.entity.*
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.contact.Group
 import net.mamoe.mirai.event.events.GroupMessageEvent
-import net.mamoe.mirai.event.events.MemberCardChangeEvent
 import net.mamoe.mirai.message.data.*
 import net.mamoe.mirai.utils.MiraiExperimentalApi
 import net.mamoe.mirai.utils.MiraiInternalApi

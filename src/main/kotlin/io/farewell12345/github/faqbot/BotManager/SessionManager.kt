@@ -1,8 +1,9 @@
 package io.farewell12345.github.faqbot.BotManager
 
-import io.farewell12345.github.faqbot.DTO.Controller.QuestionController
-import io.farewell12345.github.faqbot.DTO.Controller.TaskerTimeController
-import io.farewell12345.github.faqbot.DTO.Controller.WelcomeController
+import io.farewell12345.github.faqbot.Controller.LineArtController
+import io.farewell12345.github.faqbot.Controller.QuestionController
+import io.farewell12345.github.faqbot.Controller.TaskerTimeController
+import io.farewell12345.github.faqbot.Controller.WelcomeController
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -94,7 +95,8 @@ object SessionManager {
                         messageEvent.group,
                         messageEvent.message
                     )
-
+                "LineArt"->
+                    return LineArtController.getLineArtImg(messageEvent)
 
             }
 

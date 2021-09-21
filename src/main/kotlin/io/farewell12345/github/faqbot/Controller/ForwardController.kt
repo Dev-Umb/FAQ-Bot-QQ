@@ -1,4 +1,4 @@
-package io.farewell12345.github.faqbot.DTO.Controller
+package io.farewell12345.github.faqbot.Controller
 
 import io.farewell12345.github.faqbot.DTO.DB.DB
 import io.farewell12345.github.faqbot.DTO.model.QAmodel.Group

@@ -1,8 +1,6 @@
-package io.farewell12345.github.faqbot.DTO.Controller
+package io.farewell12345.github.faqbot.Controller
 
 import io.farewell12345.github.faqbot.Plugin.TimerTask.TaskManage
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import net.mamoe.mirai.contact.Group
 import net.mamoe.mirai.message.data.MessageChain
 import java.util.*

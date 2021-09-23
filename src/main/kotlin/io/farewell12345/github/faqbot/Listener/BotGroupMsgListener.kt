@@ -83,7 +83,7 @@ class BotGroupMsgListener : BaseListeners() {
             furry("#", "快速索引") {
                 try {
                     val id = event.message.filterIsInstance<PlainText>()[0]
-                        .content.replace("#", "").toInt()
+                        .content.replace("#", "").trim().toInt()
                     val answer: QuestionBind = QuestionController.quickSearchQuestion(id, group)?: throw Exception("此群不存在该序号的问题！")
                     val tryAnswer = QuestionController.getAnswer(answer,group.id)
                     if (tryAnswer != null) {

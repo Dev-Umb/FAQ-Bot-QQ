@@ -5,5 +5,3 @@ dbPwd: "" # 数据库密码
 botQQ: "" # 机器人的QQ
 botPwd: "" # 机器人的密码
 superUser: "" # 超级管理员QQ（可写可不写）
-fakeInfo: "" # 群内虚假信息监测网络地址（可有可无）
-fakeInfoKey: ""# 监测key值

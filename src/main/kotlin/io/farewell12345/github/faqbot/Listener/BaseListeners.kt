@@ -1,8 +1,10 @@
 package io.farewell12345.github.faqbot.Listener
 
-import io.farewell12345.github.faqbot.BotManager.BotsManager
 import io.farewell12345.github.faqbot.Plugin.ProgramManage
-import kotlinx.coroutines.CoroutineScope
+import io.farewell12345.github.faqbot.route.BotFriendMsgListener
+import io.farewell12345.github.faqbot.route.BotGroupMsgListener
+import io.farewell12345.github.faqbot.route.NewFriendMember
+import io.farewell12345.github.faqbot.route.NewGroupMemberListener
 import kotlinx.coroutines.launch
 import net.mamoe.mirai.event.SimpleListenerHost
 import org.apache.logging.log4j.LogManager

@@ -1,8 +1,9 @@
-package io.farewell12345.github.faqbot.Listener
+package io.farewell12345.github.faqbot.route
 
-import io.farewell12345.github.faqbot.BotManager.BotsManager
 import io.farewell12345.github.faqbot.BotManager.SessionManager
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
+import io.farewell12345.github.faqbot.Listener.BaseListeners
+import io.farewell12345.github.faqbot.Listener.route
 import kotlinx.coroutines.ObsoleteCoroutinesApi
 import net.mamoe.mirai.event.EventHandler
 import net.mamoe.mirai.event.events.FriendMessageEvent
@@ -23,8 +24,8 @@ class BotFriendMsgListener : BaseListeners() {
                 subject.sendMessage("格式有误！请检查录入答案格式")
             }
             case("添加定时任务", "添加定时任务") {
-                val Id:Long = commandText.toLong()
-                val thisGroup = bot.getGroup(Id)!!
+                val id:Long = commandText.toLong()
+                val thisGroup = bot.getGroup(id)!!
                 if((thisGroup.members[sender.id]?.permission?.ordinal == 0)){
                     subject.sendMessage("无权限，你不是目标群管理员")
                     return@route

@@ -1,9 +1,10 @@
-package io.farewell12345.github.faqbot.Listener
+package io.farewell12345.github.faqbot.route
 import com.google.gson.Gson
 import io.farewell12345.github.faqbot.BotManager.BotsManager
 import io.farewell12345.github.faqbot.BotManager.CommandGroupList
 import io.farewell12345.github.faqbot.Controller.WelcomeController
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Answer
+import io.farewell12345.github.faqbot.Listener.BaseListeners
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.event.EventHandler
 import net.mamoe.mirai.event.events.MemberJoinEvent

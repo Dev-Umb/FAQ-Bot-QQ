@@ -1,5 +1,6 @@
-package io.farewell12345.github.faqbot.Listener
+package io.farewell12345.github.faqbot.route
 
+import io.farewell12345.github.faqbot.Listener.BaseListeners
 import net.mamoe.mirai.event.EventHandler
 import net.mamoe.mirai.event.events.BotInvitedJoinGroupRequestEvent
 import net.mamoe.mirai.event.events.NewFriendRequestEvent

@@ -47,7 +47,11 @@ object BotsManager : CoroutineScope,EventListener {
                 qq = AppConfig.getInstance().botQQ.toLong(),
                 password = AppConfig.getInstance().botPwd
         ) {
-            this.protocol = BotConfiguration.MiraiProtocol.ANDROID_PHONE
+            this.protocol = when(AppConfig.getInstance().device){
+                "PAD"->BotConfiguration.MiraiProtocol.ANDROID_PAD;
+                "WATCH"->BotConfiguration.MiraiProtocol.ANDROID_WATCH
+                else -> BotConfiguration.MiraiProtocol.ANDROID_PHONE
+            }
             val deviceInfoFolder = File("devices")
             if (!deviceInfoFolder.exists()) {
                 deviceInfoFolder.mkdir()

@@ -16,6 +16,7 @@ public class AppConfig {
     public String dbPwd;
     public Long botQQ;
     public String botPwd;
+    public String device;
     public Long superUser;
     public String fakeInfoUrl;
     public String fakeInfoKey;
@@ -31,10 +32,12 @@ public class AppConfig {
         botQQ = Long.valueOf((String) data.get("botQQ"));
         botPwd = (String) data.get("botPwd");
         try {
+            device = (String) data.get("device");
             fakeInfoUrl = (String) data.get("fakeInfo");
             fakeInfoKey = (String) data.get("fakeInfoKey");
             superUser = Long.valueOf((String) data.get("superUser"));
         } catch (Exception ignored) {
+            device = "PHONE";
         }
     }
 

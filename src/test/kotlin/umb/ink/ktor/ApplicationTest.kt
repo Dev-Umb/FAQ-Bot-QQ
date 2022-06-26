@@ -18,6 +18,7 @@ import io.ktor.client.statement.*
 import kotlin.test.*
 import io.ktor.server.testing.*
 import umb.ink.ktor.plugins.*
+import umb.ink.ktor.routing.configureRouting
 
 class ApplicationTest {
     @Test

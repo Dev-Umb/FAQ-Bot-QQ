@@ -35,4 +35,7 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logback_version")
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+    // mirai
+    api("org.jetbrains.kotlinx","kotlinx-coroutines-core","1.3.9")
+    api("net.mamoe", "mirai-core", "2.11.1")
 }

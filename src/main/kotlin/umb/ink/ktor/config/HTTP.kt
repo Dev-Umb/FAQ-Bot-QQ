@@ -1,4 +1,4 @@
-package umb.ink.ktor.plugins
+package umb.ink.ktor.config
 
 import io.ktor.http.*
 import io.ktor.server.plugins.cors.routing.*

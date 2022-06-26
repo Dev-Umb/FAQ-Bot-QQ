@@ -4,7 +4,7 @@ import kotlinx.coroutines.*
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.BotFactory
 import net.mamoe.mirai.utils.BotConfiguration
-import umb.ink.ktor.message.BaseListener
+import umb.ink.ktor.bot.message.BaseListener
 import java.io.File
 
 class QABot: BotConfiguration() {

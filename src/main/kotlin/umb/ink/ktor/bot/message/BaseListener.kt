@@ -1,15 +1,20 @@
-package umb.ink.ktor.message
+package umb.ink.ktor.bot.message
 
+import io.netty.util.internal.shaded.org.jctools.queues.SpscLinkedQueue
 import net.mamoe.mirai.event.SimpleListenerHost
 import java.util.LinkedList
 
-open class BaseListener(): SimpleListenerHost() {
+abstract class BaseListener<T>(child: SimpleListenerHost) : SimpleListenerHost() {
     companion object{
         val listeners:LinkedList<SimpleListenerHost> = LinkedList()
     }
-    constructor(child: SimpleListenerHost) : this() {
+
+    protected val messageQueue = SpscLinkedQueue<T>()
+
+    init {
         listeners.add(child)
     }
+
     override fun handleException(context: kotlin.coroutines.CoroutineContext, exception: Throwable) {
         super.handleException(context, exception)
     }

@@ -1,0 +1,332 @@
+2021-07-22 00:30:44.093 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:30:44.121 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : Parameters: [？(varchar), 877584286(bigint)]
+2021-07-22 00:30:44.146 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:30:44.147 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Parameters: [线稿(varchar), 982715633(bigint)]
+2021-07-22 00:30:44.681 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:30:45.662 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:30:47.470 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:30:47.470 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : Parameters: [生日快乐(varchar), 877584286(bigint)]
+2021-07-22 00:30:56.662 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:30:56.662 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:30:56.662 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Parameters: [生日快乐？(varchar), 877584286(bigint)]
+2021-07-22 00:30:56.662 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : Parameters: [null(varchar), 820747045(bigint)]
+2021-07-22 00:30:57.094 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:30:57.180 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:30:57.256 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:31:03.179 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:31:03.179 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : Parameters: [生日快乐(varchar), 877584286(bigint)]
+2021-07-22 00:31:03.705 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:31:04.838 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:31:04.839 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : Parameters: [生日快乐(varchar), 877584286(bigint)]
+2021-07-22 00:31:05.214 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:31:05.215 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : Parameters: [生日快乐(varchar), 877584286(bigint)]
+2021-07-22 00:31:05.381 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:31:05.720 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:31:07.169 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:31:07.169 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : Parameters: [生日快乐(varchar), 877584286(bigint)]
+2021-07-22 00:31:07.535 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:31:07.535 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : Parameters: [生日快乐(varchar), 877584286(bigint)]
+2021-07-22 00:31:07.671 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:31:08.058 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:31:09.197 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:31:09.197 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : Parameters: [生日快乐(varchar), 877584286(bigint)]
+2021-07-22 00:31:09.798 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:31:11.603 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:31:11.604 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : Parameters: [都还没睡呢。(varchar), 820747045(bigint)]
+2021-07-22 00:31:12.119 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:31:12.223 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:31:12.223 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : Parameters: [生日快乐(varchar), 877584286(bigint)]
+2021-07-22 00:31:12.817 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:31:13.398 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:31:13.398 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : Parameters: [这么多潜水的？(varchar), 877584286(bigint)]
+2021-07-22 00:31:13.996 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:31:20.212 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:31:20.212 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : Parameters: [null(varchar), 820747045(bigint)]
+2021-07-22 00:31:20.803 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:31:21.543 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:31:21.543 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : Parameters: [null(varchar), 820747045(bigint)]
+2021-07-22 00:31:21.920 DEBUG [DefaultDispatcher-worker-27] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:31:21.920 DEBUG [DefaultDispatcher-worker-27] me.liuwj.ktorm.database : Parameters: [那必须(varchar), 877584286(bigint)]
+2021-07-22 00:31:22.138 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:31:22.534 DEBUG [DefaultDispatcher-worker-27] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:31:24.442 DEBUG [DefaultDispatcher-worker-27] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:31:24.442 DEBUG [DefaultDispatcher-worker-27] me.liuwj.ktorm.database : Parameters: [生日快乐(varchar), 877584286(bigint)]
+2021-07-22 00:31:24.583 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:31:24.583 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : Parameters: [null(varchar), 820747045(bigint)]
+2021-07-22 00:31:25.045 DEBUG [DefaultDispatcher-worker-27] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:31:25.171 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:31:25.466 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:31:25.467 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : Parameters: [起来嗨(varchar), 820747045(bigint)]
+2021-07-22 00:31:35.582 DEBUG [DefaultDispatcher-worker-20] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:31:35.582 DEBUG [DefaultDispatcher-worker-20] me.liuwj.ktorm.database : Parameters: [线稿(varchar), 982715633(bigint)]
+2021-07-22 00:31:36.201 DEBUG [DefaultDispatcher-worker-20] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:31:36.899 DEBUG [DefaultDispatcher-worker-20] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:31:36.900 DEBUG [DefaultDispatcher-worker-20] me.liuwj.ktorm.database : Parameters: [对不对呀大家(varchar), 877584286(bigint)]
+2021-07-22 00:31:37.514 DEBUG [DefaultDispatcher-worker-20] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:31:38.076 DEBUG [DefaultDispatcher-worker-20] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:31:38.076 DEBUG [DefaultDispatcher-worker-20] me.liuwj.ktorm.database : Parameters: [女同dd(varchar), 820747045(bigint)]
+2021-07-22 00:31:38.595 DEBUG [DefaultDispatcher-worker-20] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:31:39.203 DEBUG [DefaultDispatcher-worker-9] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:31:39.204 DEBUG [DefaultDispatcher-worker-9] me.liuwj.ktorm.database : Parameters: [null(varchar), 820747045(bigint)]
+2021-07-22 00:31:39.800 DEBUG [DefaultDispatcher-worker-9] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:31:40.968 DEBUG [DefaultDispatcher-worker-9] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:31:40.968 DEBUG [DefaultDispatcher-worker-9] me.liuwj.ktorm.database : Parameters: [[菜汪]请使用最新版手机QQ体验新功能(varchar), 877584286(bigint)]
+2021-07-22 00:31:41.500 DEBUG [DefaultDispatcher-worker-9] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:31:43.739 DEBUG [DefaultDispatcher-worker-9] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:31:43.739 DEBUG [DefaultDispatcher-worker-9] me.liuwj.ktorm.database : Parameters: [女同dd(varchar), 820747045(bigint)]
+2021-07-22 00:31:44.488 DEBUG [DefaultDispatcher-worker-9] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:31:54.592 DEBUG [DefaultDispatcher-worker-9] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:31:54.592 DEBUG [DefaultDispatcher-worker-9] me.liuwj.ktorm.database : Parameters: [线稿(varchar), 982715633(bigint)]
+2021-07-22 00:31:55.184 DEBUG [DefaultDispatcher-worker-9] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:31:55.435 DEBUG [DefaultDispatcher-worker-9] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:31:55.435 DEBUG [DefaultDispatcher-worker-9] me.liuwj.ktorm.database : Parameters: [没毛病(varchar), 877584286(bigint)]
+2021-07-22 00:31:56.027 DEBUG [DefaultDispatcher-worker-9] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:32:02.101 DEBUG [DefaultDispatcher-worker-9] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:32:02.102 DEBUG [DefaultDispatcher-worker-9] me.liuwj.ktorm.database : Parameters: [那必须的(varchar), 877584286(bigint)]
+2021-07-22 00:32:02.618 DEBUG [DefaultDispatcher-worker-9] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:32:04.763 DEBUG [DefaultDispatcher-worker-9] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:32:04.764 DEBUG [DefaultDispatcher-worker-9] me.liuwj.ktorm.database : Parameters: [[菜汪]请使用最新版手机QQ体验新功能(varchar), 877584286(bigint)]
+2021-07-22 00:32:05.268 DEBUG [DefaultDispatcher-worker-9] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:32:16.105 DEBUG [DefaultDispatcher-worker-9] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:32:16.106 DEBUG [DefaultDispatcher-worker-9] me.liuwj.ktorm.database : Parameters: [生日快乐(varchar), 877584286(bigint)]
+2021-07-22 00:32:16.611 DEBUG [DefaultDispatcher-worker-9] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:32:16.715 DEBUG [DefaultDispatcher-worker-9] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:32:16.715 DEBUG [DefaultDispatcher-worker-9] me.liuwj.ktorm.database : Parameters: [生日快乐(varchar), 877584286(bigint)]
+2021-07-22 00:32:17.233 DEBUG [DefaultDispatcher-worker-22] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:32:17.233 DEBUG [DefaultDispatcher-worker-22] me.liuwj.ktorm.database : Parameters: [生日快乐(varchar), 877584286(bigint)]
+2021-07-22 00:32:17.309 DEBUG [DefaultDispatcher-worker-9] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:32:17.826 DEBUG [DefaultDispatcher-worker-22] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:32:18.892 DEBUG [DefaultDispatcher-worker-22] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:32:18.892 DEBUG [DefaultDispatcher-worker-22] me.liuwj.ktorm.database : Parameters: [不要(varchar), 206073050(bigint)]
+2021-07-22 00:32:19.396 DEBUG [DefaultDispatcher-worker-22] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:32:37.676 DEBUG [DefaultDispatcher-worker-21] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:32:37.677 DEBUG [DefaultDispatcher-worker-21] me.liuwj.ktorm.database : Parameters: [线稿(varchar), 982715633(bigint)]
+2021-07-22 00:32:38.210 DEBUG [DefaultDispatcher-worker-21] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:33:11.686 DEBUG [DefaultDispatcher-worker-21] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:33:11.686 DEBUG [DefaultDispatcher-worker-21] me.liuwj.ktorm.database : Parameters: [null(varchar), 877584286(bigint)]
+2021-07-22 00:33:12.282 DEBUG [DefaultDispatcher-worker-21] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:33:36.101 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:33:36.101 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Parameters: [null(varchar), 820747045(bigint)]
+2021-07-22 00:33:36.730 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:35:24.830 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:35:24.830 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Parameters: [null(varchar), 820747045(bigint)]
+2021-07-22 00:35:25.459 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:35:27.427 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:35:27.427 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Parameters: [唉巧了。我感冒了现在也脑袋疼。(varchar), 297437975(bigint)]
+2021-07-22 00:35:28.024 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:35:32.902 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:35:32.903 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Parameters: [线稿(varchar), 982715633(bigint)]
+2021-07-22 00:35:33.504 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:35:47.355 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:35:47.355 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Parameters: [生日快乐(varchar), 877584286(bigint)]
+2021-07-22 00:35:47.862 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:35:55.708 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:35:55.708 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Parameters: [生日快乐(varchar), 877584286(bigint)]
+2021-07-22 00:35:56.211 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:36:02.739 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:36:02.739 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Parameters: [我不是感冒(varchar), 297437975(bigint)]
+2021-07-22 00:36:03.242 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:36:09.936 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:36:09.936 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Parameters: [就是最近这个事(varchar), 297437975(bigint)]
+2021-07-22 00:36:10.657 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:36:14.546 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:36:14.546 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Parameters: [搞得我脑子疼(varchar), 297437975(bigint)]
+2021-07-22 00:36:15.064 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:36:15.226 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:36:15.226 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Parameters: [[QQ红包]你收到一个专属红包，请在新版手机QQ查看。(varchar), 877584286(bigint)]
+2021-07-22 00:36:15.744 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:36:20.393 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:36:20.394 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Parameters: [啥事儿呐。(varchar), 297437975(bigint)]
+2021-07-22 00:36:21.007 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:36:23.350 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:36:23.350 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Parameters: [群里好像有内鬼就不说了(varchar), 297437975(bigint)]
+2021-07-22 00:36:23.852 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:36:27.452 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:36:27.452 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Parameters: [null(varchar), 820747045(bigint)]
+2021-07-22 00:36:28.039 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:36:29.519 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:36:29.519 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Parameters: [null(varchar), 206073050(bigint)]
+2021-07-22 00:36:30.111 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:36:34.297 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:36:34.298 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Parameters: [嗯？？？(varchar), 297437975(bigint)]
+2021-07-22 00:36:34.481 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:36:34.481 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : Parameters: [咱俩私聊去(varchar), 297437975(bigint)]
+2021-07-22 00:36:34.889 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:36:34.984 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:36:39.748 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:36:39.748 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : Parameters: [晚安呐(varchar), 206073050(bigint)]
+2021-07-22 00:36:40.271 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:36:42.924 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:36:42.924 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : Parameters: [这这这(varchar), 877584286(bigint)]
+2021-07-22 00:36:43.449 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:36:44.424 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:36:44.424 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : Parameters: [怎么没我的(varchar), 877584286(bigint)]
+2021-07-22 00:36:44.928 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:36:48.462 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:36:48.462 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : Parameters: [null(varchar), 206073050(bigint)]
+2021-07-22 00:36:49.054 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:36:55.948 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:36:55.948 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Parameters: [多谢师父的天涯四(varchar), 877584286(bigint)]
+2021-07-22 00:36:56.536 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:38:21.799 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:38:21.799 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Parameters: [null(varchar), 877584286(bigint)]
+2021-07-22 00:38:22.611 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:38:49.753 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:38:49.753 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Parameters: [其实我身份证是昨天过生(varchar), 877584286(bigint)]
+2021-07-22 00:38:50.355 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:38:59.558 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:38:59.558 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Parameters: [放屁(varchar), 877584286(bigint)]
+2021-07-22 00:39:00.082 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:39:34.121 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:39:34.121 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Parameters: [昨天是不是21号？(varchar), 877584286(bigint)]
+2021-07-22 00:39:34.717 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:39:38.455 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:39:38.455 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Parameters: [我7月21(varchar), 877584286(bigint)]
+2021-07-22 00:39:38.998 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:39:48.835 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:39:48.835 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Parameters: [我们这边只过农历(varchar), 877584286(bigint)]
+2021-07-22 00:39:49.445 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:39:51.574 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:39:51.574 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Parameters: [null(varchar), 1074184099(bigint)]
+2021-07-22 00:39:52.092 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:40:45.028 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:40:45.028 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Parameters: [暮雪多大了(varchar), 877584286(bigint)]
+2021-07-22 00:40:45.648 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:41:11.216 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:41:11.216 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Parameters: [null(varchar), 820747045(bigint)]
+2021-07-22 00:41:11.719 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:41:16.739 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:41:16.739 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Parameters: [我特喵的 你都问了好多次了(varchar), 877584286(bigint)]
+2021-07-22 00:41:17.241 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:41:19.826 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:41:19.826 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Parameters: [25(varchar), 877584286(bigint)]
+2021-07-22 00:41:20.413 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:41:39.079 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:41:39.079 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Parameters: [叫哥(varchar), 877584286(bigint)]
+2021-07-22 00:41:39.583 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:42:12.078 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:42:12.078 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Parameters: [null(varchar), 877584286(bigint)]
+2021-07-22 00:42:12.579 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:42:23.227 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:42:23.227 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Parameters: [(varchar), 820747045(bigint)]
+2021-07-22 00:42:23.816 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:43:14.568 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:43:14.568 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Parameters: [null(varchar), 1074184099(bigint)]
+2021-07-22 00:43:15.171 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:43:20.142 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:43:20.142 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Parameters: [null(varchar), 1074184099(bigint)]
+2021-07-22 00:43:20.744 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:43:22.524 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:43:22.525 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Parameters: [null(varchar), 1074184099(bigint)]
+2021-07-22 00:43:23.022 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:44:11.728 DEBUG [DefaultDispatcher-worker-13] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:44:11.729 DEBUG [DefaultDispatcher-worker-13] me.liuwj.ktorm.database : Parameters: [线稿(varchar), 982715633(bigint)]
+2021-07-22 00:44:12.262 DEBUG [DefaultDispatcher-worker-13] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:44:38.344 DEBUG [DefaultDispatcher-worker-21] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:44:38.344 DEBUG [DefaultDispatcher-worker-21] me.liuwj.ktorm.database : Parameters: [线稿(varchar), 982715633(bigint)]
+2021-07-22 00:44:38.974 DEBUG [DefaultDispatcher-worker-21] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:45:54.334 DEBUG [DefaultDispatcher-worker-7] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:45:54.335 DEBUG [DefaultDispatcher-worker-7] me.liuwj.ktorm.database : Parameters: [啊这(varchar), 820747045(bigint)]
+2021-07-22 00:45:54.895 DEBUG [DefaultDispatcher-worker-7] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:45:58.662 DEBUG [DefaultDispatcher-worker-7] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:45:58.662 DEBUG [DefaultDispatcher-worker-7] me.liuwj.ktorm.database : Parameters: [null(varchar), 877584286(bigint)]
+2021-07-22 00:45:59.257 DEBUG [DefaultDispatcher-worker-7] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:46:19.084 DEBUG [DefaultDispatcher-worker-7] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:46:19.084 DEBUG [DefaultDispatcher-worker-7] me.liuwj.ktorm.database : Parameters: [那可不行(varchar), 820747045(bigint)]
+2021-07-22 00:46:19.610 DEBUG [DefaultDispatcher-worker-7] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:46:31.484 DEBUG [DefaultDispatcher-worker-7] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:46:31.484 DEBUG [DefaultDispatcher-worker-7] me.liuwj.ktorm.database : Parameters: [他就是个臭dd(varchar), 820747045(bigint)]
+2021-07-22 00:46:32.013 DEBUG [DefaultDispatcher-worker-7] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:46:40.814 DEBUG [DefaultDispatcher-worker-7] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:46:40.815 DEBUG [DefaultDispatcher-worker-7] me.liuwj.ktorm.database : Parameters: [null(varchar), 820747045(bigint)]
+2021-07-22 00:46:41.428 DEBUG [DefaultDispatcher-worker-7] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:46:56.295 DEBUG [DefaultDispatcher-worker-21] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:46:56.295 DEBUG [DefaultDispatcher-worker-21] me.liuwj.ktorm.database : Parameters: [线稿(varchar), 982715633(bigint)]
+2021-07-22 00:46:56.930 DEBUG [DefaultDispatcher-worker-21] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:47:23.976 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:47:23.977 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Parameters: [天天偷拍(varchar), 877584286(bigint)]
+2021-07-22 00:47:24.575 DEBUG [DefaultDispatcher-worker-11] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:47:33.484 DEBUG [DefaultDispatcher-worker-5] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:47:33.484 DEBUG [DefaultDispatcher-worker-5] me.liuwj.ktorm.database : Parameters: [线稿(varchar), 982715633(bigint)]
+2021-07-22 00:47:33.992 DEBUG [DefaultDispatcher-worker-5] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:48:13.422 DEBUG [DefaultDispatcher-worker-21] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:48:13.423 DEBUG [DefaultDispatcher-worker-21] me.liuwj.ktorm.database : Parameters: [线稿(varchar), 982715633(bigint)]
+2021-07-22 00:48:13.955 DEBUG [DefaultDispatcher-worker-21] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:48:26.948 DEBUG [DefaultDispatcher-worker-9] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:48:26.948 DEBUG [DefaultDispatcher-worker-9] me.liuwj.ktorm.database : Parameters: [线稿(varchar), 982715633(bigint)]
+2021-07-22 00:48:27.554 DEBUG [DefaultDispatcher-worker-9] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:50:28.059 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:50:28.059 DEBUG [DefaultDispatcher-worker-1] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:50:28.059 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:50:28.059 DEBUG [DefaultDispatcher-worker-5] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:50:28.059 DEBUG [DefaultDispatcher-worker-6] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:50:28.060 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : Parameters: [null(varchar), 820747045(bigint)]
+2021-07-22 00:50:28.060 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Parameters: [你啊  还能有谁?(varchar), 877584286(bigint)]
+2021-07-22 00:50:28.060 DEBUG [DefaultDispatcher-worker-5] me.liuwj.ktorm.database : Parameters: [我是黑衣服(varchar), 877584286(bigint)]
+2021-07-22 00:50:28.060 DEBUG [DefaultDispatcher-worker-1] me.liuwj.ktorm.database : Parameters: [太骚了(varchar), 877584286(bigint)]
+2021-07-22 00:50:28.060 DEBUG [DefaultDispatcher-worker-6] me.liuwj.ktorm.database : Parameters: [谁骚？(varchar), 877584286(bigint)]
+2021-07-22 00:50:35.496 DEBUG [DefaultDispatcher-worker-20] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:50:35.497 DEBUG [DefaultDispatcher-worker-20] me.liuwj.ktorm.database : Parameters: [线稿(varchar), 982715633(bigint)]
+2021-07-22 00:50:36.117 DEBUG [DefaultDispatcher-worker-20] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:51:53.792 DEBUG [DefaultDispatcher-worker-13] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:51:53.792 DEBUG [DefaultDispatcher-worker-13] me.liuwj.ktorm.database : Parameters: [线稿(varchar), 982715633(bigint)]
+2021-07-22 00:51:54.404 DEBUG [DefaultDispatcher-worker-13] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:53:32.097 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:53:32.097 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : Parameters: [null(varchar), 206073050(bigint)]
+2021-07-22 00:53:32.712 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:53:34.445 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:53:34.445 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : Parameters: [线稿(varchar), 982715633(bigint)]
+2021-07-22 00:53:35.000 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:53:57.778 DEBUG [DefaultDispatcher-worker-2] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:53:57.779 DEBUG [DefaultDispatcher-worker-2] me.liuwj.ktorm.database : Parameters: [null(varchar), 206073050(bigint)]
+2021-07-22 00:53:58.369 DEBUG [DefaultDispatcher-worker-2] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:54:01.284 DEBUG [DefaultDispatcher-worker-2] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:54:01.284 DEBUG [DefaultDispatcher-worker-2] me.liuwj.ktorm.database : Parameters: [null(varchar), 206073050(bigint)]
+2021-07-22 00:54:01.518 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:54:01.518 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Parameters: [被截图了(varchar), 206073050(bigint)]
+2021-07-22 00:54:01.818 DEBUG [DefaultDispatcher-worker-2] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:54:02.023 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:54:27.978 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:54:27.978 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Parameters: [诶？(varchar), 206073050(bigint)]
+2021-07-22 00:54:28.610 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:54:35.725 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:54:35.725 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Parameters: [怎…怎么回事呀(varchar), 206073050(bigint)]
+2021-07-22 00:54:36.241 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:55:00.591 DEBUG [DefaultDispatcher-worker-19] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:55:00.592 DEBUG [DefaultDispatcher-worker-19] me.liuwj.ktorm.database : Parameters: [线稿(varchar), 982715633(bigint)]
+2021-07-22 00:55:01.135 DEBUG [DefaultDispatcher-worker-19] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:55:20.236 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:55:20.236 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : Parameters: [线稿(varchar), 982715633(bigint)]
+2021-07-22 00:55:20.841 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:55:46.812 DEBUG [DefaultDispatcher-worker-26] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:55:46.812 DEBUG [DefaultDispatcher-worker-4] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:55:46.812 DEBUG [DefaultDispatcher-worker-26] me.liuwj.ktorm.database : Parameters: [null(varchar), 206073050(bigint)]
+2021-07-22 00:55:46.812 DEBUG [DefaultDispatcher-worker-4] me.liuwj.ktorm.database : Parameters: [😂，好吧，我这个脸确实有点(varchar), 877584286(bigint)]
+2021-07-22 00:55:47.414 DEBUG [DefaultDispatcher-worker-26] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:55:47.416 DEBUG [DefaultDispatcher-worker-4] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:55:53.523 DEBUG [DefaultDispatcher-worker-19] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:55:53.524 DEBUG [DefaultDispatcher-worker-19] me.liuwj.ktorm.database : Parameters: [线稿(varchar), 982715633(bigint)]
+2021-07-22 00:55:54.152 DEBUG [DefaultDispatcher-worker-19] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:56:24.065 DEBUG [DefaultDispatcher-worker-4] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:56:24.065 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:56:24.065 DEBUG [DefaultDispatcher-worker-4] me.liuwj.ktorm.database : Parameters: [记仇(varchar), 820747045(bigint)]
+2021-07-22 00:56:24.065 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Parameters: [说我坏话(varchar), 820747045(bigint)]
+2021-07-22 00:56:28.669 DEBUG [DefaultDispatcher-worker-4] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:56:28.678 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:56:31.070 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:56:31.070 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Parameters: [非常有感觉 哥哥们(varchar), 877584286(bigint)]
+2021-07-22 00:56:31.594 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Results: 0
+2021-07-22 00:56:33.844 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 00:56:33.844 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : Parameters: [线稿(varchar), 982715633(bigint)]
+2021-07-22 00:56:34.365 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : Results: 0
+2021-07-22 01:01:13.001 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 01:01:13.001 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 01:01:13.001 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 01:01:13.001 DEBUG [DefaultDispatcher-worker-3] me.liuwj.ktorm.database : Parameters: [你是喝大了么(varchar), 877584286(bigint)]
+2021-07-22 01:01:13.001 DEBUG [DefaultDispatcher-worker-5] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 01:01:13.001 DEBUG [DefaultDispatcher-worker-12] me.liuwj.ktorm.database : Parameters: [怎…怎么回事呀(varchar), 206073050(bigint)]
+2021-07-22 01:01:13.001 DEBUG [DefaultDispatcher-worker-8] me.liuwj.ktorm.database : Parameters: [null(varchar), 206073050(bigint)]
+2021-07-22 01:01:13.001 DEBUG [DefaultDispatcher-worker-5] me.liuwj.ktorm.database : Parameters: [一脸懵逼不明觉厉(varchar), 206073050(bigint)]
+2021-07-22 01:01:32.409 DEBUG [DefaultDispatcher-worker-1] me.liuwj.ktorm.database : SQL: SELECT * FROM question WHERE (question.question = ?) AND (question.group_id = ?) 
+2021-07-22 01:01:32.409 DEBUG [DefaultDispatcher-worker-1] me.liuwj.ktorm.database : Parameters: [线稿(varchar), 982715633(bigint)]
+2021-07-22 01:01:32.953 DEBUG [DefaultDispatcher-worker-1] me.liuwj.ktorm.database : Results: 0

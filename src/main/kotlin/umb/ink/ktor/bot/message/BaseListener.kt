@@ -1,15 +1,15 @@
 package umb.ink.ktor.bot.message
 
-import io.netty.util.internal.shaded.org.jctools.queues.SpscLinkedQueue
 import net.mamoe.mirai.event.SimpleListenerHost
 import java.util.LinkedList
+import java.util.concurrent.LinkedBlockingQueue
 
 abstract class BaseListener<T>(child: SimpleListenerHost) : SimpleListenerHost() {
     companion object{
         val listeners:LinkedList<SimpleListenerHost> = LinkedList()
     }
 
-    protected val messageQueue = SpscLinkedQueue<T>()
+    protected val messageQueue = LinkedBlockingQueue<T>()
 
     init {
         listeners.add(child)

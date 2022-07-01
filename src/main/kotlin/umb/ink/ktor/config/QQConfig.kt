@@ -1,13 +1,9 @@
-package umb.ink.ktor.bot
+package umb.ink.ktor.config
 
 import net.mamoe.mirai.utils.BotConfiguration
 import okhttp3.internal.toLongOrDefault
 
-private enum class QQInfo(val value:String) {
-    QQ("1149558764"),
-    PASSWORD("Farewell1234."),
-    PROTOCOL("PAD");
-}
+
 object QQConfig{
     val qq: Long = QQInfo.QQ.value.toLongOrDefault(0)
     val password: String = QQInfo.PASSWORD.value

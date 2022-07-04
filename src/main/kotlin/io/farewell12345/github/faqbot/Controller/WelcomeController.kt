@@ -8,7 +8,7 @@ import io.farewell12345.github.faqbot.DTO.model.logger
 import me.liuwj.ktorm.dsl.*
 import net.mamoe.mirai.contact.Group
 import net.mamoe.mirai.message.data.At
-import net.mamoe.mirai.message.data.GroupImage
+import net.mamoe.mirai.message.data.Image
 import net.mamoe.mirai.message.data.MessageChain
 import net.mamoe.mirai.message.data.PlainText
 import net.mamoe.mirai.utils.MiraiInternalApi
@@ -65,7 +65,7 @@ object WelcomeController {
         var text = ""
         messageChain.forEach {
             when(it){
-                is GroupImage ->{
+                is Image ->{
                     imgList.add(it.imageId)
                 }
                 is At ->{

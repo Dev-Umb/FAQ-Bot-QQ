@@ -48,9 +48,9 @@ object BotsManager : CoroutineScope,EventListener {
                 password = AppConfig.getInstance().botPwd
         ) {
             this.protocol = when(AppConfig.getInstance().device){
-                "PAD"->BotConfiguration.MiraiProtocol.ANDROID_PAD;
+                "PHONE"->BotConfiguration.MiraiProtocol.ANDROID_PAD;
                 "WATCH"->BotConfiguration.MiraiProtocol.ANDROID_WATCH
-                else -> BotConfiguration.MiraiProtocol.ANDROID_PHONE
+                else -> BotConfiguration.MiraiProtocol.ANDROID_PAD
             }
             val deviceInfoFolder = File("devices")
             if (!deviceInfoFolder.exists()) {
@@ -58,12 +58,6 @@ object BotsManager : CoroutineScope,EventListener {
             }
             fileBasedDeviceInfo(File(deviceInfoFolder,
                     "${AppConfig.getInstance().botQQ.toLong()}.json").absolutePath)
-            botLoggerSupplier = { _ ->
-                MiraiLogger.create("Bot")
-            }
-            networkLoggerSupplier = { _ ->
-                MiraiLogger.create("NetWork")
-            }
         }
         oneBot?.login()
         return oneBot as Bot

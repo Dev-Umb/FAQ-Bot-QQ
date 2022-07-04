@@ -24,7 +24,7 @@ class GroupMessageIdentify : BaseListeners()  {
                     append(PlainText("言论包含非法词汇${
                         buildString { verifyResult.data?.forEach {
                             if (it.value is List<*>){
-                                if((it.value as List<*>).size > 0){
+                                if((it.value as List<*>).isNotEmpty()){
                                     append("[")
                                     append(it.key+"")
                                     append("]")
@@ -34,11 +34,11 @@ class GroupMessageIdentify : BaseListeners()  {
                 })
                 try {
                     message.recall()
-                }catch(e: PermissionDeniedException){
+                }catch(_: PermissionDeniedException){
 
                 }
             }
-        }catch(e:NullPointerException){
+        }catch(_:NullPointerException){
 
         }
     }

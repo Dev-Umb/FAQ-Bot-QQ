@@ -166,7 +166,7 @@ object QuestionController {
         var forwardMessage:Answer.ForwardCard?=null
         message.message.forEach {
             when(it){
-                is GroupImage ->{
+                is Image ->{
                     //downImg(it)
                     imgList.add(it.imageId)
                 }

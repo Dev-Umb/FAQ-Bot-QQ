@@ -11,9 +11,7 @@ import net.mamoe.mirai.alsoLogin
 object ProgramManage {
     suspend fun run(){
         val bot = BotsManager.loginBot()  //登录bot
-        BaseListeners.listeners.forEach {
-            bot.eventChannel.registerListenerHost(it)
-        }
+        BaseListeners.registerListeners(bot)
     //    PicManager
         CommandGroupList.init()
         val logger = logger() // 打印日志

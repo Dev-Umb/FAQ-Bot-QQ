@@ -1,4 +1,4 @@
-package io.farewell12345.github.faqbot.route
+package io.farewell12345.github.faqbot.Listener
 
 import io.farewell12345.github.faqbot.AppConfig
 import io.farewell12345.github.faqbot.BotManager.CommandGroupList
@@ -12,8 +12,6 @@ import io.farewell12345.github.faqbot.DTO.model.QAmodel.Question
 import io.farewell12345.github.faqbot.DTO.model.QAmodel.Question.message
 import io.farewell12345.github.faqbot.DTO.model.QAmodel.Question.question
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
-import io.farewell12345.github.faqbot.Listener.BaseListeners
-import io.farewell12345.github.faqbot.Listener.route
 import io.farewell12345.github.faqbot.Plugin.Lucky.Lucky
 import me.liuwj.ktorm.dsl.eq
 import me.liuwj.ktorm.entity.add

@@ -1,15 +1,14 @@
-package io.farewell12345.github.faqbot.route
+package io.farewell12345.github.faqbot.Listener
 
 import io.farewell12345.github.faqbot.BotManager.SessionManager
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
-import io.farewell12345.github.faqbot.Listener.BaseListeners
-import io.farewell12345.github.faqbot.Listener.route
 import kotlinx.coroutines.ObsoleteCoroutinesApi
 import net.mamoe.mirai.event.EventHandler
 import net.mamoe.mirai.event.events.FriendMessageEvent
 import net.mamoe.mirai.utils.MiraiInternalApi
 
 class BotFriendMsgListener : BaseListeners() {
+
     @ObsoleteCoroutinesApi
     @MiraiInternalApi
     @ExperimentalStdlibApi
@@ -43,4 +42,5 @@ class BotFriendMsgListener : BaseListeners() {
             }
         }
     }
+
 }

@@ -12,7 +12,7 @@ import net.mamoe.mirai.message.data.PlainText
 import net.mamoe.mirai.utils.MiraiInternalApi
 import java.util.*
 
-class BotGroupCommandListener:BaseListeners() {
+class BotGroupCommandListener: BaseListeners() {
     @MiraiInternalApi
     @EventHandler
     suspend fun GroupMessageEvent.onEvent() {
@@ -109,4 +109,5 @@ class BotGroupCommandListener:BaseListeners() {
             }
         }
     }
+
 }

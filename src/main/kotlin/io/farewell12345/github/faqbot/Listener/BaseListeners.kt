@@ -30,11 +30,10 @@ abstract class BaseListeners : SimpleListenerHost() {
         }
     }
     companion object {
-
         init {
             val reflections: Reflections = Reflections("io.farewell12345.github.faqbot.Listener")
             val subTypes: Set<Class<out BaseListeners?>> = reflections.getSubTypesOf(BaseListeners::class.java)
-            subTypes.forEach{ it ->
+            subTypes.forEach{
                 val listener = it.getDeclaredConstructor().newInstance()
                 if (listener is BaseListeners) {
                     addListeners(listener)
@@ -47,10 +46,6 @@ abstract class BaseListeners : SimpleListenerHost() {
                 bot.eventChannel.registerListenerHost(it)
                 logger().debug("bot loader:$it")
             }
-        }
-        fun addListeners(bot: Bot, listener: BaseListeners){
-            listeners.add(listener)
-            bot.eventChannel.registerListenerHost(listener)
         }
         private fun addListeners(listener: BaseListeners) {
             listeners.add(listener)

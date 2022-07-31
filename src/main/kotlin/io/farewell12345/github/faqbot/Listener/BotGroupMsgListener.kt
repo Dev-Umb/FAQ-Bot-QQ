@@ -13,6 +13,8 @@ import io.farewell12345.github.faqbot.DTO.model.QAmodel.Question.message
 import io.farewell12345.github.faqbot.DTO.model.QAmodel.Question.question
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
 import io.farewell12345.github.faqbot.Plugin.Lucky.Lucky
+import io.farewell12345.github.faqbot.route.IMessageEvent
+import io.farewell12345.github.faqbot.route.route
 import me.liuwj.ktorm.dsl.eq
 import me.liuwj.ktorm.entity.add
 import me.liuwj.ktorm.entity.filter
@@ -24,11 +26,11 @@ import net.mamoe.mirai.message.data.PlainText
 import net.mamoe.mirai.message.data.firstIsInstanceOrNull
 import net.mamoe.mirai.utils.MiraiInternalApi
 
-class BotGroupMsgListener : BaseListeners() {
+class BotGroupMsgListener : BaseListeners(), IMessageEvent {
     // 重写Event监听事件
-    @MiraiInternalApi
+    @OptIn(MiraiInternalApi::class)
     @EventHandler
-    suspend fun GroupMessageEvent.onEvent() {
+    override suspend fun GroupMessageEvent.onEvent() {
         route(prefix = "", delimiter = " ") {
             if (SessionManager.hasSession(sender.id)) {
                 if (SessionManager.performSession(event)) {

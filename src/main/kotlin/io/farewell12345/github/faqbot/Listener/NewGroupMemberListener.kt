@@ -4,6 +4,7 @@ import io.farewell12345.github.faqbot.BotManager.BotsManager
 import io.farewell12345.github.faqbot.BotManager.CommandGroupList
 import io.farewell12345.github.faqbot.Controller.WelcomeController
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Answer
+import io.farewell12345.github.faqbot.route.IMessageEvent
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.event.EventHandler
 import net.mamoe.mirai.event.events.MemberJoinEvent
@@ -12,9 +13,9 @@ import net.mamoe.mirai.message.data.Image
 import net.mamoe.mirai.message.data.PlainText
 import net.mamoe.mirai.message.data.buildMessageChain
 
-class NewGroupMemberListener : BaseListeners() {
+class NewGroupMemberListener : BaseListeners(), IMessageEvent {
     @EventHandler
-    suspend fun MemberJoinEvent.onEvent() {
+    override suspend fun MemberJoinEvent.onEvent() {
         val user = this.member
         val groupId = this.group.id
         if (groupId in CommandGroupList.welcomeGroupList) {

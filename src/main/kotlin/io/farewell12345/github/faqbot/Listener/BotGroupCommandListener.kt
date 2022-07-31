@@ -6,16 +6,17 @@ import io.farewell12345.github.faqbot.BotManager.SessionManager
 import io.farewell12345.github.faqbot.Controller.WelcomeController
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Answer
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
+import io.farewell12345.github.faqbot.route.IMessageEvent
+import io.farewell12345.github.faqbot.route.route
 import net.mamoe.mirai.event.EventHandler
 import net.mamoe.mirai.event.events.GroupMessageEvent
 import net.mamoe.mirai.message.data.PlainText
 import net.mamoe.mirai.utils.MiraiInternalApi
 import java.util.*
 
-class BotGroupCommandListener: BaseListeners() {
-    @MiraiInternalApi
+class BotGroupCommandListener: BaseListeners(), IMessageEvent {
     @EventHandler
-    suspend fun GroupMessageEvent.onEvent() {
+    override suspend fun GroupMessageEvent.onEvent() {
         route(prefix = ".command", delimiter = " ") {
             if (event.sender.permission.ordinal == 0
                 && event.sender.id != AppConfig.getInstance().superUser

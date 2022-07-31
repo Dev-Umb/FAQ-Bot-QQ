@@ -6,6 +6,7 @@ import io.farewell12345.github.faqbot.Plugin.ProgramManage
 import kotlinx.coroutines.launch
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.event.SimpleListenerHost
+import net.mamoe.mirai.event.events.GroupMessageEvent
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.apache.logging.log4j.util.StackLocatorUtil

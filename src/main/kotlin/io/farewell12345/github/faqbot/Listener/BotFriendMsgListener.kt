@@ -2,18 +2,17 @@ package io.farewell12345.github.faqbot.Listener
 
 import io.farewell12345.github.faqbot.BotManager.SessionManager
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
+import io.farewell12345.github.faqbot.route.IMessageEvent
+import io.farewell12345.github.faqbot.route.route
 import kotlinx.coroutines.ObsoleteCoroutinesApi
 import net.mamoe.mirai.event.EventHandler
 import net.mamoe.mirai.event.events.FriendMessageEvent
 import net.mamoe.mirai.utils.MiraiInternalApi
 
-class BotFriendMsgListener : BaseListeners() {
+class BotFriendMsgListener : BaseListeners(), IMessageEvent {
 
-    @ObsoleteCoroutinesApi
-    @MiraiInternalApi
-    @ExperimentalStdlibApi
     @EventHandler
-    suspend fun FriendMessageEvent.onEvent() {
+    override suspend fun FriendMessageEvent.onEvent() {
         route(prefix = "", delimiter = " ") {
             if (SessionManager.hasSession(sender.id)) {
                 if (SessionManager.performSession(this.event)) {

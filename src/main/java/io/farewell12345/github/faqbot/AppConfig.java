@@ -20,6 +20,7 @@ public class AppConfig {
     public Long superUser;
     public String fakeInfoUrl;
     public String fakeInfoKey;
+    public String predictPyUri;
     private AppConfig() throws FileNotFoundException {
         Yaml yml = new Yaml();
         Map<String, Object> data = yml.load(new FileReader(new File("config.yml")));
@@ -29,6 +30,7 @@ public class AppConfig {
         }
         dbUser = (String) data.get("dbUser");
         dbPwd = (String) data.get("dbPwd");
+        predictPyUri = (String) data.get("predict");
         botQQ = Long.valueOf((String) data.get("botQQ"));
         botPwd = (String) data.get("botPwd");
         try {

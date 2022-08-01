@@ -2,12 +2,13 @@ package io.farewell12345.github.faqbot.FuckOkhttp
 
 import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
+import io.farewell12345.github.faqbot.DTO.model.dataclass.FuckSisterResponse
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 
 
-class FuckOkhttp(val url:String?=null) {
+class FuckOkhttp(private val url:String?=null) {
     private val client = OkHttpClient()
     fun getBytes(): ByteArray? {
         val request = this.url?.let {
@@ -17,6 +18,15 @@ class FuckOkhttp(val url:String?=null) {
         }
         val responseGet = request?.let { client.newCall(it).execute() }
         return responseGet?.body?.bytes()
+    }
+    fun get(): String? {
+        val request = this.url?.let {
+            Request.Builder()
+                .url(it).get()
+                .build()
+        }
+        val responseGet = request?.let { client.newCall(it).execute() }
+        return responseGet?.body?.string()
     }
     fun postFile(file: ByteArray): Response? {
         val mediaType: MediaType = "image/png".toMediaTypeOrNull()!!
@@ -54,6 +64,25 @@ class FuckOkhttp(val url:String?=null) {
                 .execute().body?.string()
         return GsonBuilder().create()
             .fromJson(responseBody, T::class.java)
+    }
+
+    fun postFuckSister(body: String): FuckSisterResponse? {
+        val client= OkHttpClient()
+        val builder = FormBody.Builder()
+        builder.add("text",body)
+        val fromBody = builder.build()
+        val request = url?.let {
+            Request.Builder()
+                .url(it)
+                .post(fromBody)
+                .build()
+        }
+        val responseBody = request?.let {
+            client.newCall(it)
+                .execute().body?.string()
+        }
+        return GsonBuilder().create()
+            .fromJson(responseBody, FuckSisterResponse::class.java)
     }
 
     fun postFile(url: String?,file: ByteArray): Response? {

@@ -3,6 +3,7 @@ package io.farewell12345.github.faqbot.FuckOkhttp
 import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
 import io.farewell12345.github.faqbot.DTO.model.dataclass.FuckSisterResponse
+import io.farewell12345.github.faqbot.DTO.model.logger
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -10,6 +11,9 @@ import okhttp3.RequestBody.Companion.toRequestBody
 
 class FuckOkhttp(private val url:String?=null) {
     private val client = OkHttpClient()
+    fun reportLogger(url:String){
+        logger().debug(url)
+    }
     fun getBytes(): ByteArray? {
         val request = this.url?.let {
             Request.Builder()
@@ -26,6 +30,9 @@ class FuckOkhttp(private val url:String?=null) {
                 .build()
         }
         val responseGet = request?.let { client.newCall(it).execute() }
+        if (url != null) {
+            reportLogger(url)
+        }
         return responseGet?.body?.string()
     }
     fun postFile(file: ByteArray): Response? {
@@ -62,6 +69,7 @@ class FuckOkhttp(private val url:String?=null) {
             .build()
         val responseBody = client.newCall(requestBody)
                 .execute().body?.string()
+        reportLogger(url)
         return GsonBuilder().create()
             .fromJson(responseBody, T::class.java)
     }
@@ -81,6 +89,7 @@ class FuckOkhttp(private val url:String?=null) {
             client.newCall(it)
                 .execute().body?.string()
         }
+        url?.let { reportLogger(it) }
         return GsonBuilder().create()
             .fromJson(responseBody, FuckSisterResponse::class.java)
     }

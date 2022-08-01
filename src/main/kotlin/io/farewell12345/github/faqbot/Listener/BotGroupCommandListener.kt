@@ -30,6 +30,15 @@ class BotGroupCommandListener: BaseListeners(), IMessageEvent {
                 subject.sendMessage("本群迎新功能已关闭")
                 return@route
             }
+            case("fuckPsSister","开启/关闭反PS学姐功能"){
+                if (event.group.id !in CommandGroupList.fuckPsSister){
+                    CommandGroupList.fuckPsSister.add(group.id)
+                    subject.sendMessage("已开启反PS学姐功能，将实时监听群内消息")
+                }else{
+                    CommandGroupList.fuckPsSister.remove(group.id)
+                    subject.sendMessage("已关闭反PS学姐功能")
+                }
+            }
             case("manage", "仅限管理员进行操作",false) {
                 if (event.group.id !in CommandGroupList.managerGroupList) {
                     CommandGroupList.managerGroupList.add(event.group.id)

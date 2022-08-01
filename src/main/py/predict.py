@@ -1,3 +1,5 @@
+import ctypes
+import inspect
 import json
 import sys
 import threading
@@ -170,6 +172,66 @@ from flask import request
 
 app = Flask(__name__)
 
+import time
+
+
+def _async_raise(tid, exctype):
+    """raises the exception, performs cleanup if needed"""
+    tid = ctypes.c_long(tid)
+    if not inspect.isclass(exctype):
+        exctype = type(exctype)
+    res = ctypes.pythonapi.PyThreadState_SetAsyncExc(tid, ctypes.py_object(exctype))
+    if res == 0:
+        raise ValueError("invalid thread id")
+    elif res != 1:
+        # """if it returns a number greater than one, you're in trouble,
+        # and you should call it again with exc=NULL to revert the effect"""
+        ctypes.pythonapi.PyThreadState_SetAsyncExc(tid, None)
+        raise SystemError("PyThreadState_SetAsyncExc failed")
+
+
+def stop_thread(thread):
+    _async_raise(thread.ident, SystemExit)
+
+
+m_lock = threading.Lock()
+
+
+def listener_heart():
+    global live_time
+    m_lock.acquire()
+    t = live_time
+    m_lock.release()
+    now_time = int(time.time())
+    while now_time - t < 30:
+        now_time = int(time.time())
+        m_lock.acquire()
+        t = live_time
+        m_lock.release()
+        time.sleep(5)
+        write_test_log(f"[log time]{now_time}:{t}")
+        # 如果超过10秒没有收到心跳消息，则终止程序
+    print('程序终止')
+    stop_thread(worker)
+    write_test_log("nope heart")
+    import sys
+    sys.exit()
+
+
+@app.route('/heart', methods=['GET'])
+def heart():
+    global live_time
+    try:
+        # 更新live_time
+        m_lock.acquire()
+        live_time = int(time.time())
+        m_lock.release()
+        write_test_log(f"live_time: {live_time}")
+        return 'success'
+    except Exception as e:
+        write_test_log(str(e))
+        return str(e)
+
 
 @app.route('/train', methods=['GET'])
 def train():
@@ -203,7 +265,7 @@ def hello():
 
 def write_test_log(log):
     with open("test.txt", 'a+') as f:
-        f.write(log+"\n")
+        f.write(log + "\n")
         f.close()
 
 
@@ -214,6 +276,9 @@ def write_test_log(log):
 
 if __name__ == '__main__':
     try:
+        # 监听心跳，若长时间未收到心跳消息则终止程序
+        live_time = int(time.time())
+        threading.Thread(target=listener_heart).start()
         write_test_log("start\n")
         stop_words = read_stopwords()
         write_test_log("start stop words\n")
@@ -221,6 +286,8 @@ if __name__ == '__main__':
         write_test_log("load model\n")
         lac = LAC(mode='lac')
         write_test_log("load lac\n")
-        app.run("127.0.0.1", 9001)
+        worker = threading.Thread(target=app.run, args=("127.0.0.1", 9001))
+        worker.start()
+        worker.join()
     except Exception as e:
         write_test_log(str(e))

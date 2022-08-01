@@ -2,6 +2,7 @@ package io.farewell12345.github.faqbot.Python
 
 import io.farewell12345.github.faqbot.AppConfig
 import io.farewell12345.github.faqbot.DTO.model.dataclass.FuckSisterResponse
+import io.farewell12345.github.faqbot.DTO.model.logger
 import io.farewell12345.github.faqbot.FuckOkhttp.FuckOkhttp
 import kotlinx.coroutines.*
 
@@ -19,10 +20,14 @@ object FuckSchoolSisterUntil {
         GlobalScope.launch {
                 withContext(Dispatchers.IO) {
                     println("start sever")
-                    process?.waitFor()
+                    while (process?.isAlive == true){
+                        FuckOkhttp("http://localhost:9001/heart").get()
+                        Thread.sleep(1000)
+                    }
+                    logger().debug("process is exit!!")
                 }
             }
-        }
+    }
     public fun verifyMsg(text: String): FuckSisterResponse? {
         return FuckOkhttp(predictUrl).postFuckSister(text)
     }

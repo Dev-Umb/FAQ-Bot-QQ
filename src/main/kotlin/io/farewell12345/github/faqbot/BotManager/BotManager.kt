@@ -17,6 +17,7 @@ import net.mamoe.mirai.utils.BotConfiguration
 import net.mamoe.mirai.utils.MiraiLogger
 import java.io.File
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.coroutines.CoroutineContext
 internal val appJob = Job()
@@ -24,6 +25,7 @@ internal val appJob = Job()
 object CommandGroupList {
     lateinit var welcomeGroupList:ArrayList<Long>
     lateinit var managerGroupList:ArrayList<Long>
+    lateinit var fuckPsSister:ArrayList<Long>
     lateinit var fakeInfoIdentityHashMap: HashMap<Long, Boolean>
     lateinit var luckyGroup: HashMap<Long, Boolean>
     lateinit var lineArtGroup:HashMap<Long,Boolean>
@@ -33,6 +35,7 @@ object CommandGroupList {
         fakeInfoIdentityHashMap = HashMap()
         welcomeGroupList = ArrayList()
         managerGroupList = ArrayList()
+        fuckPsSister = ArrayList()
     }
 }
 

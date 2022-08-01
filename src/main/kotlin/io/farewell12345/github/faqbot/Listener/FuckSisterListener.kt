@@ -1,5 +1,6 @@
 package io.farewell12345.github.faqbot.Listener
 
+import io.farewell12345.github.faqbot.BotManager.CommandGroupList
 import io.farewell12345.github.faqbot.Python.FuckSchoolSisterUntil
 import io.farewell12345.github.faqbot.route.IMessageEvent
 import net.mamoe.mirai.contact.isAdministrator
@@ -18,6 +19,9 @@ class FuckSisterListener : BaseListeners(), IMessageEvent {
     }
     @EventHandler
     override suspend fun GroupMessageEvent.onEvent(){
+        if (group.id !in CommandGroupList.fuckPsSister){
+            return
+        }
         val res = fuckSchoolSisterUntil.verifyMsg(message.content)
         if (res?.isFake == true){
             subject.sendMessage(
@@ -25,7 +29,7 @@ class FuckSisterListener : BaseListeners(), IMessageEvent {
                     add(PlainText("检测到包含违法信息"))
                     add(At(sender))
                 })
-            if (group.botPermission.isAdministrator() && sender.isOperator()){
+            if (group.botPermission.isAdministrator() && !sender.isOperator()){
                 try {
                     message.recall()
                 }catch (_:Exception){

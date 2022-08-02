@@ -6,6 +6,7 @@ import io.farewell12345.github.faqbot.BotManager.SessionManager
 import io.farewell12345.github.faqbot.Controller.WelcomeController
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Answer
 import io.farewell12345.github.faqbot.DTO.model.dataclass.Session
+import io.farewell12345.github.faqbot.Python.FuckSchoolSisterUntil
 import io.farewell12345.github.faqbot.route.IMessageEvent
 import io.farewell12345.github.faqbot.route.route
 import net.mamoe.mirai.event.EventHandler
@@ -30,6 +31,14 @@ class BotGroupCommandListener: BaseListeners(), IMessageEvent {
                 subject.sendMessage("本群迎新功能已关闭")
                 return@route
             }
+            case("restartPsSister", "重启服务，仅限超级管理员"){
+                if(sender.id == AppConfig.getInstance().superUser){
+                    FuckSchoolSisterUntil.restart()
+                }else{
+                    subject.sendMessage("您没有权限，请联系开发者")
+                }
+            }
+
             case("fuckPsSister","开启/关闭反PS学姐功能"){
                 if (event.group.id !in CommandGroupList.fuckPsSister){
                     CommandGroupList.fuckPsSister.add(group.id)

@@ -7,8 +7,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Map;
 
-import static io.farewell12345.github.faqbot.DTO.model.DBUntilKt.logger;
-
 public class AppConfig {
     private static AppConfig INSTANCE = null;
     public String dbUrl;

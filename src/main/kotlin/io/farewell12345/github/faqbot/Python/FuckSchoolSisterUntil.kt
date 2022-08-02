@@ -4,35 +4,59 @@ import io.farewell12345.github.faqbot.AppConfig
 import io.farewell12345.github.faqbot.DTO.model.dataclass.FuckSisterResponse
 import io.farewell12345.github.faqbot.DTO.model.logger
 import io.farewell12345.github.faqbot.FuckOkhttp.FuckOkhttp
+import io.ktor.network.sockets.*
 import kotlinx.coroutines.*
+import java.net.ConnectException
 
 
 @OptIn(DelicateCoroutinesApi::class)
 object FuckSchoolSisterUntil {
     private var PREDICT_PYTHON_URI = AppConfig.getInstance().predictPyUri
     private var process: Process? = null
-    private const val predictUrl = "http://localhost:9001/predict"
+    private const val predictUrl = "http://127.0.0.1:9001/predict"
     fun destroy(){
-        process?.destroy()
+        if (process?.isAlive == true){
+            process?.destroy()
+        }
+    }
+    fun restart(){
+        destroy()
+        start()
+    }
+    private fun start(){
+        process = Runtime.getRuntime().exec("python3 $PREDICT_PYTHON_URI")
+        GlobalScope.launch {
+            withContext(Dispatchers.IO) {
+                println("start sever")
+                while (process?.isAlive == true){
+                    try{
+                        FuckOkhttp("http://127.0.0.1:9001/heart").get()
+                    }catch (e: ConnectException){
+                        logger().debug("connect failed try to reconnect")
+                    }catch (e: java.net.SocketTimeoutException){
+                        logger().debug("connect timeout")
+                    }catch (e: Exception){
+                        logger().debug(e)
+                    }
+                    Thread.sleep(1000)
+                }
+                logger().debug("process is exit!!,try to restart")
+                restart()
+            }
+        }
     }
     init {
-        process = Runtime.getRuntime().exec("python $PREDICT_PYTHON_URI")
-        GlobalScope.launch {
-                withContext(Dispatchers.IO) {
-                    println("start sever")
-                    while (process?.isAlive == true){
-                        FuckOkhttp("http://localhost:9001/heart").get()
-                        Thread.sleep(1000)
-                    }
-                    logger().debug("process is exit!!")
-                }
-            }
+       start()
     }
     public fun verifyMsg(text: String): FuckSisterResponse? {
-        return FuckOkhttp(predictUrl).postFuckSister(text)
+        return try {
+            FuckOkhttp(predictUrl).postFuckSister(text)
+        }catch (e: Exception){
+            null
+        }
     }
     public fun test(): String? {
-        return FuckOkhttp("http://localhost:9001/").get()
+        return FuckOkhttp("http://127.0.0.1:9001/").get()
     }
 }
 

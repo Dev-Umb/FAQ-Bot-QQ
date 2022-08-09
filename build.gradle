@@ -39,7 +39,7 @@ compileTestKotlin {
     }
 }
 
-mainClassName = 'io.farewell12345.github.faqbot.MainKt'
+mainClassName = 'ink.umb.faqbot.MainKt'
 group 'org.example'
 version '1.0-SNAPSHOT'
 

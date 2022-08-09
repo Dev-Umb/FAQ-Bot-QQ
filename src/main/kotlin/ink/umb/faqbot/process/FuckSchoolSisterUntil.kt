@@ -3,7 +3,7 @@ package ink.umb.faqbot.process
 import ink.umb.faqbot.AppConfig
 import ink.umb.faqbot.dto.db.logger
 import ink.umb.faqbot.dto.model.dataclass.FuckSisterResponse
-import ink.umb.faqbot.fuck.http.FuckOkhttp
+import ink.umb.faqbot.http.FuckOkhttp
 import kotlinx.coroutines.*
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -15,7 +15,8 @@ object FuckSchoolSisterUntil {
     private val log = logger()
     private var PREDICT_PYTHON_URI = AppConfig.getInstance().predictPyUri
     private var process: Process? = null
-    private const val predictUrl = "http://127.0.0.1:9001/predict"
+    private const val rootUrl = "http://127.0.0.1:9001"
+    private const val predictUrl = "$rootUrl/predict"
     fun destroy(){
         if (process?.isAlive == true){
             process?.destroy()
@@ -106,6 +107,15 @@ object FuckSchoolSisterUntil {
     public fun test(): String? {
         return FuckOkhttp("http://127.0.0.1:9001/").get()
     }
+    public fun train(): String? {
+        return FuckOkhttp("$rootUrl/train").get()
+    }
+
+    public fun addDataSet(data: String): String? {
+        return FuckOkhttp("$rootUrl/keywords/add")
+            .post(mapOf("text" to data))
+    }
+
 }
 
 fun main() {

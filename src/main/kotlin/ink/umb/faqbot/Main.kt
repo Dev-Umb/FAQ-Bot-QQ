@@ -14,6 +14,10 @@ import ink.umb.faqbot.plugin.ProgramManage
 
 suspend fun main() {
     // 添加监听job
-    DB
-    ProgramManage.run()
+    try {
+        DB
+        ProgramManage.run()
+    }catch (_: Exception){
+        ProgramManage.restart()
+    }
 }

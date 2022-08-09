@@ -9,9 +9,12 @@ import ink.umb.faqbot.dto.model.dataclass.Session
 import ink.umb.faqbot.process.FuckSchoolSisterUntil
 import ink.umb.faqbot.route.IMessageEvent
 import ink.umb.faqbot.route.route
+import io.ktor.utils.io.*
+import kotlinx.coroutines.launch
 import net.mamoe.mirai.event.EventHandler
 import net.mamoe.mirai.event.events.GroupMessageEvent
-import net.mamoe.mirai.message.data.PlainText
+import net.mamoe.mirai.message.data.*
+import net.mamoe.mirai.message.data.MessageSource.Key.quote
 import java.util.*
 
 class BotGroupCommandListener: BaseListeners(), IMessageEvent {
@@ -38,7 +41,20 @@ class BotGroupCommandListener: BaseListeners(), IMessageEvent {
                     subject.sendMessage("您没有权限，请联系开发者")
                 }
             }
-
+            case("add","添加"){
+                val reply = message.get(QuoteReply.Key)
+                val data = reply?.source?.originalMessage?.contentToString()
+                if (data!!.length > 10){
+                    launch {
+                        FuckSchoolSisterUntil.addDataSet(data)
+                        FuckSchoolSisterUntil.train()
+                        subject.sendMessage("模型迭代完成")
+                    }
+                    subject.sendMessage("添加语料成功,正在迭代模型")
+                }else{
+                    subject.sendMessage("语料文本太短，不足以支持训练")
+                }
+            }
             case("fuckPsSister","开启/关闭反PS学姐功能"){
                 if (event.group.id !in CommandGroupList.fuckPsSister){
                     CommandGroupList.fuckPsSister.add(group.id)

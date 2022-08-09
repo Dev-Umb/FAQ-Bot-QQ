@@ -51,7 +51,7 @@ allprojects {
         mavenCentral()
     }
 }
-def CORE_VERSION = '2.11.1'
+def CORE_VERSION = '2.12.1'
 def CONSOLE_VERSION = "2.0-RC-dev-2"
 def LUAMIRAI_VERSION = "0.5.0"
 

@@ -14,7 +14,6 @@ import kotlin.coroutines.CoroutineContext
 val unCompleteValue = hashMapOf<Long, CompletableDeferred<String>>()
 
 class CommandRoute<T : MessageEvent>(val args: List<String>?, val event: T) : CoroutineScope {
-    val config = AppConfig.getInstance()
     val helpMap = hashMapOf<String, String>()
     var alreadyCalled = false
     lateinit var commandText:String

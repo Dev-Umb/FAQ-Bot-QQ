@@ -110,10 +110,13 @@ def get_extraction_keywords(text) -> List[str]:
 
 def add_keyword_data_set(text):
     keywords = get_extraction_keywords(text)
-    with open(keyword_uri, 'a', encoding='utf-8') as f:
+    with open(keyword_uri, 'r', encoding='utf-8') as f:
         data_set = f.readlines()
-        for keyword in keywords:
-            if keyword not in data_set:
+        f.close()
+
+    for keyword in keywords:
+        if keyword not in data_set:
+            with open(keyword_uri, 'a', encoding='utf-8') as f:
                 f.write(keyword + '\n')
                 f.close()
 
@@ -230,9 +233,9 @@ def heart():
 
 
 @app.route('/train', methods=['GET'])
-def train():
+def train_model():
     global model
-    with open("data/keywords.txt", encoding='utf-8') as f:
+    with open("data/keywords.txt", 'r', encoding='utf-8') as f:
         data = f.readlines()
         f.close()
     model = train(''.join(data))
@@ -280,9 +283,9 @@ def write_test_log(log):
 if __name__ == '__main__':
     import logging
 
-    log = logging.getLogger('werkzeug')
-    log.disabled = True
-    app.logger.disabled = True
+    # log = logging.getLogger('werkzeug')
+    # log.disabled = True
+    # app.logger.disabled = True
     try:
         # 监听心跳，若长时间未收到心跳消息则终止程序
         threading.Thread(target=listener_heart).start()

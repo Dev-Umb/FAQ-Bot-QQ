@@ -1,10 +1,10 @@
-package ink.umb.faqbot.fuck.http
+package ink.umb.faqbot.http
 
 import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
 import ink.umb.faqbot.dto.db.logger
 import ink.umb.faqbot.dto.model.dataclass.FuckSisterResponse
-
+import io.ktor.util.*
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -63,10 +63,10 @@ class FuckOkhttp(private val url:String?=null) {
         @SerializedName("isFake")
         val isFake: Boolean = false
     }
-    public val JSON: MediaType? = "application/json".toMediaTypeOrNull()
-    inline fun <reified T> post(url: String, body:String?=null):T{
+    public val mediaType1: MediaType? = "application/json".toMediaTypeOrNull()
+    inline fun <reified T> post(url: String, body:String ?= null):T{
         val client= OkHttpClient()
-        val sendBody = body!!.toRequestBody(JSON);
+        val sendBody = body!!.toRequestBody(mediaType1);
         val requestBody = Request.Builder()
             .url(url)
             .post(sendBody)
@@ -77,7 +77,24 @@ class FuckOkhttp(private val url:String?=null) {
         return GsonBuilder().create()
             .fromJson(responseBody, T::class.java)
     }
-
+    fun post(body: Map<String, String>): String? {
+        val client= OkHttpClient()
+        val formBody = FormBody.Builder()
+        body.forEach { (t, u) ->
+            formBody.add(t,u)
+        }
+        val requestBody = url?.let {
+            Request.Builder()
+                .url(it)
+                .post(formBody.build())
+                .build()
+        }
+        val responseBody = requestBody?.let {
+            client.newCall(it)
+                .execute().body?.string()
+        }
+        return responseBody
+    }
     fun postFuckSister(body: String): FuckSisterResponse? {
         val client= OkHttpClient()
         val builder = FormBody.Builder()

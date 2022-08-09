@@ -1,6 +1,6 @@
 package ink.umb.faqbot.plugin.LineArt
 
-import ink.umb.faqbot.fuck.http.FuckOkhttp
+import ink.umb.faqbot.http.FuckOkhttp
 import io.ktor.util.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

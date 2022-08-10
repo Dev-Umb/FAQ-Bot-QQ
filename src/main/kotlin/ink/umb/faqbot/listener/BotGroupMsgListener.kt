@@ -32,6 +32,13 @@ class BotGroupMsgListener : BaseListeners(), IMessageEvent {
     @EventHandler
     override suspend fun GroupMessageEvent.onEvent() {
         route(prefix = "", delimiter = " ") {
+            case("取消", "停止会话录入") {
+                if (SessionManager.hasSession(event.sender.id)) {
+                    removeSession(event.sender.id)
+                    subject.sendMessage("取消会话成功！")
+                }
+                return@route
+            }
             if (SessionManager.hasSession(sender.id)) {
                 if (SessionManager.performSession(event)) {
                     subject.sendMessage("录入成功！任务正在处理，请稍等")
@@ -39,12 +46,7 @@ class BotGroupMsgListener : BaseListeners(), IMessageEvent {
                 }
                 subject.sendMessage("格式有误！请检查录入答案格式")
             }
-            case("取消", "停止会话录入") {
-                if (SessionManager.hasSession(event.sender.id)) {
-                    removeSession(event.sender.id)
-                    subject.sendMessage("取消会话成功！")
-                }
-            }
+
             case("列表", desc = "获取此群的问题列表") {
                 val query = database.question.filter{
                     it.group eq group.id

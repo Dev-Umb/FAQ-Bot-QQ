@@ -11,23 +11,11 @@
  Target Server Version : 50718
  File Encoding         : 65001
 
- Date: 15/08/2021 15:47:22
+ Date: 31/08/2022 02:43:26
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
-
--- ----------------------------
--- Table structure for group
--- ----------------------------
-DROP TABLE IF EXISTS `group`;
-CREATE TABLE `group`  (
-  `group` bigint(255) NOT NULL,
-  `user_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`group`) USING BTREE,
-  INDEX `group_id`(`group`) USING BTREE,
-  INDEX `user`(`user_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for manager
@@ -48,7 +36,7 @@ CREATE TABLE `message`  (
   `data` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
   `question_id` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 250 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1301 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for notice
@@ -68,14 +56,27 @@ CREATE TABLE `question`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `answer_id` int(11) NULL DEFAULT NULL,
   `question_id` int(11) NULL DEFAULT NULL,
-  `group` bigint(20) NULL DEFAULT NULL,
+  `group_id` bigint(20) NULL DEFAULT NULL,
   `last_edit_user` bigint(100) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `FKhmw49oeaxy93yc72okw2voxjk`(`answer_id`) USING BTREE,
   INDEX `FK6tbw2ts0kacdf64f5b2hansqy`(`question_id`) USING BTREE,
   CONSTRAINT `FK6tbw2ts0kacdf64f5b2hansqy` FOREIGN KEY (`question_id`) REFERENCES `message` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `FKhmw49oeaxy93yc72okw2voxjk` FOREIGN KEY (`answer_id`) REFERENCES `message` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 122 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 653 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for service
+-- ----------------------------
+DROP TABLE IF EXISTS `service`;
+CREATE TABLE `service`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `pattern` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `pattern_mode` int(255) NOT NULL,
+  `req_method` int(255) NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for welcome
@@ -86,6 +87,6 @@ CREATE TABLE `welcome`  (
   `group` bigint(255) NOT NULL,
   `talk` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;

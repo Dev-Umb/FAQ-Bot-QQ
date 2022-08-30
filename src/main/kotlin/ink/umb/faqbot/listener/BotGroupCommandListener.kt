@@ -3,12 +3,15 @@ package ink.umb.faqbot.listener
 import ink.umb.faqbot.AppConfig
 import ink.umb.faqbot.bot.manager.CommandGroupList
 import ink.umb.faqbot.bot.manager.SessionManager
+import ink.umb.faqbot.controller.DiyServiceController
 import ink.umb.faqbot.controller.WelcomeController
 import ink.umb.faqbot.dto.model.dataclass.Answer
 import ink.umb.faqbot.dto.model.dataclass.Session
 import ink.umb.faqbot.process.FuckSchoolSisterUntil
 import ink.umb.faqbot.route.IMessageEvent
 import ink.umb.faqbot.route.route
+import io.farewell12345.github.faqbot.dto.model.QA.MatchMode
+import io.farewell12345.github.faqbot.dto.model.QA.RequestMethod
 import io.ktor.utils.io.*
 import kotlinx.coroutines.launch
 import net.mamoe.mirai.event.EventHandler
@@ -137,6 +140,42 @@ class BotGroupCommandListener: BaseListeners(), IMessageEvent {
                     }
                     CommandGroupList.luckyGroup[event.group.id] = !CommandGroupList.luckyGroup[event.group.id]!!
                     subject.sendMessage("开启抽签功能")
+            }
+            case("addService"){
+                val args: List<String> =
+                    message.findIsInstance<PlainText>()!!
+                        .content
+                        .replace(".command ", "")
+                        .replace("addService ", "")
+                        .split(" ")
+                val pattern = args[0] ?: launch{
+                    subject.sendMessage("缺少匹配指令")
+                    throw DiyServiceController.NoArgsException()
+                }
+                val url = args[1] ?: launch{
+                    subject.sendMessage("缺少服务端地址")
+                    throw DiyServiceController.NoArgsException()
+                }
+                val requestMode = when(args[2]){
+                    "get" -> RequestMethod.get
+                    "post" -> RequestMethod.post
+                    else -> {
+                        RequestMethod.get
+                    }
+                }
+                if (pattern is String && url is String){
+                    DiyServiceController.addService(
+                        pattern = pattern,
+                        url = url,
+                        patternMode = MatchMode.precise,
+                        requestMethod = requestMode
+                    )
+                }
+                subject.sendMessage("service 添加成功")
+            }
+            case("service"){
+                val serviceList = DiyServiceController.getAllService().joinToString("\n")
+                subject.sendMessage(serviceList)
             }
             case("help", "获取指令",false) {
                 subject.sendMessage(getHelp())

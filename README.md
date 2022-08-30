@@ -33,6 +33,24 @@
 
 **(详细可见BotGroupCommandListener.Kt文件**
 
+新特性：支持添加自定义Service
+
+食用方法：
+
+指令：
+```shell
+.command addService 匹配指令 服务url 请求方法
+```
+实例：（以最简单的一言API为例）
+```shell
+.command addService 一言 https://v1.jinrishici.com/rensheng.txt get
+```
+以上指令中，“一言”为触发指令，之后是所需要请求的url地址，最后是请求方式：暂时仅支持GET和POST两种
+如果使用POST，则bot会尝试获取触发指令后的请求参数存入post-form中，以空格作为分隔符
+
+需要注意的是该特性暂时不支持解析json响应体（后续会更新），所以暂时请你尽量将返回设置为纯文本
+
+
 **或向bot发送帮助和'.command help'查看功能列表和指令列表)**
 
 ## 使用场景：

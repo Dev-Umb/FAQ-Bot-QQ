@@ -60,6 +60,8 @@ class BotGroupCommandListener: BaseListeners(), IMessageEvent {
             }
             case("fuckPsSister","开启/关闭反PS学姐功能"){
                 if (event.group.id !in CommandGroupList.fuckPsSister){
+                    FuckSchoolSisterUntil.destroy()
+                    FuckSchoolSisterUntil.init()
                     CommandGroupList.fuckPsSister.add(group.id)
                     subject.sendMessage("已开启反PS学姐功能，将实时监听群内消息")
                 }else{

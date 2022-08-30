@@ -5,6 +5,8 @@ import ink.umb.faqbot.dto.db.logger
 import ink.umb.faqbot.dto.model.dataclass.FuckSisterResponse
 import ink.umb.faqbot.http.FuckOkhttp
 import kotlinx.coroutines.*
+import okhttp3.internal.notifyAll
+import okhttp3.internal.wait
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.ConnectException
@@ -23,7 +25,6 @@ object FuckSchoolSisterUntil {
         }
     }
     fun restart(){
-        log.debug("restart service")
         destroy()
         start()
     }
@@ -51,10 +52,14 @@ object FuckSchoolSisterUntil {
         GlobalScope.launch {
             withContext(Dispatchers.IO) {
                 log.debug("service heart listener")
-                while (true){
+                var count = 0
+                while (count < 10){
                     if (process?.isAlive == false){
                         log.debug("process is exit!!,try to restart")
                         restart()
+                        count++
+                        Thread.sleep(2000)
+                        continue
                     }
                     try{
                         FuckOkhttp("http://127.0.0.1:9001/heart").get()
@@ -75,7 +80,7 @@ object FuckSchoolSisterUntil {
                         restart()
                     }catch (e: Exception){
                         log.debug(e)
-                        restart()
+                        destroy()
                     }
                     Thread.sleep(2000)
                 }
@@ -88,15 +93,14 @@ object FuckSchoolSisterUntil {
             extractProcessStream()
         }
     }
-    private fun init(){
+    private var heartThread = Thread {
+        heart()
+    }
+    fun init(){
         start()
-        Thread {
-            heart()
-        }.start()
+        heartThread.start()
     }
-    init {
-       init()
-    }
+
     public fun verifyMsg(text: String): FuckSisterResponse? {
         return try {
             FuckOkhttp(predictUrl).postFuckSister(text)

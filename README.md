@@ -16,6 +16,8 @@
         dbPwd: "" # 数据库密码
         botQQ: "" # 机器人的QQ
         botPwd: "" # 机器人的密码
+        superUser: "" # 超级用户，也就是开发者自己
+        predict: "py/predict.py" # 不需要管，这是ps学姐识别服务
       ``` 
   3. 打开数据库，编译Main.Kt开始使用
  

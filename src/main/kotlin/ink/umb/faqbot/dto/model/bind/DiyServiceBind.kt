@@ -30,6 +30,7 @@ interface DiyServiceBind: Entity<DiyServiceBind> {
     var patternMode: @MatchMode Int
     var requestMethod: @RequestMethod Int
     var url: String
+    var contentType: String
 //    // 服务响应头需要解析的字段列表
 //    var data: String
 }

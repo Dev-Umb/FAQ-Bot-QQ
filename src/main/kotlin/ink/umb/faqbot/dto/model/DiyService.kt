@@ -16,6 +16,7 @@ object DiyService: Table<DiyServiceBind>("service") {
     var patternMode = int("pattern_mode").bindTo { it.patternMode }
     var requestMethod = int("req_method").bindTo { it.requestMethod }
     var url = varchar("url").bindTo { it.url }
+    val contentType = varchar("content_type").bindTo { it.contentType  }
 //    // 服务响应头需要解析的字段列表
 //    var data = varchar("data").bindTo { it.data }
 }

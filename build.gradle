@@ -60,7 +60,10 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
-
+    implementation 'org.xerial:sqlite-jdbc:3.8.11.2'
+    implementation "me.liuwj.ktorm:ktorm-core:3.1.0"
+    // https://mavenlibs.com/maven/dependency/org.ktorm/ktorm-support-sqlite
+    implementation 'me.liuwj.ktorm:ktorm-support-sqlite:3.1.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2'
 //    implementation group:'net.mamoe', name:'mirai-core',version: '2.0-RC' // 替换为你需要的版本号
     // https://mvnrepository.com/artifact/net.mamoe/mirai-core
@@ -87,7 +90,7 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.quartz-scheduler/quartz
     implementation group: 'org.quartz-scheduler', name: 'quartz', version: '2.3.2'
-    implementation "me.liuwj.ktorm:ktorm-core:3.1.0"
+
 
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'
     implementation 'com.google.code.gson:gson:2.9.0'

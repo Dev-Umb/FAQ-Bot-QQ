@@ -80,9 +80,6 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.yaml/snakeyaml
     implementation group: 'org.yaml', name: 'snakeyaml', version: '1.30'
-
-//    // https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12
-//    compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.30'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
     implementation 'org.reflections:reflections:0.9.10'
     implementation 'org.python:jython-standalone:2.7.3b1'

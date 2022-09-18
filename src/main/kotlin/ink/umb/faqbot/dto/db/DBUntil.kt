@@ -15,3 +15,7 @@ fun logger(): Logger {
     System.setProperty("nacos.logging.default.config.enabled", "false");
     return getLogger(StackLocatorUtil.getStackTraceElement(2).className)
 }
+
+annotation class SqliteTableId{
+
+}

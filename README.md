@@ -1,28 +1,26 @@
 # FAQ-Bot-QQ
-  基于Miari框架和MariaDB开发的群内问答机器人
+  基于Miari框架和MariaDB开发的群内问答机器人（sqlite版本）
    
   支持艾特消息以及图片消息的存储
 ## 现有功能：
   1.群内问答
   
   2.迎新
+  
+3.微服务支持
 
 ## 使用方法：
-  1. 首先创建名为faq的数据库（其实叫啥都行啦，最后config文件中的DBUrl正确即可），将项目中SQL文件夹中的question.sql和welcome.sql导入数据库中  
+  1. 首先将faq.db放到根路径下
 2. 创建config.yml文件，填入下面的配置：
       ```yaml
-        dbUrl: "" # 你的数据库端口链接，示例：“jdbc:mysql://localhost:3306/faq?serverTimezone=UTC&characterEncoding=UTF-8
-        dbUser: "" # 数据库用户名
-        dbPwd: "" # 数据库密码
         botQQ: "" # 机器人的QQ
         botPwd: "" # 机器人的密码
         superUser: "" # 超级用户，也就是开发者自己
-        predict: "py/predict.py" # 不需要管，这是ps学姐识别服务
       ``` 
-  3. 打开数据库，编译Main.Kt开始使用
+  3. 编译Main.Kt开始使用
  
  
-如果不想这么麻烦，**可以直接去下载release，下载.zip文件，解压后配置config.yml和数据库，然后直接运行./bin/QABotRefect 二进制文件即可**
+如果不想这么麻烦，**可以直接去下载release，下载.zip文件，解压后配置config.yml和复制faq.db数据库到运行路径，然后直接运行./bin/QABotRefect 二进制文件即可**
   
 ## 指令菜单
 **注意：以下功能部分需要使用.command 指令开启**

@@ -7,17 +7,15 @@ import ink.umb.faqbot.controller.DiyServiceController
 import ink.umb.faqbot.controller.WelcomeController
 import ink.umb.faqbot.dto.model.dataclass.Answer
 import ink.umb.faqbot.dto.model.dataclass.Session
-import ink.umb.faqbot.process.FuckSchoolSisterUntil
+import ink.umb.faqbot.process.FuckSchoolSisterUtil
 import ink.umb.faqbot.route.IMessageEvent
 import ink.umb.faqbot.route.route
 import io.farewell12345.github.faqbot.dto.model.QA.MatchMode
 import io.farewell12345.github.faqbot.dto.model.QA.RequestMethod
-import io.ktor.utils.io.*
 import kotlinx.coroutines.launch
 import net.mamoe.mirai.event.EventHandler
 import net.mamoe.mirai.event.events.GroupMessageEvent
 import net.mamoe.mirai.message.data.*
-import net.mamoe.mirai.message.data.MessageSource.Key.quote
 import java.util.*
 
 class BotGroupCommandListener: BaseListeners(), IMessageEvent {
@@ -38,7 +36,7 @@ class BotGroupCommandListener: BaseListeners(), IMessageEvent {
             }
             case("restartPsSister", "重启服务，仅限超级管理员"){
                 if(sender.id == AppConfig.getInstance().superUser){
-                    FuckSchoolSisterUntil.restart()
+                    FuckSchoolSisterUtil.restart()
                     subject.sendMessage("重启成功")
                 }else{
                     subject.sendMessage("您没有权限，请联系开发者")
@@ -49,8 +47,8 @@ class BotGroupCommandListener: BaseListeners(), IMessageEvent {
                 val data = reply?.source?.originalMessage?.contentToString()
                 if (data!!.length > 10){
                     launch {
-                        FuckSchoolSisterUntil.addDataSet(data)
-                        FuckSchoolSisterUntil.train()
+                        FuckSchoolSisterUtil.addDataSet(data)
+                        FuckSchoolSisterUtil.train()
                         subject.sendMessage("模型迭代完成")
                     }
                     subject.sendMessage("添加语料成功,正在迭代模型")
@@ -60,8 +58,8 @@ class BotGroupCommandListener: BaseListeners(), IMessageEvent {
             }
             case("fuckPsSister","开启/关闭反PS学姐功能"){
                 if (event.group.id !in CommandGroupList.fuckPsSister){
-                    FuckSchoolSisterUntil.destroy()
-                    FuckSchoolSisterUntil.init()
+                    FuckSchoolSisterUtil.destroy()
+                    FuckSchoolSisterUtil.init()
                     CommandGroupList.fuckPsSister.add(group.id)
                     subject.sendMessage("已开启反PS学姐功能，将实时监听群内消息")
                 }else{

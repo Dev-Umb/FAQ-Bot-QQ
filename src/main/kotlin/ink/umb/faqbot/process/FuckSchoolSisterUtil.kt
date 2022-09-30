@@ -5,15 +5,13 @@ import ink.umb.faqbot.dto.db.logger
 import ink.umb.faqbot.dto.model.dataclass.FuckSisterResponse
 import ink.umb.faqbot.http.FuckOkhttp
 import kotlinx.coroutines.*
-import okhttp3.internal.notifyAll
-import okhttp3.internal.wait
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.ConnectException
 
 
 @OptIn(DelicateCoroutinesApi::class)
-object FuckSchoolSisterUntil {
+object FuckSchoolSisterUtil {
     private val log = logger()
     private var PREDICT_PYTHON_URI = AppConfig.getInstance().predictPyUri
     private var process: Process? = null
@@ -131,8 +129,8 @@ fun main() {
 //        FuckSchoolSisterUntil.destroy()
 //        throw e
 //    }
-    FuckSchoolSisterUntil
+    FuckSchoolSisterUtil
     while (true){
     }
-    FuckSchoolSisterUntil.destroy()
+    FuckSchoolSisterUtil.destroy()
 }

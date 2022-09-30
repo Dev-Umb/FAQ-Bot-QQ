@@ -1,7 +1,7 @@
 package ink.umb.faqbot.listener
 
 import ink.umb.faqbot.bot.manager.CommandGroupList
-import ink.umb.faqbot.process.FuckSchoolSisterUntil
+import ink.umb.faqbot.process.FuckSchoolSisterUtil
 import ink.umb.faqbot.route.IMessageEvent
 import net.mamoe.mirai.contact.isAdministrator
 import net.mamoe.mirai.contact.isOperator
@@ -12,7 +12,7 @@ import net.mamoe.mirai.message.data.MessageSource.Key.recall
 
 class FuckSisterListener : BaseListeners(), IMessageEvent {
     companion object{
-        val fuckSchoolSisterUntil = FuckSchoolSisterUntil
+        val fuckSchoolSisterUntil = FuckSchoolSisterUtil
     }
     @EventHandler
     override suspend fun GroupMessageEvent.onEvent(){

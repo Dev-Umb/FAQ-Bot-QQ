@@ -40,7 +40,7 @@ jobs:
       - name: Gradle Build Action
   # You may pin to the exact commit or the version.
   # uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-        uses: gradle/gradle-build-action@v2.2.1
+        uses: gradle/gradle-build-action@v2.4.2
         with:
           # Gradle version to use
           gradle-version: 7.1
